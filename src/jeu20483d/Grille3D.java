@@ -24,15 +24,15 @@ public class Grille3D implements Parametre {
     }
     
     //Getters
-    public HashSet getGrilleBase(){
+    public HashSet<Case> getGrilleBase(){
         return this.grilleBase;
     }
     
-    public HashSet getGrilleMilieu(){
+    public HashSet<Case> getGrilleMilieu(){
         return this.grilleMilieu;
     }
     
-    public HashSet getGrilleSommet(){
+    public HashSet<Case> getGrilleSommet(){
         return this.grilleSommet;
     }
     
@@ -108,20 +108,106 @@ public class Grille3D implements Parametre {
         //utilise deplacer() et deplacerEntreGrille() suivant la direction entrée
     }
     
-    public boolean jeuPerdu(){
-        return false;
+    public boolean jeuFini(){
+        
+        boolean fin = true;
+        
+        //On vérifie si les trois grilles sont pleine
+        if ((this.grilleBase.size() < TAILLE * TAILLE)||(this.grilleMilieu.size() < TAILLE * TAILLE)||(this.grilleSommet.size() < TAILLE * TAILLE)) {
+            fin = false;
+        }
+        //On vérifie si un déplacement est encore possible
+        else {
+            for (Case c : this.grilleBase) {
+                for (int i = 1; i <= 2; i++) {
+                    if (c.getVoisinDirect(i) != null) {
+                        if (c.valeursEgales(c.getVoisinDirect(i))) {
+                            fin = false;
+                        }
+                    }
+                }
+                if (c.getVoisinDirect(4) != null) {
+                    if (c.valeursEgales(c.getVoisinDirect(4))) {
+                        fin = false;
+                    }
+                }
+                if (c.getVoisinDirect(-4) != null) {
+                    if (c.valeursEgales(c.getVoisinDirect(-4))) {
+                        fin = false;
+                    }
+                }
+            }
+            
+            for (Case c : this.grilleMilieu) {
+                for (int i = 1; i <= 2; i++) {
+                    if (c.getVoisinDirect(i) != null) {
+                        if (c.valeursEgales(c.getVoisinDirect(i))) {
+                            fin = false;
+                        }
+                    }
+                }
+                if (c.getVoisinDirect(4) != null) {
+                    if (c.valeursEgales(c.getVoisinDirect(4))) {
+                        fin = false;
+                    }
+                }
+                if (c.getVoisinDirect(-4) != null) {
+                    if (c.valeursEgales(c.getVoisinDirect(-4))) {
+                        fin = false;
+                    }
+                }
+            }
+            
+            for (Case c : this.grilleSommet) {
+                for (int i = 1; i <= 2; i++) {
+                    if (c.getVoisinDirect(i) != null) {
+                        if (c.valeursEgales(c.getVoisinDirect(i))) {
+                            fin = false;
+                        }
+                    }
+                }
+                if (c.getVoisinDirect(4) != null) {
+                    if (c.valeursEgales(c.getVoisinDirect(4))) {
+                        fin = false;
+                    }
+                }
+                if (c.getVoisinDirect(-4) != null) {
+                    if (c.valeursEgales(c.getVoisinDirect(-4))) {
+                        fin = false;
+                    }
+                }
+            }
+        }
+        return fin;
     }
     
-    public boolean jeuGagne(){
-        return true;
+    public void jeuPerdu(){
+        System.out.println("La partie est finie. Votre score est " + this.score);
+        System.exit(1);
     }
     
-    public void calculScore(){
-        //cf méthode fusion 2048-L2
-        //utilisé à chaque deplacment dès que deux cases sont fusionnées
+    public void jeuGagne(){
+        System.out.println("Bravo ! Vous avez atteint 2048");
+        System.exit(0);
     }
     
-    public void AjoutCase(){
+    public void calculScore(Case c){
+        //On fusionne les deux cases
+        c.setV(c.getV() * 2);
+        
+        //On regarde si c'est la nouvelle meilleure case
+        if (this.meilleureCase < c.getV()) {
+            this.meilleureCase = c.getV();
+        }
+        
+        //On augmente le score
+        this.score += c.getV();
+        
+        //On indique que le déplacement à eu lieu
+        deplacement = true;
+    }
+    
+    public void ajoutCase(){
         //ajoute aléatoirement une case sur l'une des trois grilles
     }
 }   

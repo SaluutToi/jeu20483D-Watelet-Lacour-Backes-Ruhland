@@ -11,6 +11,7 @@ public class Case implements Parametre {
     
     private int x, y, v;
     private HashSet<Case> grille;
+    private Grille3D grille3D;
     
     //Constructeur
     public  Case(int abscisse, int ordonne, int valeur){
@@ -32,8 +33,12 @@ public class Case implements Parametre {
         return this.v;
     }
     
-    public HashSet getGrille(){
+    public HashSet<Case> getGrille(){
         return this.grille;
+    }
+    
+    public Grille3D getGrilles3D(){
+        return this.grille3D;
     }
     
     //Setters
@@ -49,8 +54,12 @@ public class Case implements Parametre {
         this.v = valeur;
     }
     
-    public void setGrille(HashSet g) {
+    public void setGrille(HashSet<Case> g) {
         this.grille = g;
+    }
+    
+    public void setGrilles3D(Grille3D g){
+        this.grille3D = g;
     }
     
     //Affichage
@@ -84,12 +93,56 @@ public class Case implements Parametre {
     }
     
     public Case getVoisinDirect(int direction){
-        Case c = new Case(0,0,0);
-        return c;
+        if (direction == HAUT) {
+            for (int i = this.y - 1; i >= 0; i--) {
+                for (Case c : grille) {
+                    if (c.getX() == this.x && c.getY() == i) {
+                        return c;
+                    }
+                }
+            }
+        } else if (direction == BAS) {
+            for (int i = this.y + 1; i < TAILLE; i++) {
+                for (Case c : grille) {
+                    if (c.getX() == this.x && c.getY() == i) {
+                        return c;
+                    }
+                }
+            }
+        } else if (direction == GAUCHE) {
+            for (int i = this.x - 1; i >= 0; i--) {
+                for (Case c : grille) {
+                    if (c.getX() == i && c.getY() == this.y) {
+                        return c;
+                    }
+                }
+            }
+        } else if (direction == DROITE) {
+            for (int i = this.x + 1; i < TAILLE; i++) {
+                for (Case c : grille) {
+                    if (c.getX() == i && c.getY() == this.y) {
+                        return c;
+                    }
+                }
+            }
+        }
+        return null;
     }
     
-    public Case getVoisinGrille(HashSet g){
-        Case c = new Case(0,0,0);
-        return c;
+    public Case getVoisinGrille(int direction){
+        if(direction == SOMMET){
+           for(Case c: grille3D.getGrilleSommet()){
+                if((c.x == this.x)&&(c.y == this.y)){
+                    return c;
+                }
+            } 
+        } else if (direction == BASE){
+            for(Case c: grille3D.getGrilleBase()){
+                if((c.x == this.x)&&(c.y == this.y)){
+                    return c;
+                }
+            }
+        }
+        return null;
     }
 }
