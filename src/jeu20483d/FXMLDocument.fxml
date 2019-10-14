@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="603.0" prefWidth="1055.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="jeu20483d.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="796.0" prefWidth="1022.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
     <children>
-        <Button fx:id="button" layoutX="169.0" onAction="#handleButtonAction" text="Quitter" />
-      <GridPane gridLinesVisible="true" layoutX="403.0" layoutY="169.0" prefHeight="204.0" prefWidth="250.0">
+        <Button fx:id="button" layoutX="113.0" onAction="#handleButtonAction" text="Quitter" />
+      <GridPane gridLinesVisible="true" layoutX="398.0" layoutY="226.0" prefHeight="230.0" prefWidth="230.0" AnchorPane.bottomAnchor="279.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="79.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="85.0" />
@@ -25,7 +26,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <GridPane gridLinesVisible="true" layoutX="729.0" layoutY="169.0" prefHeight="204.0" prefWidth="231.0">
+      <GridPane gridLinesVisible="true" layoutX="637.0" layoutY="226.0" prefHeight="230.0" prefWidth="230.0" AnchorPane.bottomAnchor="279.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -37,7 +38,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <GridPane gridLinesVisible="true" layoutX="63.0" layoutY="169.0" prefHeight="204.0" prefWidth="250.0">
+      <GridPane gridLinesVisible="true" layoutX="158.0" layoutY="226.0" prefHeight="230.0" prefWidth="230.0" AnchorPane.bottomAnchor="279.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -49,32 +50,32 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button fx:id="button1" layoutX="557.0" layoutY="448.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="80.0" text="Droite">
+      <Button fx:id="button1" layoutX="555.0" layoutY="538.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Droite" AnchorPane.bottomAnchor="148.0">
          <font>
             <Font name="Microsoft Himalaya" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="button11" layoutX="379.0" layoutY="452.0" onAction="#handleButtonAction" text="Gauche">
+      <Button fx:id="button11" layoutX="378.0" layoutY="538.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Gauche" AnchorPane.bottomAnchor="148.0">
          <font>
             <Font name="Microsoft Himalaya" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="button12" layoutX="471.0" layoutY="502.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="84.0" text="Bas">
+      <Button fx:id="button12" layoutX="466.0" layoutY="587.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Bas" AnchorPane.bottomAnchor="99.0">
          <font>
             <Font name="Microsoft Himalaya" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="button13" layoutX="470.0" layoutY="400.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="84.0" text="Haut">
+      <Button fx:id="button13" layoutX="466.0" layoutY="489.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Haut" AnchorPane.bottomAnchor="197.0">
          <font>
             <Font name="Microsoft Himalaya" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="button14" layoutX="188.0" layoutY="430.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="99.0" text="Sommet">
+      <Button fx:id="button14" layoutX="213.0" layoutY="489.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="99.0" text="Sommet" AnchorPane.bottomAnchor="197.0">
          <font>
             <Font name="Microsoft Himalaya" size="25.0" />
          </font>
       </Button>
-      <Button fx:id="button141" layoutX="188.0" layoutY="489.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="99.0" text="Base">
+      <Button fx:id="button141" layoutX="703.0" layoutY="546.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="99.0" text="Base" AnchorPane.bottomAnchor="197.0">
          <font>
             <Font name="Microsoft Himalaya" size="25.0" />
          </font>
@@ -85,40 +86,27 @@
           <MenuItem mnemonicParsing="false" text="Action 2" />
         </items>
       </MenuButton>
-      <Text layoutX="104.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOMMET" textAlignment="CENTER" wrappingWidth="169.0">
+      <Text layoutX="189.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOMMET" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.bottomAnchor="538.2158203125">
          <font>
             <Font name="OCR A Extended" size="35.0" />
          </font>
       </Text>
-      <Text layoutX="384.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048 3D">
+      <Text layoutX="401.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048 3D">
          <font>
             <Font name="OCR A Extended" size="61.0" />
          </font>
       </Text>
-      <Text layoutX="760.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BASE" textAlignment="CENTER" wrappingWidth="169.0">
+      <Text layoutX="668.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BASE" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.bottomAnchor="538.2158203125">
          <font>
             <Font name="OCR A Extended" size="35.0" />
          </font>
       </Text>
-      <Text layoutX="505.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HAUT">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Text layoutX="454.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE">
          <font>
-            <Font size="13.0" />
+            <Font size="39.0" />
          </font>
       </Text>
-      <Text layoutX="511.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BAS">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Text>
-      <Text layoutX="983.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DROITE">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Text>
-      <Text layoutX="14.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAUCHE">
-         <font>
-            <Font size="13.0" />
-         </font>
-      </Text>
+      <Pane layoutX="454.0" layoutY="159.0" prefHeight="66.0" prefWidth="117.0" />
     </children>
 </AnchorPane>
