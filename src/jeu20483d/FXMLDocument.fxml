@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -11,14 +17,33 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="796.0" prefWidth="1022.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
+<AnchorPane fx:id="fond" prefHeight="958.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
     <children>
-        <Button fx:id="button" layoutX="113.0" onAction="#handleButtonAction" text="Quitter" />
-      <GridPane gridLinesVisible="true" layoutX="398.0" layoutY="226.0" prefHeight="230.0" prefWidth="230.0" AnchorPane.bottomAnchor="279.0">
+      <Button id="bas" fx:id="button12" layoutX="584.0" layoutY="861.0" onAction="#handleButtonBas" prefHeight="50.0" prefWidth="120.0" text="Bas">
+         <font>
+            <Font name="Monospaced Regular" size="22.0" />
+         </font>
+      </Button>
+      <Button id="haut" fx:id="button13" layoutX="584.0" layoutY="760.0" onAction="#handleButtonHaut" prefHeight="50.0" prefWidth="120.0" text="Haut">
+         <font>
+            <Font name="Monospaced Regular" size="22.0" />
+         </font>
+      </Button>
+      <Text id="textScore" layoutX="579.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE" textAlignment="CENTER" AnchorPane.leftAnchor="579.0" AnchorPane.rightAnchor="579.57568359375">
+         <font>
+            <Font name="Monospaced Regular" size="46.0" />
+         </font>
+      </Text>
+      <Button id="base" fx:id="button141" layoutX="940.0" layoutY="760.0" onAction="#handleButtonBase" prefHeight="50.0" prefWidth="120.0" text="Base">
+         <font>
+            <Font name="Monospaced Regular" size="22.0" />
+         </font>
+      </Button>
+      <GridPane id="grilleBase" fx:id="grilleBase" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="825.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="79.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="85.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="88.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -26,19 +51,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <GridPane gridLinesVisible="true" layoutX="637.0" layoutY="226.0" prefHeight="230.0" prefWidth="230.0" AnchorPane.bottomAnchor="279.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-      </GridPane>
-      <GridPane gridLinesVisible="true" layoutX="158.0" layoutY="226.0" prefHeight="230.0" prefWidth="230.0" AnchorPane.bottomAnchor="279.0">
+      <Button id="sommet" fx:id="button14" layoutX="227.0" layoutY="760.0" onAction="#handleButtonSommet" prefHeight="50.0" prefWidth="120.0" text="Sommet">
+         <font>
+            <Font name="Monospaced Regular" size="22.0" />
+         </font>
+      </Button>
+      <GridPane id="grilleSommet" fx:id="grilleSommet" alignment="CENTER" gridLinesVisible="true" layoutX="112.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0" style="-fx-margin-right: 7%;">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -50,63 +68,66 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button fx:id="button1" layoutX="555.0" layoutY="538.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Droite" AnchorPane.bottomAnchor="148.0">
+      <Button id="droite" fx:id="button1" layoutX="673.0" layoutY="810.0" onAction="#handleButtonDroite" prefHeight="50.0" prefWidth="120.0" text="Droite">
          <font>
-            <Font name="Microsoft Himalaya" size="25.0" />
+            <Font name="Monospaced Regular" size="22.0" />
          </font>
       </Button>
-      <Button fx:id="button11" layoutX="378.0" layoutY="538.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Gauche" AnchorPane.bottomAnchor="148.0">
+      <Text id="textSommet" layoutX="203.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOMMET" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.leftAnchor="203.0" AnchorPane.rightAnchor="921.0">
          <font>
-            <Font name="Microsoft Himalaya" size="25.0" />
-         </font>
-      </Button>
-      <Button fx:id="button12" layoutX="466.0" layoutY="587.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Bas" AnchorPane.bottomAnchor="99.0">
-         <font>
-            <Font name="Microsoft Himalaya" size="25.0" />
-         </font>
-      </Button>
-      <Button fx:id="button13" layoutX="466.0" layoutY="489.0" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="90.0" text="Haut" AnchorPane.bottomAnchor="197.0">
-         <font>
-            <Font name="Microsoft Himalaya" size="25.0" />
-         </font>
-      </Button>
-      <Button fx:id="button14" layoutX="213.0" layoutY="489.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="99.0" text="Sommet" AnchorPane.bottomAnchor="197.0">
-         <font>
-            <Font name="Microsoft Himalaya" size="25.0" />
-         </font>
-      </Button>
-      <Button fx:id="button141" layoutX="703.0" layoutY="546.0" onAction="#handleButtonAction" prefHeight="39.0" prefWidth="99.0" text="Base" AnchorPane.bottomAnchor="197.0">
-         <font>
-            <Font name="Microsoft Himalaya" size="25.0" />
-         </font>
-      </Button>
-      <MenuButton mnemonicParsing="false" text="Nouvelle Partie">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </MenuButton>
-      <Text layoutX="189.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOMMET" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.bottomAnchor="538.2158203125">
-         <font>
-            <Font name="OCR A Extended" size="35.0" />
+            <Font name="Monospaced Regular" size="35.0" />
          </font>
       </Text>
-      <Text layoutX="401.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048 3D">
+      <Button id="gauche" fx:id="button11" layoutX="496.0" layoutY="810.0" onAction="#handleButtonGauche" prefHeight="50.0" prefWidth="120.0" text="Gauche">
          <font>
-            <Font name="OCR A Extended" size="61.0" />
+            <Font name="Monospaced Regular" size="22.0" />
+         </font>
+      </Button>
+      <Text id="textBase" layoutX="916.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BASE" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.leftAnchor="916.0" AnchorPane.rightAnchor="212.04736328125">
+         <font>
+            <Font name="Monospaced Regular" size="35.0" />
          </font>
       </Text>
-      <Text layoutX="668.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BASE" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.bottomAnchor="538.2158203125">
+      <MenuBar prefHeight="29.0" prefWidth="1022.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Nouvelle partie">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Mon compte">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Quitter">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <GridPane id="grilleMilieu" fx:id="grilleMilieu" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="469.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <Text id="titre" layoutX="435.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048-3D" textAlignment="CENTER" wrappingWidth="417.42431640625">
          <font>
-            <Font name="OCR A Extended" size="35.0" />
+            <Font name="Monospaced Bold" size="96.0" />
          </font>
       </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <Text layoutX="454.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE">
+      <Label id="score" fx:id="score" alignment="CENTER" layoutX="579.0" layoutY="263.0" prefHeight="79.0" prefWidth="134.0" text="2048" textAlignment="CENTER">
          <font>
-            <Font size="39.0" />
+            <Font name="Monospaced Regular" size="54.0" />
          </font>
-      </Text>
-      <Pane layoutX="454.0" layoutY="159.0" prefHeight="66.0" prefWidth="117.0" />
+      </Label>
     </children>
 </AnchorPane>
