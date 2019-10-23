@@ -17,24 +17,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="fond" prefHeight="958.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
+<AnchorPane fx:id="fond" prefHeight="958.0" prefWidth="1293.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
     <children>
-      <Button id="bas" fx:id="button12" layoutX="584.0" layoutY="861.0" onAction="#handleButtonBas" prefHeight="50.0" prefWidth="120.0" text="Bas">
+      <Button id="bas" fx:id="bas" layoutX="584.0" layoutY="860.0" onAction="#handleButtonBas" prefHeight="50.0" prefWidth="120.0" text="Bas">
          <font>
             <Font name="Monospaced Regular" size="22.0" />
          </font>
       </Button>
-      <Button id="haut" fx:id="button13" layoutX="584.0" layoutY="760.0" onAction="#handleButtonHaut" prefHeight="50.0" prefWidth="120.0" text="Haut">
+      <Button id="haut" fx:id="haut" layoutX="584.0" layoutY="760.0" onAction="#handleButtonHaut" prefHeight="50.0" prefWidth="120.0" text="Haut">
          <font>
             <Font name="Monospaced Regular" size="22.0" />
          </font>
       </Button>
-      <Text id="textScore" layoutX="579.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE" textAlignment="CENTER" AnchorPane.leftAnchor="579.0" AnchorPane.rightAnchor="579.57568359375">
-         <font>
-            <Font name="Monospaced Regular" size="46.0" />
-         </font>
-      </Text>
-      <Button id="base" fx:id="button141" layoutX="940.0" layoutY="760.0" onAction="#handleButtonBase" prefHeight="50.0" prefWidth="120.0" text="Base">
+      <Button id="base" fx:id="base" layoutX="940.0" layoutY="760.0" onAction="#handleButtonBase" prefHeight="50.0" prefWidth="120.0" text="Base">
          <font>
             <Font name="Monospaced Regular" size="22.0" />
          </font>
@@ -51,7 +46,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Button id="sommet" fx:id="button14" layoutX="227.0" layoutY="760.0" onAction="#handleButtonSommet" prefHeight="50.0" prefWidth="120.0" text="Sommet">
+      <Button id="sommet" fx:id="sommet" layoutX="227.0" layoutY="760.0" onAction="#handleButtonSommet" prefHeight="50.0" prefWidth="120.0" text="Sommet">
          <font>
             <Font name="Monospaced Regular" size="22.0" />
          </font>
@@ -68,43 +63,27 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button id="droite" fx:id="button1" layoutX="673.0" layoutY="810.0" onAction="#handleButtonDroite" prefHeight="50.0" prefWidth="120.0" text="Droite">
+      <Button id="droite" fx:id="droite" layoutX="673.0" layoutY="810.0" onAction="#handleButtonDroite" prefHeight="50.0" prefWidth="120.0" text="Droite">
          <font>
             <Font name="Monospaced Regular" size="22.0" />
          </font>
       </Button>
-      <Text id="textSommet" layoutX="203.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SOMMET" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.leftAnchor="203.0" AnchorPane.rightAnchor="921.0">
-         <font>
-            <Font name="Monospaced Regular" size="35.0" />
-         </font>
-      </Text>
-      <Button id="gauche" fx:id="button11" layoutX="496.0" layoutY="810.0" onAction="#handleButtonGauche" prefHeight="50.0" prefWidth="120.0" text="Gauche">
+      <Button id="gauche" fx:id="gauche" layoutX="496.0" layoutY="810.0" onAction="#handleButtonGauche" prefHeight="50.0" prefWidth="120.0" text="Gauche">
          <font>
             <Font name="Monospaced Regular" size="22.0" />
          </font>
       </Button>
-      <Text id="textBase" layoutX="916.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BASE" textAlignment="CENTER" wrappingWidth="169.0" AnchorPane.leftAnchor="916.0" AnchorPane.rightAnchor="212.04736328125">
-         <font>
-            <Font name="Monospaced Regular" size="35.0" />
-         </font>
-      </Text>
       <MenuBar prefHeight="29.0" prefWidth="1022.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Nouvelle partie">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Mon compte">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Quitter">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
+          <Menu mnemonicParsing="false" text="Nouvelle partie" />
+          <Menu mnemonicParsing="false" text="Mon compte" />
+          <Menu mnemonicParsing="false" text="Quitter" />
+            <Menu mnemonicParsing="false" text="Styles">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#styleClassique" text="Classique" />
+                  <MenuItem mnemonicParsing="false" onAction="#styleNuit" text="Nuit" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
       <GridPane id="grilleMilieu" fx:id="grilleMilieu" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="469.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0">
@@ -119,14 +98,29 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Text id="titre" layoutX="435.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2048-3D" textAlignment="CENTER" wrappingWidth="417.42431640625">
-         <font>
-            <Font name="Monospaced Bold" size="96.0" />
-         </font>
-      </Text>
       <Label id="score" fx:id="score" alignment="CENTER" layoutX="579.0" layoutY="263.0" prefHeight="79.0" prefWidth="134.0" text="2048" textAlignment="CENTER">
          <font>
             <Font name="Monospaced Regular" size="54.0" />
+         </font>
+      </Label>
+      <Label fx:id="textSommet" layoutX="224.0" layoutY="320.0" text="SOMMET" textAlignment="CENTER">
+         <font>
+            <Font name="Monospaced Regular" size="35.0" />
+         </font>
+      </Label>
+      <Label fx:id="textScore" layoutX="574.0" layoutY="207.0" text="SCORE">
+         <font>
+            <Font name="Monospaced Regular" size="46.0" />
+         </font>
+      </Label>
+      <Label fx:id="textBase" layoutX="958.0" layoutY="320.0" text="BASE" textAlignment="CENTER">
+         <font>
+            <Font name="Monospaced Regular" size="35.0" />
+         </font>
+      </Label>
+      <Label fx:id="titre" layoutX="441.0" layoutY="69.0" text="2048-3D" textAlignment="CENTER">
+         <font>
+            <Font name="Monospaced Regular" size="96.0" />
          </font>
       </Label>
     </children>

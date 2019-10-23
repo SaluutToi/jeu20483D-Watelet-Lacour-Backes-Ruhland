@@ -1,0 +1,98 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.  Author     : chloe
+*/
+
+/* style Classique */
+
+.fondClassique {
+    -fx-background-color: #FFFFFF;
+}
+
+.textClassique {
+    -fx-text-fill: #000000;
+}
+
+.buttonClassique {
+    -fx-text-fill: #000000;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
+
+.gridpaneClassique {
+     -fx-border-color: black;
+     -fx-grid-lines-visible: true;
+     /*-fx-border: 2px solid;*/
+     -fx-halignment: center;
+     -fx-alignment: CENTER;  
+}
+
+.pane2Classique {
+    -fx-background-color: #e62315;
+    -fx-border-color: black;
+}
+
+.tuile2Classique {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 46;
+    -fx-padding: 26 40 26 40;
+}
+
+.pane4Classique {
+    -fx-background-color: #bd1b0f;
+    -fx-border-color: black;
+}
+
+.tuile4Classique {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 46;
+    -fx-padding: 26 40 26 40;
+}
+
+
+/* style Nuit */
+
+.fondNuit {
+    -fx-background-color: #000000;
+}
+
+.gridpaneNuit {
+     -fx-border-color: white;
+     -fx-grid-lines-visible: true;
+     /*-fx-border: 2px solid;*/
+     -fx-halignment: center;
+     -fx-alignment: CENTER;  
+}
+
+.textNuit {
+    -fx-text-fill: #FFFFFF;
+}
+
+.buttonNuit {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #201f21;
+    -fx-border-color: white;
+}
+
+.pane2Nuit {
+    -fx-background-color: #211b3d;
+    -fx-border-color: white;
+}
+
+.tuile2Nuit {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 46;
+    -fx-padding: 26 40 26 40;
+}
+
+.pane4Nuit {
+    -fx-background-color: #372d66;
+    -fx-border-color: white;
+}
+
+.tuile4Nuit {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 46;
+    -fx-padding: 26 40 26 40;
+}
