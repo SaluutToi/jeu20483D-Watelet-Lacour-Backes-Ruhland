@@ -6,8 +6,6 @@
 package jeu20483d;
 
 import static java.lang.Thread.sleep;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.layout.Pane;
 
 
@@ -15,12 +13,12 @@ import javafx.scene.layout.Pane;
  *
  * @author chloe
  */
-public class deplacePane extends Thread {
-    private int obj;
+public class deplacePane implements Runnable {
+    private final int obj;
     private int x;
     private int y;
-    private int d;
-    private Pane p;
+    private final int d;
+    private final Pane p;
     
     public deplacePane(int d, int x, int y, int o, Pane p){
         this.d = d;
@@ -32,21 +30,79 @@ public class deplacePane extends Thread {
     
     @Override
     public void run(){
-        if(this.d == 2){ //droite
-            while(this.x < this.obj){
-                this.x++;
-                p.relocate(x, y); 
-                try {
-                    sleep(3);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(deplacePane.class.getName()).log(Level.SEVERE, null, ex);
+        switch (this.d) {
+            case 2:
+                //droite
+                while(this.x < this.obj){
+                    this.x++;
+                    p.relocate(x, y);
+                    try {
+                        sleep(3);
+                    } catch (InterruptedException ex) {
+                        
+                    }
+                }  
+                break;
+            case -1:
+                //bas
+                while(this.y < this.obj){
+                    this.y++;
+                    p.relocate(x, y);
+                    try {
+                        sleep(3);
+                    } catch (InterruptedException ex) {
+                        
+                    }
+                }   
+                break;
+            case 1:
+                //haut
+                while(this.y > this.obj){
+                    this.y--;
+                    p.relocate(x, y);
+                    try {
+                        sleep(3);
+                    } catch (InterruptedException ex) {
+                        
+                    }
+                }   
+                break;
+            case -2:
+                //gauche
+                while(this.x > this.obj){
+                    this.x--;
+                    p.relocate(x, y);
+                    try {
+                        sleep(3);
+                    } catch (InterruptedException ex) {
+                        
+                    }
+                }   
+                break;
+            case 4:
+                //sommet
+                while(this.x>this.obj){
+                    this.x--;
+                    p.relocate(x, y);
+                    try {
+                        sleep(3);
+                    } catch (InterruptedException ex) {
+                        
+                    }
                 }
-            }
-        }else if(this.d == -1){ //bas
-            while(this.y < this.obj){
-                this.y++;
-                p.relocate(x, y);
-            }
+                break;
+            default:
+                while(this.x<this.obj){
+                    this.x++;
+                    p.relocate(x, y);
+                    try {
+                        sleep(3);
+                    } catch (InterruptedException ex) {
+                        
+                    }
+                }
+                //base
+                break;
         }
         
     }

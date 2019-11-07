@@ -67,12 +67,10 @@ public class FXMLDocumentController implements Initializable {
         boolean b;
         b = this.jeu.ajoutCase();
         b = this.jeu.ajoutCase();
-        b = this.jeu.ajoutCase();
         
         //On affiche les deux nouvelles Cases
         this.afficherStyle("Classique");
         this.score.setText("0");
-        System.out.print(jeu);
     }  
     
     
@@ -80,49 +78,97 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonHaut(ActionEvent event) {
-        System.out.println("You clicked haut!");
+        
+        this.jeu.lanceDeplacement(1);
+        ThreadGroup groupe = new ThreadGroup("mon groupe");
+        synchronized(groupe){
+            for(int i=0;i<3;i++){                  
+                int[] objectifS = this.calculObjectif(1, this.grilleS, i);
+                for(int j=0; j<3; j++){
+                    if(this.grilleS[i][j] != null){
+                        int x = (int) this.grilleS[i][j].getLayoutX();
+                        int y = (int) this.grilleS[i][j].getLayoutY();
+                        Pane pp = this.grilleS[i][j];
+                        deplacePane p = new deplacePane(1, x, y, objectifS[j], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }    
+                }
+                
+                int[] objectifM = this.calculObjectif(1, this.grilleM, i);
+                for(int j=2; j>-1; j--){
+                    if(this.grilleM[i][j] != null){
+                        int x = (int) this.grilleM[i][j].getLayoutX();
+                        int y = (int) this.grilleM[i][j].getLayoutY();
+                        Pane pp = this.grilleM[i][j];
+                        deplacePane p = new deplacePane(1, x, y, objectifM[j], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                }
+                
+                int[] objectifB = this.calculObjectif(1, this.grilleB, i);
+                for(int j=2; j>-1; j--){
+                    if(this.grilleB[i][j] != null){
+                        int x = (int) this.grilleB[i][j].getLayoutX();
+                        int y = (int) this.grilleB[i][j].getLayoutY();
+                        Pane pp = this.grilleB[i][j];
+                        deplacePane p = new deplacePane(1, x, y, objectifB[j], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                }
+            }
+        }
     }
     
     @FXML
     private void handleButtonBas(ActionEvent event) {
         
         this.jeu.lanceDeplacement(-1);
-        
-        for(int j=2;j>-1;j--){
-            for(int i=0;i<3;i++){
-                if(this.grilleS[i][j] != null){                    
-                    int objectif = this.calculObjectif(-1, this.grilleS[i][j], i, j, this.jeu.getGrilleSommet());
-                    int x = (int) this.grilleS[i][j].getLayoutX();
-                    int y = (int) this.grilleS[i][j].getLayoutY();
-                    Pane pp = this.grilleS[i][j];
-                    System.out.println(objectif);
-                    deplacePane p = new deplacePane(-1, x, y, objectif, pp);
-                    Thread th = new Thread(p); // on crée un contrôleur de Thread
-                    th.setDaemon(true);
-                    th.start();
-                    
+        ThreadGroup groupe = new ThreadGroup("mon groupe");
+        synchronized(groupe){
+            for(int i=0;i<3;i++){                  
+                int[] objectifS = this.calculObjectif(-1, this.grilleS, i);
+                for(int j=2; j>-1; j--){
+                    if(this.grilleS[i][j] != null){
+                        int x = (int) this.grilleS[i][j].getLayoutX();
+                        int y = (int) this.grilleS[i][j].getLayoutY();
+                        Pane pp = this.grilleS[i][j];
+                        deplacePane p = new deplacePane(-1, x, y, objectifS[j], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }    
                 }
-                if(this.grilleM[i][j] != null){
-                    int objectif = this.calculObjectif(-1, this.grilleM[i][j], i, j, this.jeu.getGrilleMilieu());
-                    int x = (int) this.grilleM[i][j].getLayoutX();
-                    int y = (int) this.grilleM[i][j].getLayoutY();
-                    Pane pp = this.grilleM[i][j];
-                    System.out.println(objectif);
-                    deplacePane p = new deplacePane(-1, x, y, objectif, pp);
-                    Thread th = new Thread(p); // on crée un contrôleur de Thread
-                    th.setDaemon(true);
-                    th.start();
+                
+                int[] objectifM = this.calculObjectif(-1, this.grilleM, i);
+                for(int j=2; j>-1; j--){
+                    if(this.grilleM[i][j] != null){
+                        int x = (int) this.grilleM[i][j].getLayoutX();
+                        int y = (int) this.grilleM[i][j].getLayoutY();
+                        Pane pp = this.grilleM[i][j];
+                        deplacePane p = new deplacePane(-1, x, y, objectifM[j], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
                 }
-                if(this.grilleB[i][j] != null){
-                    int objectif = this.calculObjectif(-1, this.grilleB[i][j], i, j, this.jeu.getGrilleBase());
-                    int x = (int) this.grilleB[i][j].getLayoutX();
-                    int y = (int) this.grilleB[i][j].getLayoutY();
-                    Pane pp = this.grilleB[i][j];
-                    System.out.println(objectif);
-                    deplacePane p = new deplacePane(-1, x, y, objectif, pp);
-                    //Thread th = new Thread(p); // on crée un contrôleur de Thread
-                    p.setDaemon(true);
-                    p.start();
+                
+                int[] objectifB = this.calculObjectif(-1, this.grilleB, i);
+                for(int j=2; j>-1; j--){
+                    if(this.grilleB[i][j] != null){
+                        int x = (int) this.grilleB[i][j].getLayoutX();
+                        int y = (int) this.grilleB[i][j].getLayoutY();
+                        Pane pp = this.grilleB[i][j];
+                        deplacePane p = new deplacePane(-1, x, y, objectifB[j], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
                 }
             }
         }
@@ -130,7 +176,51 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonGauche(ActionEvent event) {
-        System.out.println("You clicked gauche!");
+        
+        this.jeu.lanceDeplacement(-2);
+        ThreadGroup groupe = new ThreadGroup("mon groupe");
+        synchronized(groupe){
+            for(int j=0;j<3;j++){                  
+                int[] objectifS = this.calculObjectif(-2, this.grilleS, j);
+                for(int i=0; i<3; i++){
+                    if(this.grilleS[i][j] != null){
+                        int x = (int) this.grilleS[i][j].getLayoutX();
+                        int y = (int) this.grilleS[i][j].getLayoutY();
+                        Pane pp = this.grilleS[i][j];
+                        deplacePane p = new deplacePane(-2, x, y, objectifS[i], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }    
+                }
+                
+                int[] objectifM = this.calculObjectif(-2, this.grilleM, j);
+                for(int i=0; i<3; i++){
+                    if(this.grilleM[i][j] != null){
+                        int x = (int) this.grilleM[i][j].getLayoutX();
+                        int y = (int) this.grilleM[i][j].getLayoutY();
+                        Pane pp = this.grilleM[i][j];
+                        deplacePane p = new deplacePane(-2, x, y, objectifM[i], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                }
+                
+                int[] objectifB = this.calculObjectif(-2, this.grilleB, j);
+                for(int i=0; i<3; i++){
+                    if(this.grilleB[i][j] != null){
+                        int x = (int) this.grilleB[i][j].getLayoutX();
+                        int y = (int) this.grilleB[i][j].getLayoutY();
+                        Pane pp = this.grilleB[i][j];
+                        deplacePane p = new deplacePane(-2, x, y, objectifB[i], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                }
+            }
+        }
     }
     
     @FXML
@@ -138,43 +228,45 @@ public class FXMLDocumentController implements Initializable {
         
         this.jeu.lanceDeplacement(2);
         ThreadGroup groupe = new ThreadGroup("mon groupe");
-        
-        for(int i=2;i>-1;i--){
-            for(int j=0;j<3;j++){
-                if(this.grilleS[i][j] != null){                    
-                    int objectif = this.calculObjectif(2, this.grilleS[i][j], i, j, this.jeu.getGrilleSommet());
-                    int x = (int) this.grilleS[i][j].getLayoutX();
-                    int y = (int) this.grilleS[i][j].getLayoutY();
-                    Pane pp = this.grilleS[i][j];
-                    System.out.println(objectif);
-                    deplacePane p = new deplacePane(2, x, y, objectif, pp);
-                    Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                    th.setDaemon(true);
-                    th.start();
-                    
+        synchronized(groupe){
+            for(int j=0;j<3;j++){                  
+                int[] objectifS = this.calculObjectif(2, this.grilleS, j);
+                for(int i=2; i>-1; i--){
+                    if(this.grilleS[i][j] != null){
+                        int x = (int) this.grilleS[i][j].getLayoutX();
+                        int y = (int) this.grilleS[i][j].getLayoutY();
+                        Pane pp = this.grilleS[i][j];
+                        deplacePane p = new deplacePane(2, x, y, objectifS[i], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }    
                 }
-                if(this.grilleM[i][j] != null){
-                    int objectif = this.calculObjectif(2, this.grilleM[i][j], i, j, this.jeu.getGrilleMilieu());
-                    int x = (int) this.grilleM[i][j].getLayoutX();
-                    int y = (int) this.grilleM[i][j].getLayoutY();
-                    Pane pp = this.grilleM[i][j];
-                    System.out.println(objectif);
-                    deplacePane p = new deplacePane(2, x, y, objectif, pp);
-                    Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread
-                    th.setDaemon(true);
-                    th.start();
+                
+                int[] objectifM = this.calculObjectif(2, this.grilleM, j);
+                for(int i=2; i>-1; i--){
+                    if(this.grilleM[i][j] != null){
+                        int x = (int) this.grilleM[i][j].getLayoutX();
+                        int y = (int) this.grilleM[i][j].getLayoutY();
+                        Pane pp = this.grilleM[i][j];
+                        deplacePane p = new deplacePane(2, x, y, objectifM[i], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
                 }
-                if(this.grilleB[i][j] != null){
-                    int objectif = this.calculObjectif(2, this.grilleB[i][j], i, j, this.jeu.getGrilleBase());
-                    int x = (int) this.grilleB[i][j].getLayoutX();
-                    int y = (int) this.grilleB[i][j].getLayoutY();
-                    Pane pp = this.grilleB[i][j];
-                    System.out.println(objectif);
-                    deplacePane p = new deplacePane(2, x, y, objectif, pp);
-                    //Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread
-                    p.setDaemon(true);
-                    p.start();
-                    
+                
+                int[] objectifB = this.calculObjectif(2, this.grilleB, j);
+                for(int i=2; i>-1; i--){
+                    if(this.grilleB[i][j] != null){
+                        int x = (int) this.grilleB[i][j].getLayoutX();
+                        int y = (int) this.grilleB[i][j].getLayoutY();
+                        Pane pp = this.grilleB[i][j];
+                        deplacePane p = new deplacePane(2, x, y, objectifB[i], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
                 }
             }
         }
@@ -182,69 +274,387 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonSommet(ActionEvent event) {
-        System.out.println("You clicked sommet!");
+        this.jeu.lanceDeplacement(4);
+        ThreadGroup groupe = new ThreadGroup("mon groupe");
+        synchronized(groupe){
+            for(int i=0;i<3;i++){
+                for(int j=0; j<3; j++){
+                    int[] objectif = this.calculObjectif(i, j, 4);
+                    if(this.grilleS[i][j] != null){
+                        int x = (int) this.grilleS[i][j].getLayoutX();
+                        int y = (int) this.grilleS[i][j].getLayoutY();
+                        Pane pp = this.grilleS[i][j];
+                        deplacePane p = new deplacePane(4, x, y, objectif[0], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    } 
+                    if(this.grilleM[i][j] != null){
+                        int x = (int) this.grilleM[i][j].getLayoutX();
+                        int y = (int) this.grilleM[i][j].getLayoutY();
+                        Pane pp = this.grilleM[i][j];
+                        deplacePane p = new deplacePane(4, x, y, objectif[1], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                    if(this.grilleB[i][j] != null){
+                        int x = (int) this.grilleB[i][j].getLayoutX();
+                        int y = (int) this.grilleB[i][j].getLayoutY();
+                        Pane pp = this.grilleB[i][j];
+                        deplacePane p = new deplacePane(4, x, y, objectif[2], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                }
+            }
+        }
     }
     
     @FXML
     private void handleButtonBase(ActionEvent event) {
-        System.out.println("You clicked base!");
+        this.jeu.lanceDeplacement(-4);
+        ThreadGroup groupe = new ThreadGroup("mon groupe");
+        synchronized(groupe){
+            for(int i=0;i<3;i++){
+                for(int j=0; j<3; j++){
+                    int[] objectif = this.calculObjectif(i, j, -4);
+                    if(this.grilleS[i][j] != null){
+                        System.out.println(objectif[0]);
+                        int x = (int) this.grilleS[i][j].getLayoutX();
+                        int y = (int) this.grilleS[i][j].getLayoutY();
+                        Pane pp = this.grilleS[i][j];
+                        deplacePane p = new deplacePane(-4, x, y, objectif[0], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    } 
+                    if(this.grilleM[i][j] != null){
+                        System.out.println(objectif[1]);
+                        int x = (int) this.grilleM[i][j].getLayoutX();
+                        int y = (int) this.grilleM[i][j].getLayoutY();
+                        Pane pp = this.grilleM[i][j];
+                        deplacePane p = new deplacePane(-4, x, y, objectif[1], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                    if(this.grilleB[i][j] != null){
+                        System.out.println(objectif[2]);
+                        int x = (int) this.grilleB[i][j].getLayoutX();
+                        int y = (int) this.grilleB[i][j].getLayoutY();
+                        Pane pp = this.grilleB[i][j];
+                        deplacePane p = new deplacePane(-4, x, y, objectif[2], pp);
+                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        th.setDaemon(true);
+                        th.start();
+                    }
+                }
+            }
+        }
     }
     
-    public int calculObjectif(int direction, Pane p, int x, int y, HashSet<Case> gCase){
-        int objectif = 0;
+    public int[] calculObjectif(int direction, Pane[][] p, int ligne){
+        int[] result = new int[3];
+        Pane[] pLigne;
         switch (direction){
                 case 1: //Vers le haut
+                    pLigne = new Pane[3];
+                    for(int i=0;i<3;i++){
+                        pLigne[i] = p[ligne][i];
+                    }
+                    if (pLigne[0] == null){
+                        if(pLigne[1] != null){
+                            result[1] = (int) (pLigne[1].getLayoutY() - 116);
+                            if(pLigne[2] != null){
+                                if(pLigne[2].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                    result[2] = (int) (pLigne[2].getLayoutY() - 2*116);
+                                } else {
+                                    result[2] = (int) (pLigne[2].getLayoutY() - 116);
+                                }
+                            }
+                        } else {
+                            if(pLigne[2] != null){
+                                result[2] = (int) (pLigne[2].getLayoutY() - 2*116);
+                            }
+                        }
+                    } else {
+                        result[0] = (int) pLigne[0].getLayoutY();
+                        if(pLigne[1] != null){
+                            result[1] = (int) pLigne[1].getLayoutY();
+                            if(pLigne[1].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                                result[1] =- 116;
+                                if(pLigne[2] != null){
+                                    result[2] = (int) pLigne[2].getLayoutY() - 116;
+                                }
+                            } else {
+                                if(pLigne[2] != null){
+                                    result[2] = (int) pLigne[2].getLayoutY();
+                                    if(pLigne[2].getAccessibleText().equals(pLigne[2].getAccessibleText())){
+                                        result[2] =- 116;
+                                    }
+                                }
+                            }
+                        } else {
+                            if(pLigne[2] != null){
+                                if(pLigne[2].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                                    result[2] = (int) pLigne[0].getLayoutY() - 2*116;
+                                } else {
+                                    result[2] = (int) pLigne[2].getLayoutY() - 116;
+                                }
+                            }
+                        }
+                    }
                     break;
                 case 2: //vers la droite
-                    //La case n'a pas était deplacée
-                    if( (this.jeu.getCase(x, y, gCase) != null)&&(Integer.parseInt(p.getAccessibleText()) == this.jeu.getCase(x, y, gCase).getV())){
-                        objectif = (int) p.getLayoutX();
+                    pLigne = new Pane[3];
+                    for(int i=0;i<3;i++){
+                        pLigne[i] = p[i][ligne];
+                    }
+                    if (pLigne[2] == null){
+                        if(pLigne[1] != null){
+                            result[1] = (int) (pLigne[1].getLayoutX() + 116);
+                            if(pLigne[0] != null){
+                                if(pLigne[0].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                    result[0] = (int) (pLigne[0].getLayoutX() + 2*116);
+                                } else {
+                                    result[0] = (int) (pLigne[0].getLayoutX() + 116);
+                                }
+                            }
+                        } else {
+                            if(pLigne[0] != null){
+                                result[0] = (int) (pLigne[0].getLayoutX() + 2*116);
+                            }
+                        }
                     } else {
-                        int o = (int) p.getLayoutX();
-                        boolean trouve = false;
-                        for(int i=x+1;i<3;i++){ //On parcourt la rangée à la recherche de sa position
-                            o = o + 116;
-                            if((this.jeu.getCase(i, y, gCase)!=null)&&(!trouve)){
-                                //La case se déplace sans fusionner avec une autre
-                                if(Integer.parseInt(p.getAccessibleText()) == this.jeu.getCase(i, y, gCase).getV()){
-                                    objectif = o;
-                                    trouve = true;
-                                } 
-                                //La case se déplace et fusionne
-                                else if(Integer.parseInt(p.getAccessibleText()) == (this.jeu.getCase(i, y, gCase).getV()*2)){
-                                    objectif = o;
-                                    trouve= true;
+                        result[2] = (int) pLigne[2].getLayoutX();
+                        if(pLigne[1] != null){
+                            result[1] = (int) pLigne[1].getLayoutX();
+                            if(pLigne[1].getAccessibleText().equals(pLigne[2].getAccessibleText())){
+                                result[1] =+ 116;
+                                if(pLigne[0] != null){
+                                    result[0] = (int) pLigne[0].getLayoutX() + 116;
+                                }
+                            } else {
+                                if(pLigne[0] != null){
+                                    result[0] = (int) pLigne[0].getLayoutX();
+                                    if(pLigne[0].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                        result[0] =+ 116;
+                                    }
+                                }
+                            }
+                        } else {
+                            if(pLigne[0] != null){
+                                if(pLigne[0].getAccessibleText().equals(pLigne[2].getAccessibleText())){
+                                    result[0] = (int) pLigne[0].getLayoutX() + 2*116;
+                                } else {
+                                    result[0] = (int) pLigne[0].getLayoutX() + 116;
                                 }
                             }
                         }
                     }
                     break;
                 case -1: //vers le bas
-                    if( (this.jeu.getCase(x, y, gCase) != null)&&(Integer.parseInt(p.getAccessibleText()) == this.jeu.getCase(x, y, gCase).getV())){
-                        objectif = (int) p.getLayoutY();
+                    pLigne = new Pane[3];
+                    for(int i=0;i<3;i++){
+                        pLigne[i] = p[ligne][i];
+                    }
+                    if (pLigne[2] == null){
+                        if(pLigne[1] != null){
+                            result[1] = (int) (pLigne[1].getLayoutY() + 116);
+                            if(pLigne[0] != null){
+                                if(pLigne[0].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                    result[0] = (int) (pLigne[0].getLayoutY() + 2*116);
+                                } else {
+                                    result[0] = (int) (pLigne[0].getLayoutY() + 116);
+                                }
+                            }
+                        } else {
+                            if(pLigne[0] != null){
+                                result[0] = (int) (pLigne[0].getLayoutY() + 2*116);
+                            }
+                        }
                     } else {
-                        int o = (int) p.getLayoutY();
-                        for(int i=y+1;i<3;i++){ //On parcourt la rangée à la recherche de sa position
-                            o = o + 116;
-                            if(this.jeu.getCase(x, i, gCase)!=null){
-                                //La case se déplace sans fusionner avec une autre
-                                if(Integer.parseInt(p.getAccessibleText()) == this.jeu.getCase(x, i, gCase).getV()){
-                                    objectif = o;
-                                } 
-                                //La case se déplace et fusionne
-                                else if(Integer.parseInt(p.getAccessibleText()) == (this.jeu.getCase(x, i, gCase).getV()*2)){
-                                    objectif = o;
+                        result[2] = (int) pLigne[2].getLayoutY();
+                        if(pLigne[1] != null){
+                            result[1] = (int) pLigne[1].getLayoutY();
+                            if(pLigne[1].getAccessibleText().equals(pLigne[2].getAccessibleText())){
+                                result[1] =+ 116;
+                                if(pLigne[0] != null){
+                                    result[0] = (int) pLigne[0].getLayoutY() + 116;
+                                }
+                            } else {
+                                if(pLigne[0] != null){
+                                    result[0] = (int) pLigne[0].getLayoutY();
+                                    if(pLigne[0].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                        result[0] =+ 116;
+                                    }
+                                }
+                            }
+                        } else {
+                            if(pLigne[0] != null){
+                                if(pLigne[0].getAccessibleText().equals(pLigne[2].getAccessibleText())){
+                                    result[0] = (int) pLigne[0].getLayoutY() + 2*116;
+                                } else {
+                                    result[0] = (int) pLigne[0].getLayoutY() + 116;
                                 }
                             }
                         }
                     }
                     break;
                 case -2: //vers la gauche
+                    pLigne = new Pane[3];
+                    for(int i=0;i<3;i++){
+                        pLigne[i] = p[i][ligne];
+                    }
+                    if (pLigne[0] == null){
+                        if(pLigne[1] != null){
+                            result[1] = (int) (pLigne[1].getLayoutX() - 116);
+                            if(pLigne[2] != null){
+                                if(pLigne[2].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                    result[2] = (int) (pLigne[2].getLayoutX() - 2*116);
+                                } else {
+                                    result[2] = (int) (pLigne[2].getLayoutX() - 116);
+                                }
+                            }
+                        } else {
+                            if(pLigne[2] != null){
+                                result[2] = (int) (pLigne[2].getLayoutX() - 2*116);
+                            }
+                        }
+                    } else {
+                        result[0] = (int) pLigne[0].getLayoutX();
+                        if(pLigne[1] != null){
+                            result[1] = (int) pLigne[1].getLayoutX();
+                            if(pLigne[1].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                                result[1] =- 116;
+                                if(pLigne[2] != null){
+                                    result[2] = (int) pLigne[2].getLayoutX() - 116;
+                                }
+                            } else {
+                                if(pLigne[2] != null){
+                                    result[2] = (int) pLigne[2].getLayoutX();
+                                    if(pLigne[2].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                        result[2] =- 116;
+                                    }
+                                }
+                            }
+                        } else {
+                            if(pLigne[2] != null){
+                                if(pLigne[2].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                                    result[2] = (int) pLigne[2].getLayoutX() - 2*116;
+                                } else {
+                                    result[2] = (int) pLigne[2].getLayoutX() - 116;
+                                }
+                            }
+                        }
+                    }
                     break;    
         }
-        return objectif;
+        return result;
     }
     
+    
+    public int[] calculObjectif(int i, int j, int d){
+        int[] result = new int[3];
+        int xSommet = 112;
+        int xMilieu = 469;
+        int xBase = 825;
+        Pane[] pLigne = new Pane[3];
+        pLigne[0] = this.grilleS[i][j];
+        pLigne[1] = this.grilleM[i][j];
+        pLigne[2] = this.grilleB[i][j];
+        
+        if(d == 4){ //sommet
+            if(pLigne[0] == null){
+                if(pLigne[1] != null){
+                    result[1] = xSommet + 116*i;
+                    if(pLigne[2] != null){
+                        if(pLigne[2].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                            result[2] = xSommet + 116*i;
+                        } else {
+                            result[2] = xMilieu + 116*i;
+                        }
+                    }
+                } else {
+                    if(pLigne[2] != null){
+                        result[2] = xSommet + 116*i;
+                    }
+                }
+            } else {
+                result[0] = xSommet + 116*i;
+                if(pLigne[1] != null){
+                    result[1] = xMilieu + 116*i;
+                    if(pLigne[1].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                        result[1] = xSommet + 116*i;
+                        if(pLigne[2] != null){
+                            result[2] = xMilieu + 116*i;
+                        }
+                    } else {
+                        if(pLigne[2] != null){
+                            result[2] = xBase + 116*i;
+                            if(pLigne[2].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                result[2] = xMilieu + 116*i;
+                            }
+                        }
+                    }
+                } else {
+                    if(pLigne[2] != null){
+                        if(pLigne[2].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                            result[2] = xSommet + 116*i;
+                        } else {
+                            result[2] = xMilieu + 116*i;
+                        }
+                    }
+                }
+            }
+        } else if(d == -4){ //base
+            if(pLigne[2] == null){
+                if(pLigne[1] != null){
+                    result[1] = xBase + 116*i;
+                    if(pLigne[0] != null){
+                        if(pLigne[0].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                            result[0] = xBase + 116*i;
+                        } else {
+                            result[0] = xMilieu + 116*i;
+                        }
+                    }
+                } else {
+                    if(pLigne[0] != null){
+                        result[0] = xBase + 116*i;
+                    }
+                }
+            } else {
+                result[2] = xBase + 116*i;
+                if(pLigne[1] != null){
+                    result[1] = xMilieu + 116*i;
+                    if(pLigne[1].getAccessibleText().equals(pLigne[2].getAccessibleText())){
+                        result[1] = xBase + 116*i;
+                        if(pLigne[0] != null){
+                            result[0] = xMilieu + 116*i;
+                        }
+                    } else {
+                        if(pLigne[0] != null){
+                            result[0] = xSommet + 116*i;
+                            if(pLigne[0].getAccessibleText().equals(pLigne[1].getAccessibleText())){
+                                result[0] = xMilieu + 116*i;
+                            }
+                        }
+                    }
+                } else {
+                    if(pLigne[0] != null){
+                        if(pLigne[2].getAccessibleText().equals(pLigne[0].getAccessibleText())){
+                            result[0] = xBase + 116*i;
+                        } else {
+                            result[0] = xMilieu + 116*i;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
     
     //Méthodes pour changer de style
     
