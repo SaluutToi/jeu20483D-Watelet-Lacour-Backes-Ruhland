@@ -8,6 +8,10 @@ package jeu20483d;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -56,15 +60,20 @@ public class FXMLDocumentController implements Initializable {
     
     //variables globales non définies dans la vue
     private Grille3D jeu = new Grille3D();
-    private Pane[][] grilleS = new Pane[3][3];
-    private Pane[][] grilleM = new Pane[3][3];
-    private Pane[][] grilleB = new Pane[3][3];
+    private final Pane[][] grilleS = new Pane[3][3];
+    private final Pane[][] grilleM = new Pane[3][3];
+    private final Pane[][] grilleB = new Pane[3][3];
+    private final int[][] tabObjS = new int[3][3];
+    private final int[][] tabObjM = new int[3][3];
+    private final int[][] tabObjB = new int[3][3];
+    private int xTemp; private int yTemp; private int aTemp; private int bTemp;
     private String style;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         boolean b;
+        b = this.jeu.ajoutCase();
         b = this.jeu.ajoutCase();
         b = this.jeu.ajoutCase();
         
@@ -79,45 +88,133 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void handleButtonHaut(ActionEvent event) {
         
+        //On actualise les grilles de pane
+        this.afficherStyle(this.style);
+        
         this.jeu.lanceDeplacement(1);
-        ThreadGroup groupe = new ThreadGroup("mon groupe");
-        synchronized(groupe){
-            for(int i=0;i<3;i++){                  
-                int[] objectifS = this.calculObjectif(1, this.grilleS, i);
-                for(int j=0; j<3; j++){
-                    if(this.grilleS[i][j] != null){
-                        int x = (int) this.grilleS[i][j].getLayoutX();
-                        int y = (int) this.grilleS[i][j].getLayoutY();
-                        Pane pp = this.grilleS[i][j];
-                        deplacePane p = new deplacePane(1, x, y, objectifS[j], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
-                        th.start();
-                    }    
-                }
+        //On met à jour les tableaux de objectifs
+        for(int i=0; i<3;i++){
+            int [] objS = this.calculObjectif(1, this.grilleS, i);
+            int [] objM = this.calculObjectif(1, this.grilleM, i);
+            int [] objB = this.calculObjectif(1, this.grilleB, i);
                 
-                int[] objectifM = this.calculObjectif(1, this.grilleM, i);
+            for(int j=0;j<3;j++){
+                    this.tabObjS[i][j] = objS[j];
+                    this.tabObjM[i][j] = objM[j];
+                    this.tabObjB[i][j] = objB[j];
+            }
+        }
+        
+        ThreadGroup groupe = new ThreadGroup("groupe");
+        synchronized(groupe){
+            //On parcourt toutes les cases
+            for(int i=0;i<3;i++){                  
                 for(int j=2; j>-1; j--){
-                    if(this.grilleM[i][j] != null){
-                        int x = (int) this.grilleM[i][j].getLayoutX();
-                        int y = (int) this.grilleM[i][j].getLayoutY();
-                        Pane pp = this.grilleM[i][j];
-                        deplacePane p = new deplacePane(1, x, y, objectifM[j], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                    this.aTemp =i;
+                    this.bTemp=j;
+                    //Grille SOMMET
+                    if(this.grilleS[i][j] != null){
+                        this.xTemp = (int) this.grilleS[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleS[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("S "+a+" "+b+" obj"+ tabObjS[a][b]);
+                                while (y > tabObjS[a][b]) {
+                                    y -= 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleS[a][b].relocate(x, y);
+                                            grilleS[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
-                }
-                
-                int[] objectifB = this.calculObjectif(1, this.grilleB, i);
-                for(int j=2; j>-1; j--){
+                    //Grille MILIEU
+                    if(this.grilleM[i][j] != null){
+                        this.xTemp = (int) this.grilleM[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleM[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("M "+a+" "+b+" obj"+ tabObjM[a][b]);
+                                while (y > tabObjM[a][b]) {
+                                    y -= 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleM[a][b].relocate(x, y); 
+                                            grilleM[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
+                        th.setDaemon(true); 
+                        th.start();
+                    }  
+                    //Grille BASE
                     if(this.grilleB[i][j] != null){
-                        int x = (int) this.grilleB[i][j].getLayoutX();
-                        int y = (int) this.grilleB[i][j].getLayoutY();
-                        Pane pp = this.grilleB[i][j];
-                        deplacePane p = new deplacePane(1, x, y, objectifB[j], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                        this.xTemp = (int) this.grilleB[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleB[i][j].getLayoutY();
+                       Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("B "+a+" "+b+" obj"+ tabObjB[a][b]);
+                                while (y > tabObjB[a][b]) {
+                                    y -= 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleB[a][b].relocate(x, y);
+                                            grilleB[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
                 }
@@ -127,46 +224,133 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonBas(ActionEvent event) {
+        //On actualise les grilles de pane
+        this.afficherStyle(this.style);
         
         this.jeu.lanceDeplacement(-1);
-        ThreadGroup groupe = new ThreadGroup("mon groupe");
-        synchronized(groupe){
-            for(int i=0;i<3;i++){                  
-                int[] objectifS = this.calculObjectif(-1, this.grilleS, i);
-                for(int j=2; j>-1; j--){
-                    if(this.grilleS[i][j] != null){
-                        int x = (int) this.grilleS[i][j].getLayoutX();
-                        int y = (int) this.grilleS[i][j].getLayoutY();
-                        Pane pp = this.grilleS[i][j];
-                        deplacePane p = new deplacePane(-1, x, y, objectifS[j], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
-                        th.start();
-                    }    
-                }
+        //On met à jour les tableaux de objectifs
+        for(int i=0; i<3;i++){
+            int [] objS = this.calculObjectif(-1, this.grilleS, i);
+            int [] objM = this.calculObjectif(-1, this.grilleM, i);
+            int [] objB = this.calculObjectif(-1, this.grilleB, i);
                 
-                int[] objectifM = this.calculObjectif(-1, this.grilleM, i);
-                for(int j=2; j>-1; j--){
-                    if(this.grilleM[i][j] != null){
-                        int x = (int) this.grilleM[i][j].getLayoutX();
-                        int y = (int) this.grilleM[i][j].getLayoutY();
-                        Pane pp = this.grilleM[i][j];
-                        deplacePane p = new deplacePane(-1, x, y, objectifM[j], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+            for(int j=0;j<3;j++){
+                    this.tabObjS[i][j] = objS[j];
+                    this.tabObjM[i][j] = objM[j];
+                    this.tabObjB[i][j] = objB[j];
+            }
+        }
+        
+        ThreadGroup groupe = new ThreadGroup("groupe");
+        synchronized(groupe){
+            //On parcourt toutes les cases
+            for(int i=0;i<3;i++){                  
+                for(int j=0; j<3; j++){
+                    this.aTemp =i;
+                    this.bTemp=j;
+                    //Grille SOMMET
+                    if(this.grilleS[i][j] != null){
+                        this.xTemp = (int) this.grilleS[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleS[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("S "+a+" "+b+" obj"+ tabObjS[a][b]);
+                                while (y < tabObjS[a][b]) {
+                                    y += 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleS[a][b].relocate(x, y);
+                                            grilleS[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
-                }
-                
-                int[] objectifB = this.calculObjectif(-1, this.grilleB, i);
-                for(int j=2; j>-1; j--){
+                    //Grille MILIEU
+                    if(this.grilleM[i][j] != null){
+                        this.xTemp = (int) this.grilleM[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleM[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("M "+a+" "+b+" obj"+ tabObjM[a][b]);
+                                while (y < tabObjM[a][b]) {
+                                    y += 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleM[a][b].relocate(x, y); 
+                                            grilleM[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
+                        th.setDaemon(true); 
+                        th.start();
+                    }  
+                    //Grille BASE
                     if(this.grilleB[i][j] != null){
-                        int x = (int) this.grilleB[i][j].getLayoutX();
-                        int y = (int) this.grilleB[i][j].getLayoutY();
-                        Pane pp = this.grilleB[i][j];
-                        deplacePane p = new deplacePane(-1, x, y, objectifB[j], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                        this.xTemp = (int) this.grilleB[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleB[i][j].getLayoutY();
+                       Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("B "+a+" "+b+" obj"+ tabObjB[a][b]);
+                                while (y < tabObjB[a][b]) {
+                                    y += 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleB[a][b].relocate(x, y);
+                                            grilleB[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
                 }
@@ -176,46 +360,133 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonGauche(ActionEvent event) {
+        //On actualise les grilles de pane
+        this.afficherStyle(this.style);
         
         this.jeu.lanceDeplacement(-2);
-        ThreadGroup groupe = new ThreadGroup("mon groupe");
-        synchronized(groupe){
-            for(int j=0;j<3;j++){                  
-                int[] objectifS = this.calculObjectif(-2, this.grilleS, j);
-                for(int i=0; i<3; i++){
-                    if(this.grilleS[i][j] != null){
-                        int x = (int) this.grilleS[i][j].getLayoutX();
-                        int y = (int) this.grilleS[i][j].getLayoutY();
-                        Pane pp = this.grilleS[i][j];
-                        deplacePane p = new deplacePane(-2, x, y, objectifS[i], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
-                        th.start();
-                    }    
-                }
+        //On met à jour les tableaux de objectifs
+        for(int j=0; j<3;j++){
+            int [] objS = this.calculObjectif(-2, this.grilleS, j);
+            int [] objM = this.calculObjectif(-2, this.grilleM, j);
+            int [] objB = this.calculObjectif(-2, this.grilleB, j);
                 
-                int[] objectifM = this.calculObjectif(-2, this.grilleM, j);
+            for(int i=0;i<3;i++){
+                    this.tabObjS[i][j] = objS[i];
+                    this.tabObjM[i][j] = objM[i];
+                    this.tabObjB[i][j] = objB[i];
+            }
+        }
+        
+        ThreadGroup groupe = new ThreadGroup("groupe");
+        synchronized(groupe){
+            //On parcourt toutes les cases
+            for(int j=0;j<3;j++){                  
                 for(int i=0; i<3; i++){
-                    if(this.grilleM[i][j] != null){
-                        int x = (int) this.grilleM[i][j].getLayoutX();
-                        int y = (int) this.grilleM[i][j].getLayoutY();
-                        Pane pp = this.grilleM[i][j];
-                        deplacePane p = new deplacePane(-2, x, y, objectifM[i], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                    this.aTemp =i;
+                    this.bTemp=j;
+                    //Grille SOMMET
+                    if(this.grilleS[i][j] != null){
+                        this.xTemp = (int) this.grilleS[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleS[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("S "+a+" "+b+" obj"+ tabObjS[a][b]);
+                                while (x > tabObjS[a][b]) {
+                                    x -= 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleS[a][b].relocate(x, y);
+                                            grilleS[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
-                }
-                
-                int[] objectifB = this.calculObjectif(-2, this.grilleB, j);
-                for(int i=0; i<3; i++){
+                    //Grille MILIEU
+                    if(this.grilleM[i][j] != null){
+                        this.xTemp = (int) this.grilleM[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleM[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("M "+a+" "+b+" obj"+ tabObjM[a][b]);
+                                while (x > tabObjM[a][b]) {
+                                    x -= 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleM[a][b].relocate(x, y); 
+                                            grilleM[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
+                        th.setDaemon(true); 
+                        th.start();
+                    }  
+                    //Grille BASE
                     if(this.grilleB[i][j] != null){
-                        int x = (int) this.grilleB[i][j].getLayoutX();
-                        int y = (int) this.grilleB[i][j].getLayoutY();
-                        Pane pp = this.grilleB[i][j];
-                        deplacePane p = new deplacePane(-2, x, y, objectifB[i], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                        this.xTemp = (int) this.grilleB[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleB[i][j].getLayoutY();
+                       Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("B "+a+" "+b+" obj"+ tabObjB[a][b]);
+                                while (x > tabObjB[a][b]) {
+                                    x -= 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleB[a][b].relocate(x, y);
+                                            grilleB[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
                 }
@@ -225,46 +496,134 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonDroite(ActionEvent event) throws InterruptedException {
+        //On actualise les grilles de pane
+        this.afficherStyle(this.style);
         
         this.jeu.lanceDeplacement(2);
-        ThreadGroup groupe = new ThreadGroup("mon groupe");
-        synchronized(groupe){
-            for(int j=0;j<3;j++){                  
-                int[] objectifS = this.calculObjectif(2, this.grilleS, j);
-                for(int i=2; i>-1; i--){
-                    if(this.grilleS[i][j] != null){
-                        int x = (int) this.grilleS[i][j].getLayoutX();
-                        int y = (int) this.grilleS[i][j].getLayoutY();
-                        Pane pp = this.grilleS[i][j];
-                        deplacePane p = new deplacePane(2, x, y, objectifS[i], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
-                        th.start();
-                    }    
-                }
+        
+        //On met à jour les tableaux de objectifs
+        for(int j=0; j<3;j++){
+            int [] objS = this.calculObjectif(2, this.grilleS, j);
+            int [] objM = this.calculObjectif(2, this.grilleM, j);
+            int [] objB = this.calculObjectif(2, this.grilleB, j);
                 
-                int[] objectifM = this.calculObjectif(2, this.grilleM, j);
+            for(int i=0;i<3;i++){
+                    this.tabObjS[i][j] = objS[i];
+                    this.tabObjM[i][j] = objM[i];
+                    this.tabObjB[i][j] = objB[i];
+            }
+        }
+        
+        ThreadGroup groupe = new ThreadGroup("groupe");
+        synchronized(groupe){
+            //On parcourt toutes les cases
+            for(int j=0;j<3;j++){                  
                 for(int i=2; i>-1; i--){
-                    if(this.grilleM[i][j] != null){
-                        int x = (int) this.grilleM[i][j].getLayoutX();
-                        int y = (int) this.grilleM[i][j].getLayoutY();
-                        Pane pp = this.grilleM[i][j];
-                        deplacePane p = new deplacePane(2, x, y, objectifM[i], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                    this.aTemp =i;
+                    this.bTemp=j;
+                    //Grille SOMMET
+                    if(this.grilleS[i][j] != null){
+                        this.xTemp = (int) this.grilleS[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleS[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("S "+a+" "+b+" obj"+ tabObjS[a][b]);
+                                while (x < tabObjS[a][b]) {
+                                    x += 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleS[a][b].relocate(x, y);
+                                            grilleS[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
-                }
-                
-                int[] objectifB = this.calculObjectif(2, this.grilleB, j);
-                for(int i=2; i>-1; i--){
+                    //Grille MILIEU
+                    if(this.grilleM[i][j] != null){
+                        this.xTemp = (int) this.grilleM[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleM[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("M "+a+" "+b+" obj"+ tabObjM[a][b]);
+                                while (x < tabObjM[a][b]) {
+                                    x += 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleM[a][b].relocate(x, y); 
+                                            grilleM[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
+                        th.setDaemon(true); 
+                        th.start();
+                    }  
+                    //Grille BASE
                     if(this.grilleB[i][j] != null){
-                        int x = (int) this.grilleB[i][j].getLayoutX();
-                        int y = (int) this.grilleB[i][j].getLayoutY();
-                        Pane pp = this.grilleB[i][j];
-                        deplacePane p = new deplacePane(2, x, y, objectifB[i], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
+                        this.xTemp = (int) this.grilleB[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleB[i][j].getLayoutY();
+                       Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("B "+a+" "+b+" obj"+ tabObjB[a][b]);
+                                while (x < tabObjB[a][b]) {
+                                    x += 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleB[a][b].relocate(x, y);
+                                            grilleB[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
+                        th.setDaemon(true); 
                         th.start();
                     }
                 }
@@ -274,36 +633,129 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonSommet(ActionEvent event) {
+        //On actualise les grilles de pane
+        this.afficherStyle(this.style);
+        
         this.jeu.lanceDeplacement(4);
+        
+        //On met à jour les tableaux de objectifs
+        for(int j=0; j<3;j++){
+            for(int i=0;i<3;i++){
+                int [] obj = this.calculObjectif(i, j, 4);
+                this.tabObjS[i][j] = obj[0];
+                this.tabObjM[i][j] = obj[1];
+                this.tabObjB[i][j] = obj[2];
+            }
+        }
+        
         ThreadGroup groupe = new ThreadGroup("mon groupe");
         synchronized(groupe){
             for(int i=0;i<3;i++){
                 for(int j=0; j<3; j++){
-                    int[] objectif = this.calculObjectif(i, j, 4);
+                    this.aTemp =i;
+                    this.bTemp=j;
+                    //Grille SOMMET
                     if(this.grilleS[i][j] != null){
-                        int x = (int) this.grilleS[i][j].getLayoutX();
-                        int y = (int) this.grilleS[i][j].getLayoutY();
-                        Pane pp = this.grilleS[i][j];
-                        deplacePane p = new deplacePane(4, x, y, objectif[0], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
-                        th.start();
-                    } 
-                    if(this.grilleM[i][j] != null){
-                        int x = (int) this.grilleM[i][j].getLayoutX();
-                        int y = (int) this.grilleM[i][j].getLayoutY();
-                        Pane pp = this.grilleM[i][j];
-                        deplacePane p = new deplacePane(4, x, y, objectif[1], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        this.xTemp = (int) this.grilleS[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleS[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("S "+a+" "+b+" obj"+ tabObjS[a][b]);
+                                while (x > tabObjS[a][b]) {
+                                    x -= 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleS[a][b].relocate(x, y);
+                                            grilleS[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); // on crée un contrôleur de Thread
                         th.setDaemon(true);
                         th.start();
                     }
+                    //Grille MILIEU
+                    if(this.grilleM[i][j] != null){
+                        this.xTemp = (int) this.grilleM[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleM[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("M "+a+" "+b+" obj"+ tabObjM[a][b]);
+                                while (x > tabObjM[a][b]) {
+                                    x -= 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleM[a][b].relocate(x, y); 
+                                            grilleM[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); // on crée un contrôleur de Thread
+                        th.setDaemon(true);
+                        th.start();
+                    }  
+                    //Grille BASE
                     if(this.grilleB[i][j] != null){
-                        int x = (int) this.grilleB[i][j].getLayoutX();
-                        int y = (int) this.grilleB[i][j].getLayoutY();
-                        Pane pp = this.grilleB[i][j];
-                        deplacePane p = new deplacePane(4, x, y, objectif[2], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        this.xTemp = (int) this.grilleB[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleB[i][j].getLayoutY();
+                       Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("B "+a+" "+b+" obj"+ tabObjB[a][b]);
+                                while (x > tabObjB[a][b]) {
+                                    x -= 1; 
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleB[a][b].relocate(x, y); 
+                                            grilleB[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null; 
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
                         th.setDaemon(true);
                         th.start();
                     }
@@ -314,39 +766,128 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void handleButtonBase(ActionEvent event) {
+        //On actualise les grilles de pane
+        this.afficherStyle(this.style);
+        
         this.jeu.lanceDeplacement(-4);
+        //On met à jour les tableaux de objectifs
+        for(int j=0; j<3;j++){
+            for(int i=0;i<3;i++){
+                int [] obj = this.calculObjectif(i, j, -4);
+                this.tabObjS[i][j] = obj[0];
+                this.tabObjM[i][j] = obj[1];
+                this.tabObjB[i][j] = obj[2];
+            }
+        }
+        
         ThreadGroup groupe = new ThreadGroup("mon groupe");
         synchronized(groupe){
             for(int i=0;i<3;i++){
                 for(int j=0; j<3; j++){
-                    int[] objectif = this.calculObjectif(i, j, -4);
+                    this.aTemp =i;
+                    this.bTemp=j;
+                    //Grille SOMMET
                     if(this.grilleS[i][j] != null){
-                        System.out.println(objectif[0]);
-                        int x = (int) this.grilleS[i][j].getLayoutX();
-                        int y = (int) this.grilleS[i][j].getLayoutY();
-                        Pane pp = this.grilleS[i][j];
-                        deplacePane p = new deplacePane(-4, x, y, objectif[0], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
-                        th.setDaemon(true);
-                        th.start();
-                    } 
-                    if(this.grilleM[i][j] != null){
-                        System.out.println(objectif[1]);
-                        int x = (int) this.grilleM[i][j].getLayoutX();
-                        int y = (int) this.grilleM[i][j].getLayoutY();
-                        Pane pp = this.grilleM[i][j];
-                        deplacePane p = new deplacePane(-4, x, y, objectif[1], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        this.xTemp = (int) this.grilleS[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleS[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("S "+a+" "+b+" obj"+ tabObjS[a][b]);
+                                while (x < tabObjS[a][b]) {
+                                    x += 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleS[a][b].relocate(x, y); 
+                                            grilleS[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task); 
                         th.setDaemon(true);
                         th.start();
                     }
+                    //Grille MILIEU
+                    if(this.grilleM[i][j] != null){
+                        this.xTemp = (int) this.grilleM[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleM[i][j].getLayoutY();
+                        Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("M "+a+" "+b+" obj"+ tabObjM[a][b]);
+                                while (x < tabObjM[a][b]) {
+                                    x += 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleM[a][b].relocate(x, y);
+                                            grilleM[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                }
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
+                        th.setDaemon(true);
+                        th.start();
+                    }  
+                    //Grille BASE
                     if(this.grilleB[i][j] != null){
-                        System.out.println(objectif[2]);
-                        int x = (int) this.grilleB[i][j].getLayoutX();
-                        int y = (int) this.grilleB[i][j].getLayoutY();
-                        Pane pp = this.grilleB[i][j];
-                        deplacePane p = new deplacePane(-4, x, y, objectif[2], pp);
-                        Thread th = new Thread(groupe, p); // on crée un contrôleur de Thread 
+                        this.xTemp = (int) this.grilleB[i][j].getLayoutX();
+                        this.yTemp = (int) this.grilleB[i][j].getLayoutY();
+                       Task task = new Task<Void>() { // on définit une tâche parallèle pour mettre à jour la vue
+                            private int a=aTemp;
+                            private int b=bTemp;
+                            private int x=xTemp;
+                            private int y=yTemp;
+                            @Override
+                            public Void call() throws Exception { // implémentation de la méthode protected abstract V call() dans la classe Task
+                                System.out.println("B "+a+" "+b+" obj"+ tabObjB[a][b]);
+                                while (x < tabObjB[a][b]) {
+                                    x += 1;
+                                    Platform.runLater(new Runnable() { // classe anonyme
+                                        @Override
+                                        public void run() {
+                                            grilleB[a][b].relocate(x, y); 
+                                            grilleB[a][b].setVisible(true);    
+                                        }
+                                    });
+                                    try {
+                                        Thread.sleep(3);
+                                    } catch (InterruptedException ex) {
+                        
+                                    }
+                                } 
+                                return null;
+                            } // end call
+
+                        };
+                        Thread th = new Thread(groupe, task);
                         th.setDaemon(true);
                         th.start();
                     }
@@ -552,6 +1093,9 @@ public class FXMLDocumentController implements Initializable {
                     }
                     break;    
         }
+        for(int i=0; i<3; i++){
+            System.out.println("ligne"+ligne+" obj "+i+":"+result[i]);
+        }
         return result;
     }
     
@@ -656,6 +1200,24 @@ public class FXMLDocumentController implements Initializable {
         return result;
     }
     
+    
+    //Méthode pour charger une nouvelle partie
+    
+    @FXML
+    private void newPartie(ActionEvent event){
+        
+        this.jeu = new Grille3D();
+        
+        boolean b;
+        b = this.jeu.ajoutCase();
+        b = this.jeu.ajoutCase();
+        
+        //On affiche les deux nouvelles Cases
+        this.afficherStyle("Classique");
+        this.score.setText("0");
+    }
+    
+    
     //Méthodes pour changer de style
     
     @FXML
@@ -707,17 +1269,11 @@ public class FXMLDocumentController implements Initializable {
         this.base.getStyleClass().add("button"+this.style);
         
         //On retire les cases déjà présentes dans les grilles
-        for(int i=0; i<3;i++){
-            for(int j =0;j<3;j++){
-                if(this.grilleB[i][j] != null){
-                    this.grilleB[i][j].setVisible(false);
-                }
-                if(this.grilleM[i][j] != null){
-                    this.grilleM[i][j].setVisible(false);
-                }
-                if(this.grilleS[i][j] != null){
-                    this.grilleS[i][j].setVisible(false);
-                }
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                this.fond.getChildren().removeAll(this.grilleS[i][j]);
+                this.fond.getChildren().removeAll(this.grilleM[i][j]);
+                this.fond.getChildren().removeAll(this.grilleB[i][j]);
             }
         }
         
