@@ -1,5 +1,7 @@
 package jeu20483d;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chloe
