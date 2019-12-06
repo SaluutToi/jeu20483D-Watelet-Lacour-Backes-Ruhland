@@ -1,5 +1,6 @@
 package jeu20483d;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,7 +11,7 @@ import java.util.Random;
  * @author chloe
  */
 
-public class Grille3D implements Parametre {
+public class Grille3D implements Parametre, Serializable {
     
     private HashSet<Case> grilleBase, grilleMilieu, grilleSommet;
     private int score, meilleureCase;

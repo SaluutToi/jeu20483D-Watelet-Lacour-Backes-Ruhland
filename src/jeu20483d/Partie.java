@@ -4,7 +4,7 @@ package jeu20483d;
  *
  * @author chloe
  */
-public class Partie {
+public class Partie implements Serializable {
     private Joueur joueur1;
     private Grille3D grille1;
     private int score1;

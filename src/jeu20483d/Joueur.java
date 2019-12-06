@@ -1,10 +1,12 @@
 package jeu20483d;
 
+import java.io.Serializable;
+
 /**
  *
  * @author chloe
  */
-public class Joueur {
+public class Joueur implements Serializable {
     private String pseudo, mdp;
     private int meilleurScore, partiesGagnees;
     

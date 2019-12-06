@@ -1,5 +1,6 @@
 package jeu20483d;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
@@ -7,7 +8,7 @@ import java.util.HashSet;
  * @author chloe
  */
 
-public class Case implements Parametre {
+public class Case implements Parametre, Serializable {
     
     private int x, y, v;
     private HashSet<Case> grille;
