@@ -168,78 +168,168 @@ public class Grille3D implements Parametre {
         }
     }
     
-    public void deplacerEntreGrille(int direction){ //Les cases sont déplacer de gRecois à gDonne
-        for(int i=0;i<TAILLE;i++){
-            for(int j=0;j<TAILLE;j++){
-                if(direction == BASE){
+    public void deplacerEntreGrille(int direction){
+        if(direction == BASE){
+            for(int i=0;i<TAILLE;i++){
+                for(int j=0;j<TAILLE;j++){
                     Case c = new Case(i, j, 0);
+                    
                     if(!this.grilleBase.contains(c)){
                         if(this.grilleMilieu.contains(c)){
                             Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
-                            this.grilleBase.add(caseDeplace);
-                            this.grilleMilieu.remove(caseDeplace);
+                            this.grilleBase.add(caseDeplace); //on ajoute la case à la grille BASE
+                            this.grilleMilieu.remove(caseDeplace); //on la retire de la grille MILIEU
                             this.deplacement = true;
                             
                             if(this.grilleSommet.contains(c)){
                                 Case caseDeplace2 = this.getCase(i, j, this.grilleSommet);
-                                this.grilleMilieu.add(caseDeplace2);
-                                this.grilleSommet.remove(caseDeplace2);
+                                if(caseDeplace2.valeursEgales(caseDeplace)){
+                                    this.grilleBase.remove(caseDeplace);
+                                    this.calculScore(caseDeplace2);
+                                    this.grilleBase.add(caseDeplace2);
+                                    this.grilleSommet.remove(caseDeplace2);
+                                    this.deplacement = true;
+                                } else {
+                                    this.grilleMilieu.add(caseDeplace2);
+                                    this.grilleSommet.remove(caseDeplace2);
+                                    this.deplacement = true;
+                                }
+                            }
+                        } else {
+                            if(this.grilleSommet.contains(c)){
+                                Case caseDeplace = this.getCase(i, j, grilleSommet);
+                                this.grilleBase.add(caseDeplace);
+                                this.grilleSommet.remove(caseDeplace);
                                 this.deplacement = true;
                             }
-                        } else if(this.grilleSommet.contains(c)){
-                            Case caseDeplace = this.getCase(i, j, grilleSommet);
-                            this.grilleBase.add(caseDeplace);
-                            this.grilleSommet.remove(caseDeplace);
-                            this.deplacement = true;
                         }
-                    } else if(grilleMilieu.contains(c) && this.getCase(i, j, grilleBase).valeursEgales(this.getCase(i, j, grilleMilieu))){
-                        Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
-                        this.getCase(i, j, grilleBase).setV(this.getCase(i, j, grilleBase).getV()*2);
-                        this.grilleMilieu.remove(caseDeplace);
-                        this.deplacement = true;
+                    } else {
+                        if(grilleMilieu.contains(c)){
+                            Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
+                            if(caseDeplace.valeursEgales(this.getCase(i, j, grilleBase))){
+                                this.calculScore(caseDeplace);
+                                this.grilleBase.remove(this.getCase(i, j, grilleBase));
+                                this.grilleBase.add(caseDeplace);
+                                this.grilleMilieu.remove(caseDeplace);
+                                this.deplacement = true;
                         
-                         if(this.grilleSommet.contains(c)){
-                            Case caseDeplace2 = this.getCase(i, j, this.grilleSommet);
-                            this.grilleMilieu.add(caseDeplace2);
-                            this.grilleSommet.remove(caseDeplace2);
-                            this.deplacement = true;
+                                if(this.grilleSommet.contains(c)){
+                                    Case caseDeplace2 = this.getCase(i, j, this.grilleSommet);
+                                    this.grilleMilieu.add(caseDeplace2);
+                                    this.grilleSommet.remove(caseDeplace2);
+                                    this.deplacement = true;
+                                }
+                            } else {
+                                if(this.grilleSommet.contains(c)){
+                                    Case caseDeplace2 = this.getCase(i, j, this.grilleSommet);
+                                    if(caseDeplace2.valeursEgales(caseDeplace)){
+                                        this.grilleMilieu.remove(caseDeplace);
+                                        this.calculScore(caseDeplace2);
+                                        this.grilleMilieu.add(caseDeplace2);
+                                        this.grilleSommet.remove(caseDeplace2);
+                                        this.deplacement = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            if(this.grilleSommet.contains(c)){
+                                Case caseDeplace = this.getCase(i, j, this.grilleSommet);
+                                if(caseDeplace.valeursEgales(this.getCase(i, j, grilleBase))){
+                                    this.grilleBase.remove(this.getCase(i, j, grilleBase));
+                                    this.calculScore(caseDeplace);
+                                    this.grilleBase.add(caseDeplace);
+                                    this.grilleSommet.remove(caseDeplace);
+                                    this.deplacement = true;
+                                } else {
+                                    this.grilleMilieu.add(caseDeplace);
+                                    this.grilleSommet.remove(caseDeplace);
+                                    this.deplacement = true;
+                                }
+                            }
                         }
-                    }    
-                } else if (direction == SOMMET){
+                    }
+                } 
+            }
+        } else if (direction == SOMMET){
+            for(int i=0;i<TAILLE;i++){
+                for(int j=0;j<TAILLE;j++){
                     Case c = new Case(i, j, 0);
+                    
                     if(!this.grilleSommet.contains(c)){
                         if(this.grilleMilieu.contains(c)){
                             Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
-                            this.grilleSommet.add(caseDeplace);
-                            this.grilleMilieu.remove(caseDeplace);
+                            this.grilleSommet.add(caseDeplace); //on ajoute la case à la grille BASE
+                            this.grilleMilieu.remove(caseDeplace); //on la retire de la grille MILIEU
                             this.deplacement = true;
                             
                             if(this.grilleBase.contains(c)){
                                 Case caseDeplace2 = this.getCase(i, j, this.grilleBase);
-                                this.grilleMilieu.add(caseDeplace2);
-                                this.grilleBase.remove(caseDeplace2);
+                                if(caseDeplace2.valeursEgales(caseDeplace)){
+                                    this.grilleSommet.remove(caseDeplace);
+                                    this.calculScore(caseDeplace2);
+                                    this.grilleSommet.add(caseDeplace2);
+                                    this.grilleBase.remove(caseDeplace2);
+                                    this.deplacement = true;
+                                } else {
+                                    this.grilleMilieu.add(caseDeplace2);
+                                    this.grilleBase.remove(caseDeplace2);
+                                    this.deplacement = true;
+                                }
+                            }
+                        } else {
+                            if(this.grilleBase.contains(c)){
+                                Case caseDeplace = this.getCase(i, j, grilleBase);
+                                this.grilleSommet.add(caseDeplace);
+                                this.grilleBase.remove(caseDeplace);
                                 this.deplacement = true;
                             }
-                        } else if(this.grilleBase.contains(c)){
-                            Case caseDeplace = this.getCase(i, j, grilleBase);
-                            this.grilleSommet.add(caseDeplace);
-                            this.grilleBase.remove(caseDeplace);
-                            this.deplacement = true;
                         }
-                    } else if(grilleMilieu.contains(c) && this.getCase(i, j, grilleSommet).valeursEgales(this.getCase(i, j, grilleMilieu))){
-                        Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
-                        this.getCase(i, j, grilleSommet).setV(this.getCase(i, j, grilleSommet).getV()*2);
-                        this.grilleMilieu.remove(caseDeplace);
-                        this.deplacement = true;
+                    } else {
+                        if(grilleMilieu.contains(c)){
+                            Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
+                            if(caseDeplace.valeursEgales(this.getCase(i, j, grilleSommet))){
+                                this.calculScore(caseDeplace);
+                                this.grilleSommet.remove(this.getCase(i, j, grilleSommet));
+                                this.grilleSommet.add(caseDeplace);
+                                this.grilleMilieu.remove(caseDeplace);
+                                this.deplacement = true;
                         
-                         if(this.grilleBase.contains(c)){
-                            Case caseDeplace2 = this.getCase(i, j, this.grilleBase);
-                            this.grilleMilieu.add(caseDeplace2);
-                            this.grilleBase.remove(caseDeplace2);
-                            this.deplacement = true;
+                                if(this.grilleBase.contains(c)){
+                                    Case caseDeplace2 = this.getCase(i, j, this.grilleBase);
+                                    this.grilleMilieu.add(caseDeplace2);
+                                    this.grilleBase.remove(caseDeplace2);
+                                    this.deplacement = true;
+                                }
+                            } else {
+                                if(this.grilleBase.contains(c)){
+                                    Case caseDeplace2 = this.getCase(i, j, this.grilleBase);
+                                    if(caseDeplace2.valeursEgales(caseDeplace)){
+                                        this.grilleMilieu.remove(caseDeplace);
+                                        this.calculScore(caseDeplace2);
+                                        this.grilleMilieu.add(caseDeplace2);
+                                        this.grilleBase.remove(caseDeplace2);
+                                        this.deplacement = true;
+                                    }
+                                }
+                            }
+                        } else {
+                            if(this.grilleBase.contains(c)){
+                                Case caseDeplace = this.getCase(i, j, this.grilleBase);
+                                if(caseDeplace.valeursEgales(this.getCase(i, j, grilleSommet))){
+                                    this.grilleSommet.remove(this.getCase(i, j, grilleSommet));
+                                    this.calculScore(caseDeplace);
+                                    this.grilleSommet.add(caseDeplace);
+                                    this.grilleBase.remove(caseDeplace);
+                                    this.deplacement = true;
+                                } else {
+                                    this.grilleMilieu.add(caseDeplace);
+                                    this.grilleBase.remove(caseDeplace);
+                                    this.deplacement = true;
+                                }
+                            }
                         }
                     }
-                }
+                } 
             }
         }
     }
@@ -369,7 +459,7 @@ public class Grille3D implements Parametre {
                     trouve = true;
                 } else if((this.grilleMilieu.size() < TAILLE * TAILLE)&&(numGrille == 1)){
                     trouve = true;
-                } else if(this.grilleSommet.size() < TAILLE * TAILLE){
+                } else if((this.grilleSommet.size() < TAILLE * TAILLE)&&(numGrille == 2)){
                     trouve = true;
                 }  
             }

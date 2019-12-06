@@ -29,27 +29,59 @@ and open the template in the editor.  Author     : chloe
 }
 
 .pane2Classique {
-    -fx-background-color: #e62315;
+    -fx-background-image: url("images/classique2.png");
     -fx-border-color: black;
-}
-
-.tuile2Classique {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 46;
-    -fx-padding: 26 40 26 40;
 }
 
 .pane4Classique {
-    -fx-background-color: #bd1b0f;
+    -fx-background-image: url("images/classique4.png");
     -fx-border-color: black;
 }
 
-.tuile4Classique {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 46;
-    -fx-padding: 26 40 26 40;
+.pane8Classique {
+    -fx-background-image: url("images/classique8.png");
+    -fx-border-color: black;
 }
 
+.pane16Classique {
+    -fx-background-image: url("images/classique16.png");
+    -fx-border-color: black;
+}
+
+.pane32Classique {
+    -fx-background-image: url("images/classique32.png");
+    -fx-border-color: black;
+}
+
+.pane64Classique {
+    -fx-background-image: url("images/classique64.png");
+    -fx-border-color: black;
+}
+
+.pane128Classique {
+    -fx-background-image: url("images/classique128.png");
+    -fx-border-color: black;
+}
+
+.pane256Classique {
+    -fx-background-image: url("images/classique256.png");
+    -fx-border-color: black;
+}
+
+.pane512Classique {
+    -fx-background-image: url("images/classique512.png");
+    -fx-border-color: black;
+}
+
+.pane1024Classique {
+    -fx-background-image: url("images/classique1024.png");
+    -fx-border-color: black;
+}
+
+.pane2048Classique {
+    -fx-background-image: url("images/classique248.png");
+    -fx-border-color: black;
+}
 
 /* style Nuit */
 
