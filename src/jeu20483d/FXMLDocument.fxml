@@ -17,10 +17,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <ScrollPane prefHeight="958.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
    <content>
-      <AnchorPane fx:id="fond" prefHeight="958.0" prefWidth="1293.0" stylesheets="@styles.css">
+      <AnchorPane fx:id="fond" onKeyPressed="#keyPressed" prefHeight="958.0" prefWidth="1293.0" stylesheets="@styles.css">
           <children>
             <Button id="bas" fx:id="bas" layoutX="584.0" layoutY="860.0" onAction="#handleButtonBas" prefHeight="50.0" prefWidth="120.0" text="Bas">
                <font>
@@ -83,8 +82,16 @@
                         <MenuItem mnemonicParsing="false" onAction="#newPartie" text="Partie solo" />
                      </items>
                   </Menu>
-                <Menu mnemonicParsing="false" text="Mon compte" />
-                <Menu mnemonicParsing="false" text="Quitter" />
+                <Menu mnemonicParsing="false" text="Mon compte">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Classement" />
+                        <MenuItem mnemonicParsing="false" text="Déconnexion" />
+                     </items></Menu>
+                <Menu mnemonicParsing="false" text="Retour au menu">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="sans sauvegarder" />
+                        <MenuItem mnemonicParsing="false" text="en sauvegardant" />
+                     </items></Menu>
                   <Menu mnemonicParsing="false" text="Styles">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#styleClassique" text="Classique" />
@@ -105,7 +112,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <Label id="score" fx:id="score" alignment="CENTER" layoutX="579.0" layoutY="263.0" prefHeight="79.0" prefWidth="134.0" text="2048" textAlignment="CENTER">
+            <Label id="score" fx:id="score" alignment="CENTER" layoutX="470.0" layoutY="263.0" prefHeight="79.0" prefWidth="346.0" text="2048" textAlignment="CENTER">
                <font>
                   <Font name="Monospaced Regular" size="54.0" />
                </font>

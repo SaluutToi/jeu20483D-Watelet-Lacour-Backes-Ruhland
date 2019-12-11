@@ -94,38 +94,41 @@ public class Case implements Parametre, Serializable {
     }
     
     public Case getVoisinDirect(int direction){
-        if (direction == HAUT) {
-            for (int i = this.y - 1; i >= 0; i--) {
-                for (Case c : grille) {
-                    if (c.getX() == this.x && c.getY() == i) {
-                        return c;
+        switch (direction) {
+            case HAUT:
+                for (int i = this.y - 1; i >= 0; i--) {
+                    for (Case c : grille) {
+                        if (c.getX() == this.x && c.getY() == i) {
+                            return c;
+                        }
                     }
-                }
-            }
-        } else if (direction == BAS) {
-            for (int i = this.y + 1; i < TAILLE; i++) {
-                for (Case c : grille) {
-                    if (c.getX() == this.x && c.getY() == i) {
-                        return c;
+                }   break;
+            case BAS:
+                for (int i = this.y + 1; i < TAILLE; i++) {
+                    for (Case c : grille) {
+                        if (c.getX() == this.x && c.getY() == i) {
+                            return c;
+                        }
                     }
-                }
-            }
-        } else if (direction == GAUCHE) {
-            for (int i = this.x - 1; i >= 0; i--) {
-                for (Case c : grille) {
-                    if (c.getX() == i && c.getY() == this.y) {
-                        return c;
+                }   break;
+            case GAUCHE:
+                for (int i = this.x - 1; i >= 0; i--) {
+                    for (Case c : grille) {
+                        if (c.getX() == i && c.getY() == this.y) {
+                            return c;
+                        }
                     }
-                }
-            }
-        } else if (direction == DROITE) {
-            for (int i = this.x + 1; i < TAILLE; i++) {
-                for (Case c : grille) {
-                    if (c.getX() == i && c.getY() == this.y) {
-                        return c;
+                }   break;
+            case DROITE:
+                for (int i = this.x + 1; i < TAILLE; i++) {
+                    for (Case c : grille) {
+                        if (c.getX() == i && c.getY() == this.y) {
+                            return c;
+                        }
                     }
-                }
-            }
+                }   break;
+            default:
+                break;
         }
         return null;
     }

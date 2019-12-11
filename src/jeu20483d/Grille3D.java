@@ -101,75 +101,344 @@ public class Grille3D implements Parametre, Serializable {
     
     
     //Méthodes
-    public Case[] caseExtreme(int direction, HashSet <Case> g){
-        Case[] result = new Case[TAILLE];
-        for (Case c : g) {
-            switch (direction) {
-                case HAUT:
-                    if ((result[c.getX()] == null) || (result[c.getX()].getY() > c.getY())) {
-                        result[c.getX()] = c;
+    public void deplacer(HashSet<Case> grille, int direction, int ligne){
+        //on établit la ligne ou la colonne que l'on doit déplacer
+        int [] coordonnee = new int[3];
+        Case [] cases = new Case[3];
+        
+        switch(direction){
+            case HAUT:
+                coordonnee[0]=0;
+                coordonnee[1]=1;
+                coordonnee[2]=2;
+                for(int j=0;j<3;j++){
+                    if(this.getCase(ligne, j, grille)!=null){
+                        cases[j]=this.getCase(ligne, j, grille);
                     }
-                    break;
-                case BAS:
-                    if ((result[c.getX()] == null) || (result[c.getX()].getY() < c.getY())) {
-                        result[c.getX()] = c;
-                    }
-                    break;
-                case GAUCHE:
-                    if ((result[c.getY()] == null) || (result[c.getY()].getX() > c.getX())) {
-                        result[c.getY()] = c;
-                    }
-                    break;
-                default:
-                    if ((result[c.getY()] == null) || (result[c.getY()].getX() < c.getX())) {
-                        result[c.getY()] = c;
-                    }
-                    break;
-            }
-        }
-        return result;
-    }
-    
-    public void deplacer(int direction, HashSet <Case> g, Case[] extremites, int rangee, int compteur){
-        if (extremites[rangee] != null) {
-            if ((direction == HAUT && extremites[rangee].getY() != compteur)
-                    || (direction == BAS && extremites[rangee].getY() != TAILLE - 1 - compteur)
-                    || (direction == GAUCHE && extremites[rangee].getX() != compteur)
-                    || (direction == DROITE && extremites[rangee].getX() != TAILLE - 1 - compteur)) {
-                g.remove(extremites[rangee]);
-                switch (direction) {
-                    case HAUT:
-                        extremites[rangee].setY(compteur);
-                        break;
-                    case BAS:
-                        extremites[rangee].setY(TAILLE - 1 - compteur);
-                        break;
-                    case GAUCHE:
-                        extremites[rangee].setX(compteur);
-                        break;
-                    default:
-                        extremites[rangee].setX(TAILLE - 1 - compteur);
-                        break;
                 }
-                g.add(extremites[rangee]);
-                deplacement = true;
-            }
-            Case voisin = extremites[rangee].getVoisinDirect(-direction);
-            if (voisin != null) {
-                if (extremites[rangee].valeursEgales(voisin)) {
-                    this.calculScore(extremites[rangee]);
-                    extremites[rangee] = voisin.getVoisinDirect(-direction);
-                    g.remove(voisin);
-                    this.deplacer(direction, g, extremites, rangee, compteur + 1);
+                if(cases[0]==null){
+                    if(cases[1]!=null){
+                        grille.remove(cases[1]);
+                        cases[1].setY(coordonnee[0]);
+                        grille.add(cases[1]);
+                        deplacement = true;
+                        if(cases[2]!=null){
+                            if(cases[2].getV()==cases[1].getV()){
+                                grille.remove(cases[1]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setY(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else {
+                                grille.remove(cases[2]);
+                                cases[2].setY(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            grille.remove(cases[2]);
+                            cases[2].setY(coordonnee[0]);
+                            grille.add(cases[2]);
+                        }
+                    }
                 } else {
-                    extremites[rangee] = voisin;
-                    this.deplacer(direction, g, extremites, rangee, compteur + 1);
+                    if(cases[1]!=null){
+                        if(cases[1].getV()==cases[0].getV()){
+                            grille.remove(cases[0]);
+                            grille.remove(cases[1]);
+                            this.calculScore(cases[1]);
+                            cases[1].setY(coordonnee[0]);
+                            grille.add(cases[1]);
+                            deplacement = true;
+                            if(cases[2]!=null){
+                                grille.remove(cases[2]);
+                                cases[2].setY(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        } else {
+                            if(cases[2]!=null){
+                                if(cases[2].getV() == cases[1].getV()){
+                                    deplacement = true;
+                                    grille.remove(cases[1]);
+                                    grille.remove(cases[2]);
+                                    this.calculScore(cases[2]);
+                                    cases[2].setY(coordonnee[1]);
+                                    grille.add(cases[2]);
+                                }   
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            if(cases[2].getV() == cases[0].getV()){
+                                grille.remove(cases[0]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setY(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else{
+                                grille.remove(cases[2]);
+                                cases[2].setY(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    }
                 }
-            }
+                break;
+            case BAS:
+                coordonnee[0]=2;
+                coordonnee[1]=1;
+                coordonnee[2]=0;
+                if(this.getCase(ligne, 2, grille)!=null){
+                    cases[0]=this.getCase(ligne, 2, grille);
+                }
+                if(this.getCase(ligne, 0, grille)!=null){
+                    cases[2]=this.getCase(ligne, 0, grille);
+                }
+                if(this.getCase(ligne, 1, grille)!=null){
+                    cases[1]=this.getCase(ligne, 1, grille);
+                }
+                if(cases[0]==null){
+                    if(cases[1]!=null){
+                        grille.remove(cases[1]);
+                        cases[1].setY(coordonnee[0]);
+                        grille.add(cases[1]);
+                        deplacement = true;
+                        if(cases[2]!=null){
+                            if(cases[2].getV()==cases[1].getV()){
+                                grille.remove(cases[1]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setY(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else {
+                                grille.remove(cases[2]);
+                                cases[2].setY(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            grille.remove(cases[2]);
+                            cases[2].setY(coordonnee[0]);
+                            grille.add(cases[2]);
+                        }
+                    }
+                } else {
+                    if(cases[1]!=null){
+                        if(cases[1].getV()==cases[0].getV()){
+                            grille.remove(cases[0]);
+                            grille.remove(cases[1]);
+                            this.calculScore(cases[1]);
+                            cases[1].setY(coordonnee[0]);
+                            grille.add(cases[1]);
+                            deplacement = true;
+                            if(cases[2]!=null){
+                                grille.remove(cases[2]);
+                                cases[2].setY(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        } else {
+                            if(cases[2]!=null){
+                                if(cases[2].getV() == cases[1].getV()){
+                                    deplacement = true;
+                                    grille.remove(cases[1]);
+                                    grille.remove(cases[2]);
+                                    this.calculScore(cases[2]);
+                                    cases[2].setY(coordonnee[1]);
+                                    grille.add(cases[2]);
+                                }   
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            if(cases[2].getV() == cases[0].getV()){
+                                grille.remove(cases[0]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setY(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else{
+                                grille.remove(cases[2]);
+                                cases[2].setY(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    }
+                }
+                break;
+            case DROITE:
+                coordonnee[0]=2;
+                coordonnee[1]=1;
+                coordonnee[2]=0;
+                if(this.getCase(2, ligne, grille)!=null){
+                    cases[0]=this.getCase(2, ligne, grille);
+                }
+                if(this.getCase(0, ligne, grille)!=null){
+                    cases[2]=this.getCase(0, ligne, grille);
+                }
+                if(this.getCase(1, ligne, grille)!=null){
+                    cases[1]=this.getCase(1, ligne, grille);
+                }
+                if(cases[0]==null){
+                    if(cases[1]!=null){
+                        grille.remove(cases[1]);
+                        cases[1].setX(coordonnee[0]);
+                        grille.add(cases[1]);
+                        deplacement = true;
+                        if(cases[2]!=null){
+                            if(cases[2].getV()==cases[1].getV()){
+                                grille.remove(cases[1]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setX(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else {
+                                grille.remove(cases[2]);
+                                cases[2].setX(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            grille.remove(cases[2]);
+                            cases[2].setX(coordonnee[0]);
+                            grille.add(cases[2]);
+                        }
+                    }
+                } else {
+                    if(cases[1]!=null){
+                        if(cases[1].getV()==cases[0].getV()){
+                            grille.remove(cases[0]);
+                            grille.remove(cases[1]);
+                            this.calculScore(cases[1]);
+                            cases[1].setX(coordonnee[0]);
+                            grille.add(cases[1]);
+                            deplacement = true;
+                            if(cases[2]!=null){
+                                grille.remove(cases[2]);
+                                cases[2].setX(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        } else {
+                            if(cases[2]!=null){
+                                if(cases[2].getV() == cases[1].getV()){
+                                    deplacement = true;
+                                    grille.remove(cases[1]);
+                                    grille.remove(cases[2]);
+                                    this.calculScore(cases[2]);
+                                    cases[2].setX(coordonnee[1]);
+                                    grille.add(cases[2]);
+                                }   
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            if(cases[2].getV() == cases[0].getV()){
+                                grille.remove(cases[0]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setX(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else{
+                                grille.remove(cases[2]);
+                                cases[2].setX(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    }
+                }
+                break;
+            case GAUCHE:
+                coordonnee[0]=0;
+                coordonnee[1]=1;
+                coordonnee[2]=2;
+                for(int i=0;i<3;i++){
+                    if(this.getCase(i, ligne, grille)!=null){
+                        cases[i]=this.getCase(i, ligne, grille);
+                    }
+                }
+                if(cases[0]==null){
+                    if(cases[1]!=null){
+                        grille.remove(cases[1]);
+                        cases[1].setX(coordonnee[0]);
+                        grille.add(cases[1]);
+                        deplacement = true;
+                        if(cases[2]!=null){
+                            if(cases[2].getV()==cases[1].getV()){
+                                grille.remove(cases[1]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setX(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else {
+                                grille.remove(cases[2]);
+                                cases[2].setX(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            grille.remove(cases[2]);
+                            cases[2].setX(coordonnee[0]);
+                            grille.add(cases[2]);
+                        }
+                    }
+                } else {
+                    if(cases[1]!=null){
+                        if(cases[1].getV()==cases[0].getV()){
+                            grille.remove(cases[0]);
+                            grille.remove(cases[1]);
+                            this.calculScore(cases[1]);
+                            cases[1].setX(coordonnee[0]);
+                            grille.add(cases[1]);
+                            deplacement = true;
+                            if(cases[2]!=null){
+                                grille.remove(cases[2]);
+                                cases[2].setX(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        } else {
+                            if(cases[2]!=null){
+                                if(cases[2].getV() == cases[1].getV()){
+                                    deplacement = true;
+                                    grille.remove(cases[1]);
+                                    grille.remove(cases[2]);
+                                    this.calculScore(cases[2]);
+                                    cases[2].setX(coordonnee[1]);
+                                    grille.add(cases[2]);
+                                }   
+                            }
+                        }
+                    } else {
+                        if(cases[2]!=null){
+                            deplacement = true;
+                            if(cases[2].getV() == cases[0].getV()){
+                                grille.remove(cases[0]);
+                                grille.remove(cases[2]);
+                                this.calculScore(cases[2]);
+                                cases[2].setX(coordonnee[0]);
+                                grille.add(cases[2]);
+                            } else{
+                                grille.remove(cases[2]);
+                                cases[2].setX(coordonnee[1]);
+                                grille.add(cases[2]);
+                            }
+                        }
+                    }
+                }
+                break;
         }
     }
     
-    public void deplacerEntreGrille(int direction){
+    public void deplacer(int direction){
         if(direction == BASE){
             for(int i=0;i<TAILLE;i++){
                 for(int j=0;j<TAILLE;j++){
@@ -337,14 +606,43 @@ public class Grille3D implements Parametre, Serializable {
     
     public boolean lanceDeplacement(int direction){
         deplacement = false; // pour vérifier si on a bougé au moins une case après le déplacement, avant d'en rajouter une nouvelle
-        if(direction == HAUT || direction == BAS || direction == GAUCHE || direction == DROITE ){
-            for (int i = 0; i < TAILLE; i++) {
-                    this.deplacer(direction, this.grilleBase, this.caseExtreme(direction, grilleBase), i, 0);
-                    this.deplacer(direction, this.grilleMilieu, this.caseExtreme(direction, grilleMilieu), i, 0);
-                    this.deplacer(direction, this.grilleSommet, this.caseExtreme(direction, grilleSommet), i, 0);
-            }
-        } else if (direction == BASE || direction == SOMMET){
-            this.deplacerEntreGrille(direction);
+        switch(direction){
+            case HAUT:
+                for(int i=0;i<3;i++){
+                    this.deplacer(this.grilleSommet, HAUT, i);
+                    this.deplacer(this.grilleMilieu, HAUT, i);
+                    this.deplacer(this.grilleBase, HAUT, i);
+                }
+                break;
+            case BAS:
+                for(int i=0;i<3;i++){
+                    this.deplacer(this.grilleSommet, BAS, i);
+                    this.deplacer(this.grilleMilieu, BAS, i);
+                    this.deplacer(this.grilleBase, BAS, i);
+                }
+                break;
+            case GAUCHE:
+                for(int i=0;i<3;i++){
+                    this.deplacer(this.grilleSommet, GAUCHE, i);
+                    this.deplacer(this.grilleMilieu, GAUCHE, i);
+                    this.deplacer(this.grilleBase, GAUCHE, i);
+                }
+                break;
+            case DROITE:
+                for(int i=0;i<3;i++){
+                    this.deplacer(this.grilleSommet, DROITE, i);
+                    this.deplacer(this.grilleMilieu, DROITE, i);
+                    this.deplacer(this.grilleBase, DROITE, i);
+                }
+                break;
+            case SOMMET:
+                this.deplacer(direction);
+                break;
+            case BASE:
+                this.deplacer(direction);
+                break;
+            default:
+                break;
         }
         return deplacement;
     }
@@ -367,13 +665,14 @@ public class Grille3D implements Parametre, Serializable {
                         }
                     }
                 }
-                if (c.getVoisinDirect(4) != null) {
-                    if (c.valeursEgales(c.getVoisinDirect(4))) {
+                int x = c.getX();
+                int y = c.getY();
+                if(this.getCase(x, y, this.grilleMilieu) != null){
+                    if(this.getCase(x, y, grilleMilieu).valeursEgales(c)){
                         fin = false;
                     }
-                }
-                if (c.getVoisinDirect(-4) != null) {
-                    if (c.valeursEgales(c.getVoisinDirect(-4))) {
+                } else if(this.getCase(x, y, this.grilleSommet) != null){
+                    if(this.getCase(x, y, grilleSommet).valeursEgales(c)){
                         fin = false;
                     }
                 }
@@ -387,16 +686,6 @@ public class Grille3D implements Parametre, Serializable {
                         }
                     }
                 }
-                if (c.getVoisinDirect(4) != null) {
-                    if (c.valeursEgales(c.getVoisinDirect(4))) {
-                        fin = false;
-                    }
-                }
-                if (c.getVoisinDirect(-4) != null) {
-                    if (c.valeursEgales(c.getVoisinDirect(-4))) {
-                        fin = false;
-                    }
-                }
             }
             
             for (Case c : this.grilleSommet) {
@@ -407,13 +696,14 @@ public class Grille3D implements Parametre, Serializable {
                         }
                     }
                 }
-                if (c.getVoisinDirect(4) != null) {
-                    if (c.valeursEgales(c.getVoisinDirect(4))) {
+                int x = c.getX();
+                int y = c.getY();
+                if(this.getCase(x, y, this.grilleMilieu) != null){
+                    if(this.getCase(x, y, grilleMilieu).valeursEgales(c)){
                         fin = false;
                     }
-                }
-                if (c.getVoisinDirect(-4) != null) {
-                    if (c.valeursEgales(c.getVoisinDirect(-4))) {
+                } else if(this.getCase(x, y, this.grilleBase) != null){
+                    if(this.getCase(x, y, grilleBase).valeursEgales(c)){
                         fin = false;
                     }
                 }
