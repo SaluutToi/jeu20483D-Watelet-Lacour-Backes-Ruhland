@@ -7,14 +7,13 @@ package jeu20483d;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -80,14 +79,16 @@ public class FXMLDocumentController implements Initializable {
     private int xTemp; private int yTemp; private int aTemp; private int bTemp; private int fusion;
     //Pour permettre de changer le style:
     private String style;
+    private Pane fondMessageFin;
+    private Pane messageFin;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         boolean b;
-        b = this.jeu.ajoutCase();
-        b = this.jeu.ajoutCase();
-        b = this.jeu.ajoutCase();
+        this.jeu.ajoutCase();
+        this.jeu.ajoutCase();
+        this.jeu.ajoutCase();
         
         //On affiche les deux nouvelles Cases
         this.afficher("Classique");
@@ -95,15 +96,15 @@ public class FXMLDocumentController implements Initializable {
     }  
     
     
-    //Méthodes pour déplacer les cases
+    //Méthodes pour déplacer les cases avec les boutons
     @FXML
-    private void handleButtonHaut(ActionEvent event) {
+    private void handleButtonHaut() {
         
         //On actualise les grilles de pane
         this.afficher(this.style);
         
-        this.jeu.lanceDeplacement(1);
-        
+        boolean v = this.jeu.lanceDeplacement(1);
+        /*
         //On met à jour les tableaux de objectifs
         
         for(int i=0;i<3;i++){
@@ -298,18 +299,26 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             }
-        }
-        this.ajoutCase();
+        }*/
+        
+        this.afficher(this.style);
         this.score.setText(""+this.jeu.getScore()+"");
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.finPartie(true);
+        } else if(this.jeu.jeuFini()){
+            this.finPartie(false);
+        } else {
+            this.ajoutCase(v);
+        }
     }
     
     @FXML
-    private void handleButtonBas(ActionEvent event) {
+    private void handleButtonBas() {
         //On actualise les grilles de pane
         this.afficher(this.style);
         
-        this.jeu.lanceDeplacement(-1);
-        
+        boolean v = this.jeu.lanceDeplacement(-1);
+        /*
         //On met à jour les tableaux de objectifs
         
         for(int i=0;i<3;i++){
@@ -504,19 +513,26 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             }
-        }
-        this.ajoutCase();
-        System.out.println(this.jeu);
+        }*/
+        
+        this.afficher(this.style);
         this.score.setText(""+this.jeu.getScore()+"");
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.finPartie(true);
+        } else if(this.jeu.jeuFini()){
+            this.finPartie(false);
+        } else {
+            this.ajoutCase(v);
+        }
     }
     
     @FXML
-    private void handleButtonGauche(ActionEvent event) {
+    private void handleButtonGauche() {
         //On actualise les grilles de pane
         this.afficher(this.style);
         
-        this.jeu.lanceDeplacement(-2);
-        
+        boolean v = this.jeu.lanceDeplacement(-2);
+        /*
         //On met à jour les tableaux de objectifs
         
         for(int i=0;i<3;i++){
@@ -711,19 +727,26 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             }
-        }
-        this.ajoutCase();
-        System.out.println(this.jeu);
+        }*/
+        
+        this.afficher(this.style);
         this.score.setText(""+this.jeu.getScore()+"");
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.finPartie(true);
+        } else if(this.jeu.jeuFini()){
+            this.finPartie(false);
+        } else {
+            this.ajoutCase(v);
+        }
     }
     
     @FXML
-    private void handleButtonDroite(ActionEvent event) throws InterruptedException {
+    private void handleButtonDroite() {
         //On actualise les grilles de pane
         this.afficher(this.style);
         
-        this.jeu.lanceDeplacement(2);
-        
+        boolean v = this.jeu.lanceDeplacement(2);
+        /*
         //On met à jour les tableaux de objectifs
         for(int i=0;i<3;i++){
             this.calculObjectif(1, i, 2);
@@ -916,19 +939,26 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             }
-        }
-        this.ajoutCase();
-        System.out.println(this.jeu);
+        }*/
+        
+        this.afficher(this.style);
         this.score.setText(""+this.jeu.getScore()+"");
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.finPartie(true);
+        } else if(this.jeu.jeuFini()){
+            this.finPartie(false);
+        } else {
+            this.ajoutCase(v);
+        }
     }
     
     @FXML
-    private void handleButtonSommet(ActionEvent event) {
+    private void handleButtonSommet() {
         //On actualise les grilles de pane
         this.afficher(this.style);
         
-        this.jeu.lanceDeplacement(4);
-        
+        boolean v = this.jeu.lanceDeplacement(4);
+        /*
         //On met à jour les tableaux de objectifs
         this.calculObjectif(4);
         
@@ -970,7 +1000,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;
                                     case 3:
                                         try {
-                                            Thread.sleep(3*116*4+9);
+                                            Thread.sleep(3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -979,7 +1009,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;     
                                     case 4:
                                         try {
-                                            Thread.sleep(2*3*116*4+9);
+                                            Thread.sleep(2*3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1029,7 +1059,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;
                                     case 3:
                                         try {
-                                            Thread.sleep(3*116*4+9);
+                                            Thread.sleep(3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1038,7 +1068,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;     
                                     case 4:
                                         try {
-                                            Thread.sleep(2*3*116*4+9);
+                                            Thread.sleep(2*3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1088,7 +1118,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;
                                     case 2:
                                         try {
-                                            Thread.sleep(3*116*4+9);
+                                            Thread.sleep(3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1097,7 +1127,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;     
                                     case 3:
                                         try {
-                                            Thread.sleep(2*3*116*4+9);
+                                            Thread.sleep(2*3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1118,19 +1148,26 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         }
+        */
         
-        this.ajoutCase();
-        System.out.println(this.jeu);
+        this.afficher(this.style);
         this.score.setText(""+this.jeu.getScore()+"");
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.finPartie(true);
+        } else if(this.jeu.jeuFini()){
+            this.finPartie(false);
+        } else {
+            this.ajoutCase(v);
+        }
     }
     
     @FXML
-    private void handleButtonBase(ActionEvent event) {
+    private void handleButtonBase() {
         //On actualise les grilles de pane
         this.afficher(this.style);
         
-        this.jeu.lanceDeplacement(-4);
-        
+        boolean v = this.jeu.lanceDeplacement(-4);
+        /*
         //On met à jour les tableaux de objectifs
         this.calculObjectif(-4);
         
@@ -1172,7 +1209,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;
                                     case 3:
                                         try {
-                                            Thread.sleep(3*116*4+9);
+                                            Thread.sleep(3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1181,7 +1218,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;     
                                     case 4:
                                         try {
-                                            Thread.sleep(2*3*116*4+9);
+                                            Thread.sleep(2*3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1231,7 +1268,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;
                                     case 3:
                                         try {
-                                            Thread.sleep(3*116*4+9);
+                                            Thread.sleep(3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1240,7 +1277,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;     
                                     case 4:
                                         try {
-                                            Thread.sleep(2*3*116*4+9);
+                                            Thread.sleep(2*3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1290,7 +1327,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;
                                     case 3:
                                         try {
-                                            Thread.sleep(3*116*4+9);
+                                            Thread.sleep(3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1299,7 +1336,7 @@ public class FXMLDocumentController implements Initializable {
                                         break;     
                                     case 4:
                                         try {
-                                            Thread.sleep(2*3*116*4+9);
+                                            Thread.sleep(2*3*116*3+9);
                                         } catch (InterruptedException ex) {
                                             System.out.println(ex);
                                         }       
@@ -1319,10 +1356,38 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             }
-        }
-        this.ajoutCase();
-        System.out.println(this.jeu);
+        }*/
+        
+        this.afficher(this.style);
         this.score.setText(""+this.jeu.getScore()+"");
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.finPartie(true);
+        } else if(this.jeu.jeuFini()){
+            this.finPartie(false);
+        } else {
+            this.ajoutCase(v);
+        }
+    }
+    
+    //Méthode pour déplacer les cases avec les touches
+    @FXML
+    public void keyPressed(KeyEvent ke) {
+        String touche = ke.getText();
+        System.out.println(ke);
+        if(touche.compareTo("q") == 0){ //GAUCHE
+            this.handleButtonGauche();
+            
+        } else if(touche.compareTo("s") == 0){ //BAS
+            this.handleButtonBas();
+        }else if(touche.compareTo("d") == 0){ //DROITE
+            this.handleButtonDroite();
+        }else if(touche.compareTo("z") == 0){ //HAUT
+            this.handleButtonHaut();
+        }else if(touche.compareTo("r") == 0){ //SOMMET  
+            this.handleButtonSommet();
+        } else if(touche.compareTo("f") == 0){ //BASE
+            this.handleButtonBase();
+        }
     }
     
     public void calculObjectif(int iGrille, int iLigne, int direction){
@@ -1646,7 +1711,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    
     public void calculObjectif(int d){
         
         final int xSommet = 112;
@@ -1832,7 +1896,8 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    public void ajoutCase(){
+    public void ajoutCase(boolean vrai){
+        if(vrai){
         this.jeu.ajoutCase();
         
         for(int i=0;i<3;i++){
@@ -1929,24 +1994,86 @@ public class FXMLDocumentController implements Initializable {
                     }
                 }
             }
+        }}
+        System.out.println(this.jeu);
+    }
+    
+    public void finPartie(boolean vrai){
+        //On rend la bue du plateau de jeu opaque
+        Pane fondFin = new Pane();
+        fondFin.setPrefHeight(958);
+        fondFin.setPrefWidth(1293);
+        fondFin.relocate(0, 0);
+        fondFin.getStyleClass().add("fondFin"+this.style);
+        this.fond.getChildren().add(fondFin);
+        
+        //On affiche les message de fin
+        Pane fondMessage = new Pane();
+        fondMessage.setPrefWidth(597);
+        fondMessage.setPrefHeight(458);
+        fondMessage.relocate(344,250);
+        fondMessage.getStyleClass().add("fondMessage"+this.style);
+        
+        if(!vrai){
+            Label message = new Label("Dommage, vous avez perdu !");
+            message.relocate(0, 50);
+            message.setPrefWidth(597);
+            message.getStyleClass().add("textFin"+this.style);
+            fondMessage.getChildren().add(message);
+        } else {
+            Label message = new Label("Félicitation, vous avez Gagné !");
+            message.relocate(0, 50);
+            message.setPrefWidth(597);
+            message.getStyleClass().add("textFin"+this.style);
+            fondMessage.getChildren().add(message);
         }
+        
+        Label scoreMess = new Label("Votre score est de " + this.jeu.getScore());
+        scoreMess.relocate(0, 126);
+        scoreMess.setPrefWidth(597);
+        scoreMess.getStyleClass().add("textScoreMeilleureCase"+this.style);
+        Label meilleureCase = new Label("Votre meilleure case est "+ this.jeu.getMeilleureCase());
+        meilleureCase.relocate(0, 196);
+        meilleureCase.setPrefWidth(597);
+        meilleureCase.getStyleClass().add("textScoreMeilleureCase"+this.style);
+        
+        Button rejouer = new Button("Nouvelle Partie");
+        rejouer.relocate(200, 300);
+        rejouer.getStyleClass().add("button"+this.style);
+        rejouer.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+            newPartie();
+        });
+        
+        Button quit = new Button("Retour au menu");
+        quit.relocate(197, 350);
+        quit.getStyleClass().add("button"+this.style);
+        
+        this.fond.getChildren().add(fondMessage);
+        fondMessage.getChildren().add(quit);
+        fondMessage.getChildren().add(rejouer);
+        fondMessage.getChildren().add(scoreMess);
+        fondMessage.getChildren().add(meilleureCase);
+        
+        this.fondMessageFin = fondFin;
+        this.messageFin = fondMessage;
     }
     
     //Méthode pour charger une nouvelle partie
     @FXML
-    private void newPartie(ActionEvent event){
+    private void newPartie(){
         
+        this.fond.getChildren().removeAll(this.fondMessageFin);
+        this.fond.getChildren().removeAll(this.messageFin);
         this.jeu = new Grille3D();
         
         boolean b;
-        b = this.jeu.ajoutCase();
-        b = this.jeu.ajoutCase();
+        this.jeu.ajoutCase();
+        this.jeu.ajoutCase();
         
         //On affiche les deux nouvelles Cases
         this.afficher("Classique");
         this.score.setText("0");
     }
-    
     
     private void afficher(String s){
         
@@ -2092,11 +2219,11 @@ public class FXMLDocumentController implements Initializable {
     
     //Méthodes pour changer de style
     @FXML
-    private void styleNuit(ActionEvent event) {
+    private void styleNuit() {
         this.afficher("Nuit");
     }
     @FXML
-    private void styleClassique(ActionEvent event) {
+    private void styleClassique() {
         this.afficher("Classique");
     }
 }

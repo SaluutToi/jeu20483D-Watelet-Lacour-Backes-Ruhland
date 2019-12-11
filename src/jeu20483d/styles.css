@@ -10,6 +10,29 @@ and open the template in the editor.  Author     : chloe
     -fx-background-color: #FFFFFF;
 }
 
+.fondFinClassique{
+    -fx-background-color: #FFFFFF;
+    -fx-opacity: 0.5;
+}
+
+.fondMessageClassique {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
+
+
+.textFinClassique{
+    -fx-text-fill: #000000;
+    -fx-font-size: 36;
+    -fx-alignment: CENTER;  
+}
+
+.textScoreMeilleureCaseClassique{
+    -fx-text-fill: #000000;
+    -fx-font-size: 30;
+    -fx-alignment: CENTER;  
+}
+
 .textClassique {
     -fx-text-fill: #000000;
 }
@@ -18,12 +41,12 @@ and open the template in the editor.  Author     : chloe
     -fx-text-fill: #000000;
     -fx-background-color: #FFFFFF;
     -fx-border-color: black;
+    -fx-font-size: 18;
 }
 
 .gridpaneClassique {
      -fx-border-color: black;
      -fx-grid-lines-visible: true;
-     /*-fx-border: 2px solid;*/
      -fx-halignment: center;
      -fx-alignment: CENTER;  
 }
@@ -79,7 +102,7 @@ and open the template in the editor.  Author     : chloe
 }
 
 .pane2048Classique {
-    -fx-background-image: url("images/classique248.png");
+    -fx-background-image: url("images/classique2048.png");
     -fx-border-color: black;
 }
 
@@ -92,7 +115,6 @@ and open the template in the editor.  Author     : chloe
 .gridpaneNuit {
      -fx-border-color: white;
      -fx-grid-lines-visible: true;
-     /*-fx-border: 2px solid;*/
      -fx-halignment: center;
      -fx-alignment: CENTER;  
 }
@@ -127,4 +149,11 @@ and open the template in the editor.  Author     : chloe
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 46;
     -fx-padding: 26 40 26 40;
+}
+
+
+
+.pane2Noel {
+    -fx-background-image: url("images/noel2.png");
+    -fx-border-color: black;
 }
