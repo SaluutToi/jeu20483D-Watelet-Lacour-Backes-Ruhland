@@ -30,23 +30,18 @@ public class Grille3D implements Parametre, Serializable {
     public HashSet<Case> getGrilleBase(){
         return this.grilleBase;
     }
-    
     public HashSet<Case> getGrilleMilieu(){
         return this.grilleMilieu;
     }
-    
     public HashSet<Case> getGrilleSommet(){
         return this.grilleSommet;
     }
-    
     public int getScore(){
         return this.score;
     }
-    
     public int getMeilleureCase(){
         return this.meilleureCase;
     }
-    
     public Case getCase(int x, int y, HashSet<Case> g){
         for (Case c : g) {
             if(c.getX() == x && c.getY() == y){
@@ -69,7 +64,6 @@ public class Grille3D implements Parametre, Serializable {
         this.grilleSommet = gS;
     }
     
-    //Affichage
     @Override
     public String toString() {
         int[][] tableau1 = new int[TAILLE][TAILLE];
@@ -100,38 +94,39 @@ public class Grille3D implements Parametre, Serializable {
     }
     
     
-    //Méthodes
     public void deplacer(HashSet<Case> grille, int direction, int ligne){
-        //on établit la ligne ou la colonne que l'on doit déplacer
-        int [] coordonnee = new int[3];
+        //On établit la ligne ou la colonne que l'on doit déplacer et les objectifs correspondants
+        int [] obj = new int[3];
         Case [] cases = new Case[3];
-        
+        //On déplace les cases de la ligne/colonnes en fonction de la direction
         switch(direction){
             case HAUT:
-                coordonnee[0]=0;
-                coordonnee[1]=1;
-                coordonnee[2]=2;
+                //On établit la colonne à déplacer et les objectifs associés
+                obj[0]=0;
+                obj[1]=1;
+                obj[2]=2;
                 for(int j=0;j<3;j++){
                     if(this.getCase(ligne, j, grille)!=null){
                         cases[j]=this.getCase(ligne, j, grille);
                     }
                 }
+                //On vérifie tous les cas possibles et on déplace les cases en conséquence
                 if(cases[0]==null){
                     if(cases[1]!=null){
                         grille.remove(cases[1]);
-                        cases[1].setY(coordonnee[0]);
+                        cases[1].setY(obj[0]);
                         grille.add(cases[1]);
                         deplacement = true;
                         if(cases[2]!=null){
                             if(cases[2].getV()==cases[1].getV()){
                                 grille.remove(cases[1]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setY(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setY(obj[0]);
                                 grille.add(cases[2]);
                             } else {
                                 grille.remove(cases[2]);
-                                cases[2].setY(coordonnee[1]);
+                                cases[2].setY(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
@@ -139,7 +134,7 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[2]!=null){
                             deplacement = true;
                             grille.remove(cases[2]);
-                            cases[2].setY(coordonnee[0]);
+                            cases[2].setY(obj[0]);
                             grille.add(cases[2]);
                         }
                     }
@@ -148,13 +143,13 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[1].getV()==cases[0].getV()){
                             grille.remove(cases[0]);
                             grille.remove(cases[1]);
-                            this.calculScore(cases[1]);
-                            cases[1].setY(coordonnee[0]);
+                            this.fusion(cases[1]);
+                            cases[1].setY(obj[0]);
                             grille.add(cases[1]);
                             deplacement = true;
                             if(cases[2]!=null){
                                 grille.remove(cases[2]);
-                                cases[2].setY(coordonnee[1]);
+                                cases[2].setY(obj[1]);
                                 grille.add(cases[2]);
                             }
                         } else {
@@ -163,8 +158,8 @@ public class Grille3D implements Parametre, Serializable {
                                     deplacement = true;
                                     grille.remove(cases[1]);
                                     grille.remove(cases[2]);
-                                    this.calculScore(cases[2]);
-                                    cases[2].setY(coordonnee[1]);
+                                    this.fusion(cases[2]);
+                                    cases[2].setY(obj[1]);
                                     grille.add(cases[2]);
                                 }   
                             }
@@ -175,22 +170,23 @@ public class Grille3D implements Parametre, Serializable {
                             if(cases[2].getV() == cases[0].getV()){
                                 grille.remove(cases[0]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setY(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setY(obj[0]);
                                 grille.add(cases[2]);
                             } else{
                                 grille.remove(cases[2]);
-                                cases[2].setY(coordonnee[1]);
+                                cases[2].setY(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
                     }
                 }
                 break;
+            //On fait de même pour la direction BAS
             case BAS:
-                coordonnee[0]=2;
-                coordonnee[1]=1;
-                coordonnee[2]=0;
+                obj[0]=2;
+                obj[1]=1;
+                obj[2]=0;
                 if(this.getCase(ligne, 2, grille)!=null){
                     cases[0]=this.getCase(ligne, 2, grille);
                 }
@@ -203,19 +199,19 @@ public class Grille3D implements Parametre, Serializable {
                 if(cases[0]==null){
                     if(cases[1]!=null){
                         grille.remove(cases[1]);
-                        cases[1].setY(coordonnee[0]);
+                        cases[1].setY(obj[0]);
                         grille.add(cases[1]);
                         deplacement = true;
                         if(cases[2]!=null){
                             if(cases[2].getV()==cases[1].getV()){
                                 grille.remove(cases[1]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setY(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setY(obj[0]);
                                 grille.add(cases[2]);
                             } else {
                                 grille.remove(cases[2]);
-                                cases[2].setY(coordonnee[1]);
+                                cases[2].setY(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
@@ -223,7 +219,7 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[2]!=null){
                             deplacement = true;
                             grille.remove(cases[2]);
-                            cases[2].setY(coordonnee[0]);
+                            cases[2].setY(obj[0]);
                             grille.add(cases[2]);
                         }
                     }
@@ -232,13 +228,13 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[1].getV()==cases[0].getV()){
                             grille.remove(cases[0]);
                             grille.remove(cases[1]);
-                            this.calculScore(cases[1]);
-                            cases[1].setY(coordonnee[0]);
+                            this.fusion(cases[1]);
+                            cases[1].setY(obj[0]);
                             grille.add(cases[1]);
                             deplacement = true;
                             if(cases[2]!=null){
                                 grille.remove(cases[2]);
-                                cases[2].setY(coordonnee[1]);
+                                cases[2].setY(obj[1]);
                                 grille.add(cases[2]);
                             }
                         } else {
@@ -247,8 +243,8 @@ public class Grille3D implements Parametre, Serializable {
                                     deplacement = true;
                                     grille.remove(cases[1]);
                                     grille.remove(cases[2]);
-                                    this.calculScore(cases[2]);
-                                    cases[2].setY(coordonnee[1]);
+                                    this.fusion(cases[2]);
+                                    cases[2].setY(obj[1]);
                                     grille.add(cases[2]);
                                 }   
                             }
@@ -259,22 +255,23 @@ public class Grille3D implements Parametre, Serializable {
                             if(cases[2].getV() == cases[0].getV()){
                                 grille.remove(cases[0]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setY(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setY(obj[0]);
                                 grille.add(cases[2]);
                             } else{
                                 grille.remove(cases[2]);
-                                cases[2].setY(coordonnee[1]);
+                                cases[2].setY(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
                     }
                 }
                 break;
+            //On fait de même pour la direction DROITE
             case DROITE:
-                coordonnee[0]=2;
-                coordonnee[1]=1;
-                coordonnee[2]=0;
+                obj[0]=2;
+                obj[1]=1;
+                obj[2]=0;
                 if(this.getCase(2, ligne, grille)!=null){
                     cases[0]=this.getCase(2, ligne, grille);
                 }
@@ -287,19 +284,19 @@ public class Grille3D implements Parametre, Serializable {
                 if(cases[0]==null){
                     if(cases[1]!=null){
                         grille.remove(cases[1]);
-                        cases[1].setX(coordonnee[0]);
+                        cases[1].setX(obj[0]);
                         grille.add(cases[1]);
                         deplacement = true;
                         if(cases[2]!=null){
                             if(cases[2].getV()==cases[1].getV()){
                                 grille.remove(cases[1]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setX(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setX(obj[0]);
                                 grille.add(cases[2]);
                             } else {
                                 grille.remove(cases[2]);
-                                cases[2].setX(coordonnee[1]);
+                                cases[2].setX(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
@@ -307,7 +304,7 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[2]!=null){
                             deplacement = true;
                             grille.remove(cases[2]);
-                            cases[2].setX(coordonnee[0]);
+                            cases[2].setX(obj[0]);
                             grille.add(cases[2]);
                         }
                     }
@@ -316,13 +313,13 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[1].getV()==cases[0].getV()){
                             grille.remove(cases[0]);
                             grille.remove(cases[1]);
-                            this.calculScore(cases[1]);
-                            cases[1].setX(coordonnee[0]);
+                            this.fusion(cases[1]);
+                            cases[1].setX(obj[0]);
                             grille.add(cases[1]);
                             deplacement = true;
                             if(cases[2]!=null){
                                 grille.remove(cases[2]);
-                                cases[2].setX(coordonnee[1]);
+                                cases[2].setX(obj[1]);
                                 grille.add(cases[2]);
                             }
                         } else {
@@ -331,8 +328,8 @@ public class Grille3D implements Parametre, Serializable {
                                     deplacement = true;
                                     grille.remove(cases[1]);
                                     grille.remove(cases[2]);
-                                    this.calculScore(cases[2]);
-                                    cases[2].setX(coordonnee[1]);
+                                    this.fusion(cases[2]);
+                                    cases[2].setX(obj[1]);
                                     grille.add(cases[2]);
                                 }   
                             }
@@ -343,22 +340,23 @@ public class Grille3D implements Parametre, Serializable {
                             if(cases[2].getV() == cases[0].getV()){
                                 grille.remove(cases[0]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setX(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setX(obj[0]);
                                 grille.add(cases[2]);
                             } else{
                                 grille.remove(cases[2]);
-                                cases[2].setX(coordonnee[1]);
+                                cases[2].setX(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
                     }
                 }
                 break;
+            //On fait de même pour la direction GAUCHE
             case GAUCHE:
-                coordonnee[0]=0;
-                coordonnee[1]=1;
-                coordonnee[2]=2;
+                obj[0]=0;
+                obj[1]=1;
+                obj[2]=2;
                 for(int i=0;i<3;i++){
                     if(this.getCase(i, ligne, grille)!=null){
                         cases[i]=this.getCase(i, ligne, grille);
@@ -367,19 +365,19 @@ public class Grille3D implements Parametre, Serializable {
                 if(cases[0]==null){
                     if(cases[1]!=null){
                         grille.remove(cases[1]);
-                        cases[1].setX(coordonnee[0]);
+                        cases[1].setX(obj[0]);
                         grille.add(cases[1]);
                         deplacement = true;
                         if(cases[2]!=null){
                             if(cases[2].getV()==cases[1].getV()){
                                 grille.remove(cases[1]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setX(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setX(obj[0]);
                                 grille.add(cases[2]);
                             } else {
                                 grille.remove(cases[2]);
-                                cases[2].setX(coordonnee[1]);
+                                cases[2].setX(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
@@ -387,7 +385,7 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[2]!=null){
                             deplacement = true;
                             grille.remove(cases[2]);
-                            cases[2].setX(coordonnee[0]);
+                            cases[2].setX(obj[0]);
                             grille.add(cases[2]);
                         }
                     }
@@ -396,13 +394,13 @@ public class Grille3D implements Parametre, Serializable {
                         if(cases[1].getV()==cases[0].getV()){
                             grille.remove(cases[0]);
                             grille.remove(cases[1]);
-                            this.calculScore(cases[1]);
-                            cases[1].setX(coordonnee[0]);
+                            this.fusion(cases[1]);
+                            cases[1].setX(obj[0]);
                             grille.add(cases[1]);
                             deplacement = true;
                             if(cases[2]!=null){
                                 grille.remove(cases[2]);
-                                cases[2].setX(coordonnee[1]);
+                                cases[2].setX(obj[1]);
                                 grille.add(cases[2]);
                             }
                         } else {
@@ -411,8 +409,8 @@ public class Grille3D implements Parametre, Serializable {
                                     deplacement = true;
                                     grille.remove(cases[1]);
                                     grille.remove(cases[2]);
-                                    this.calculScore(cases[2]);
-                                    cases[2].setX(coordonnee[1]);
+                                    this.fusion(cases[2]);
+                                    cases[2].setX(obj[1]);
                                     grille.add(cases[2]);
                                 }   
                             }
@@ -423,12 +421,12 @@ public class Grille3D implements Parametre, Serializable {
                             if(cases[2].getV() == cases[0].getV()){
                                 grille.remove(cases[0]);
                                 grille.remove(cases[2]);
-                                this.calculScore(cases[2]);
-                                cases[2].setX(coordonnee[0]);
+                                this.fusion(cases[2]);
+                                cases[2].setX(obj[0]);
                                 grille.add(cases[2]);
                             } else{
                                 grille.remove(cases[2]);
-                                cases[2].setX(coordonnee[1]);
+                                cases[2].setX(obj[1]);
                                 grille.add(cases[2]);
                             }
                         }
@@ -440,22 +438,22 @@ public class Grille3D implements Parametre, Serializable {
     
     public void deplacer(int direction){
         if(direction == BASE){
+            //On parcourt les 3 grilles 
             for(int i=0;i<TAILLE;i++){
                 for(int j=0;j<TAILLE;j++){
                     Case c = new Case(i, j, 0);
-                    
+                    //On vérifie toutes les possibilités et on déplace les cases en conséquence
                     if(!this.grilleBase.contains(c)){
                         if(this.grilleMilieu.contains(c)){
                             Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
-                            this.grilleBase.add(caseDeplace); //on ajoute la case à la grille BASE
-                            this.grilleMilieu.remove(caseDeplace); //on la retire de la grille MILIEU
+                            this.grilleBase.add(caseDeplace); 
+                            this.grilleMilieu.remove(caseDeplace);
                             this.deplacement = true;
-                            
                             if(this.grilleSommet.contains(c)){
                                 Case caseDeplace2 = this.getCase(i, j, this.grilleSommet);
                                 if(caseDeplace2.valeursEgales(caseDeplace)){
                                     this.grilleBase.remove(caseDeplace);
-                                    this.calculScore(caseDeplace2);
+                                    this.fusion(caseDeplace2);
                                     this.grilleBase.add(caseDeplace2);
                                     this.grilleSommet.remove(caseDeplace2);
                                     this.deplacement = true;
@@ -477,7 +475,7 @@ public class Grille3D implements Parametre, Serializable {
                         if(grilleMilieu.contains(c)){
                             Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
                             if(caseDeplace.valeursEgales(this.getCase(i, j, grilleBase))){
-                                this.calculScore(caseDeplace);
+                                this.fusion(caseDeplace);
                                 this.grilleBase.remove(this.getCase(i, j, grilleBase));
                                 this.grilleBase.add(caseDeplace);
                                 this.grilleMilieu.remove(caseDeplace);
@@ -494,7 +492,7 @@ public class Grille3D implements Parametre, Serializable {
                                     Case caseDeplace2 = this.getCase(i, j, this.grilleSommet);
                                     if(caseDeplace2.valeursEgales(caseDeplace)){
                                         this.grilleMilieu.remove(caseDeplace);
-                                        this.calculScore(caseDeplace2);
+                                        this.fusion(caseDeplace2);
                                         this.grilleMilieu.add(caseDeplace2);
                                         this.grilleSommet.remove(caseDeplace2);
                                         this.deplacement = true;
@@ -506,7 +504,7 @@ public class Grille3D implements Parametre, Serializable {
                                 Case caseDeplace = this.getCase(i, j, this.grilleSommet);
                                 if(caseDeplace.valeursEgales(this.getCase(i, j, grilleBase))){
                                     this.grilleBase.remove(this.getCase(i, j, grilleBase));
-                                    this.calculScore(caseDeplace);
+                                    this.fusion(caseDeplace);
                                     this.grilleBase.add(caseDeplace);
                                     this.grilleSommet.remove(caseDeplace);
                                     this.deplacement = true;
@@ -520,23 +518,22 @@ public class Grille3D implements Parametre, Serializable {
                     }
                 } 
             }
+        //On applique le même principe pour la direction SOMMET
         } else if (direction == SOMMET){
             for(int i=0;i<TAILLE;i++){
                 for(int j=0;j<TAILLE;j++){
                     Case c = new Case(i, j, 0);
-                    
                     if(!this.grilleSommet.contains(c)){
                         if(this.grilleMilieu.contains(c)){
                             Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
-                            this.grilleSommet.add(caseDeplace); //on ajoute la case à la grille BASE
-                            this.grilleMilieu.remove(caseDeplace); //on la retire de la grille MILIEU
+                            this.grilleSommet.add(caseDeplace); 
+                            this.grilleMilieu.remove(caseDeplace);
                             this.deplacement = true;
-                            
                             if(this.grilleBase.contains(c)){
                                 Case caseDeplace2 = this.getCase(i, j, this.grilleBase);
                                 if(caseDeplace2.valeursEgales(caseDeplace)){
                                     this.grilleSommet.remove(caseDeplace);
-                                    this.calculScore(caseDeplace2);
+                                    this.fusion(caseDeplace2);
                                     this.grilleSommet.add(caseDeplace2);
                                     this.grilleBase.remove(caseDeplace2);
                                     this.deplacement = true;
@@ -558,7 +555,7 @@ public class Grille3D implements Parametre, Serializable {
                         if(grilleMilieu.contains(c)){
                             Case caseDeplace = this.getCase(i, j, this.grilleMilieu);
                             if(caseDeplace.valeursEgales(this.getCase(i, j, grilleSommet))){
-                                this.calculScore(caseDeplace);
+                                this.fusion(caseDeplace);
                                 this.grilleSommet.remove(this.getCase(i, j, grilleSommet));
                                 this.grilleSommet.add(caseDeplace);
                                 this.grilleMilieu.remove(caseDeplace);
@@ -575,7 +572,7 @@ public class Grille3D implements Parametre, Serializable {
                                     Case caseDeplace2 = this.getCase(i, j, this.grilleBase);
                                     if(caseDeplace2.valeursEgales(caseDeplace)){
                                         this.grilleMilieu.remove(caseDeplace);
-                                        this.calculScore(caseDeplace2);
+                                        this.fusion(caseDeplace2);
                                         this.grilleMilieu.add(caseDeplace2);
                                         this.grilleBase.remove(caseDeplace2);
                                         this.deplacement = true;
@@ -587,7 +584,7 @@ public class Grille3D implements Parametre, Serializable {
                                 Case caseDeplace = this.getCase(i, j, this.grilleBase);
                                 if(caseDeplace.valeursEgales(this.getCase(i, j, grilleSommet))){
                                     this.grilleSommet.remove(this.getCase(i, j, grilleSommet));
-                                    this.calculScore(caseDeplace);
+                                    this.fusion(caseDeplace);
                                     this.grilleSommet.add(caseDeplace);
                                     this.grilleBase.remove(caseDeplace);
                                     this.deplacement = true;
@@ -648,9 +645,7 @@ public class Grille3D implements Parametre, Serializable {
     }
     
     public boolean jeuFini(){
-        
         boolean fin = true;
-        
         //On vérifie si les trois grilles sont pleine
         if ((this.grilleBase.size() < TAILLE * TAILLE)||(this.grilleMilieu.size() < TAILLE * TAILLE)||(this.grilleSommet.size() < TAILLE * TAILLE)) {
             fin = false;
@@ -677,7 +672,6 @@ public class Grille3D implements Parametre, Serializable {
                     }
                 }
             }
-            
             for (Case c : this.grilleMilieu) {
                 for (int i = 1; i <= 2; i++) {
                     if (c.getVoisinDirect(i) != null) {
@@ -687,7 +681,6 @@ public class Grille3D implements Parametre, Serializable {
                     }
                 }
             }
-            
             for (Case c : this.grilleSommet) {
                 for (int i = 1; i <= 2; i++) {
                     if (c.getVoisinDirect(i) != null) {
@@ -722,23 +715,20 @@ public class Grille3D implements Parametre, Serializable {
         System.exit(0);
     }
     
-    public void calculScore(Case c){
+    public void fusion(Case c){
         //On fusionne les deux cases
         c.setV(c.getV() * 2);
-        
         //On regarde si c'est la nouvelle meilleure case
         if (this.meilleureCase < c.getV()) {
             this.meilleureCase = c.getV();
         }
-        
         //On augmente le score
         this.score += c.getV();
-        
         //On indique que le déplacement à eu lieu
         deplacement = true;
     }
     
-    public boolean ajoutCase(){
+    public void ajoutCase(){
         if ((this.grilleBase.size() < TAILLE * TAILLE)||(this.grilleMilieu.size() < TAILLE * TAILLE)||(this.grilleSommet.size() < TAILLE * TAILLE)) {          
             //On choisit une grille au hasard
             boolean trouve = false;
@@ -816,9 +806,6 @@ public class Grille3D implements Parametre, Serializable {
                     }
                     break;
             }
-            return true;
-        } else {
-            return false;
         }
     }
 }

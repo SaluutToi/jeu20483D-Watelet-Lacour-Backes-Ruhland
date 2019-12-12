@@ -12,7 +12,6 @@ public class Case implements Parametre, Serializable {
     
     private int x, y, v;
     private HashSet<Case> grille;
-    private Grille3D grille3D;
     
     //Constructeur
     public  Case(int abscisse, int ordonne, int valeur){
@@ -25,51 +24,35 @@ public class Case implements Parametre, Serializable {
     public int getX() {
         return this.x;
     }
-
     public int getY() {
         return this.y;
     }
-    
     public int getV(){
         return this.v;
     }
-    
     public HashSet<Case> getGrille(){
         return this.grille;
-    }
-    
-    public Grille3D getGrilles3D(){
-        return this.grille3D;
     }
     
     //Setters
     public void setX(int x) {
         this.x = x;
     }
-    
     public void setY(int y) {
         this.y = y;
     }
-
     public void setV(int valeur) {
         this.v = valeur;
     }
-    
     public void setGrille(HashSet<Case> g) {
         this.grille = g;
     }
     
-    public void setGrilles3D(Grille3D g){
-        this.grille3D = g;
-    }
-    
-    //Affichage
     @Override
     public String toString() {
         return "Case(" + this.x + "," + this.y + "," + this.v + ")";
     }
     
-    //Méthodes
     @Override
     public boolean equals(Object obj) { 
         if (obj instanceof Case) {
@@ -129,23 +112,6 @@ public class Case implements Parametre, Serializable {
                 }   break;
             default:
                 break;
-        }
-        return null;
-    }
-    
-    public Case getVoisinGrille(int direction){
-        if(direction == SOMMET){
-           for(Case c: grille3D.getGrilleSommet()){
-                if((c.x == this.x)&&(c.y == this.y)){
-                    return c;
-                }
-            } 
-        } else if (direction == BASE){
-            for(Case c: grille3D.getGrilleBase()){
-                if((c.x == this.x)&&(c.y == this.y)){
-                    return c;
-                }
-            }
         }
         return null;
     }

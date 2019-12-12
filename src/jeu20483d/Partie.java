@@ -30,6 +30,4 @@ public class Partie implements Serializable {
     public int getScore1(){
         return this.score1;
     }
-    
-    //Partie sert uniquement à enregistrer dans la bdd donc pas besoin de setters?
 }
