@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @author chloe
  */
 public class Bdd {
-        Connection conn = null;
+        private Connection conn;
         private String adresse;
         private String user;
         private String password;
@@ -43,12 +43,12 @@ public class Bdd {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             BufferedReader br = new BufferedReader(new FileReader("bdd.txt"));
-            String ligne= br.readLine();
-            String[] infosBdd = ligne.split(";");
-            adresse = infosBdd[0];
-            user = infosBdd[1];
-            password=infosBdd[2];
-            conn = DriverManager.getConnection(adresse, user, password);
+            String ligne= br.readLine(); 
+            String[] infosBdd = ligne.split(";"); 
+            this.adresse = infosBdd[0];
+            this.user = infosBdd[1];
+            this.password=infosBdd[2];
+            this.conn = DriverManager.getConnection(adresse, user, password);
             System.out.println("Connexion établie");
         }
         catch (ClassNotFoundException | IllegalAccessException | InstantiationException | SQLException | FileNotFoundException e)
@@ -132,16 +132,15 @@ public class Bdd {
         return true;
     }
     
-    public boolean connexion(Joueur j)
+    public boolean connexion(String mail, String mdp)
     {
         this.ouvrir();
         boolean b = false;
-        String pseudo = j.getPseudo();
-        String mdp = j.getMDP();
+     
         try 
         {
-            Statement s = conn.createStatement();
-            String q = "select from joueur where pseudo like '"+pseudo+"' and mdp like '"+mdp+"'";
+            Statement s = this.conn.createStatement();
+            String q = "select from joueur where mail like '"+mail+"' and mdp like '"+mdp+"'";
             ResultSet rs = s.executeQuery(q);
             if (rs.next())
             {
@@ -160,12 +159,12 @@ public class Bdd {
         this.ouvrir();
         try 
         {
-            Statement s = conn.createStatement();
+            Statement s = this.conn.createStatement();
             String q = "select score from joueur where pseudo like '"+j.getPseudo()+"'";
             ResultSet rs = s.executeQuery(q);
             if (!rs.next() || rs.getInt(1)<j.getMeilleurScore())
             {
-                Statement ss = conn.createStatement();
+                Statement ss = this.conn.createStatement();
                 String qq = "insert into joueur (score) values ("+j.getMeilleurScore()+")";
             }
         }
