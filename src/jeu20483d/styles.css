@@ -3,9 +3,41 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.  Author     : chloe
 */
+/*Css insciprtion*/
+.fondConnexion{
+    -fx-background-image: url("images/fondConnexion.png");
+}
+.buttonConnexion{
+    -fx-text-fill: #000000;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
+
+/*Css du menu*/
+.fondMenu{
+    -fx-background-image: url("images/fondMenu.png");
+}
+.fondMenuMessage {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
+.buttonMenu {
+    -fx-text-fill: #000000;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
+/*Css de l'onglet aide dans le jeu'*/
+.textAide{
+    -fx-text-fill: #000000;
+    -fx-font-size: 20;
+    -fx-alignment: CENTER;  
+}
+.fondMessageAide {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
 
 /* style Classique */
-
 .fondClassique {
     -fx-background-color: #FFFFFF;
 }
@@ -20,10 +52,6 @@ and open the template in the editor.  Author     : chloe
 .textFinClassique{
     -fx-text-fill: #000000;
     -fx-font-size: 36;
-    -fx-alignment: CENTER;  
-}.textAideClassique{
-    -fx-text-fill: #000000;
-    -fx-font-size: 20;
     -fx-alignment: CENTER;  
 }
 .textScoreMeilleureCaseClassique{
@@ -186,11 +214,6 @@ and open the template in the editor.  Author     : chloe
 .textFinNoel{
     -fx-text-fill: #ffee36;
     -fx-font-size: 36;
-    -fx-alignment: CENTER;  
-}
-.textAideNoel{
-    -fx-text-fill: #ffee36;
-    -fx-font-size: 20;
     -fx-alignment: CENTER;  
 }
 .textScoreMeilleureCaseNoel{

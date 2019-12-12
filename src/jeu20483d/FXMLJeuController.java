@@ -5,24 +5,31 @@
  */
 package jeu20483d;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 
 
-public class FXMLDocumentController implements Initializable {
+public class FXMLJeuController implements Initializable {
     
     //Initialisation des elements de la vue:
     
@@ -99,7 +106,7 @@ public class FXMLDocumentController implements Initializable {
     
     
     @FXML
-    public void keyPressed(KeyEvent ke) {
+    private void keyPressed(KeyEvent ke) {
         String touche = ke.getText();
         if(touche.compareTo("q") == 0){ //GAUCHE
             this.handleButtonGauche();
@@ -1434,7 +1441,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    public void calculObjectif(int d){
+    private void calculObjectif(int d){
         //Coordonnée X du coin haut-gauche de chaque grille servant à définir les objectifs:
         final int xSommet = 112;
         final int xMilieu = 469;
@@ -1617,7 +1624,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    public void calculObjectif(int iGrille, int iLigne, int direction){
+    private void calculObjectif(int iGrille, int iLigne, int direction){
         //On initialise les grilles temporaires qui serviront à remplir les varibales globales indiquant:
         boolean[] casesPrises = new boolean[3]; //les cases prises
         int[] fusionTemp = new int[3]; //les fusions
@@ -1942,7 +1949,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    public void ajoutCase(){
+    private void ajoutCase(){
             //On ajoute une case
             this.jeu.ajoutCase();
             //On la cherche pour afficher le pane au bon endroit sur la vue
@@ -2028,7 +2035,7 @@ public class FXMLDocumentController implements Initializable {
             }
     }
     
-    public void finPartie(boolean vrai){
+    private void finPartie(boolean vrai){
         //On rend la vue du jeu un peu caché cf css
         Pane fondFin = new Pane();
         fondFin.setPrefHeight(958);
@@ -2224,10 +2231,12 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void aideTouche(){
+        //TRUE si le choix "touche" dans l'onglet aide est selectionné
         aide = !aide;
+        //On affiche le message
         if(aide){
             Pane p = new Pane();
-            p.getStyleClass().add("fondMessage"+this.style);
+            p.getStyleClass().add("fondMessageAide");
             p.setPrefWidth(374);
             p.setPrefHeight(231);
             p.relocate(29, 61);
@@ -2235,10 +2244,10 @@ public class FXMLDocumentController implements Initializable {
             Label l1 = new Label("z pour haut, s pour bas");
             Label l2 = new Label("q pour gauche, d pour droite");
             Label l3 = new Label("r pour sommet, f pour base");
-            l.getStyleClass().add("textAide"+this.style);
-            l1.getStyleClass().add("textAide"+this.style);
-            l2.getStyleClass().add("textAide"+this.style);
-            l3.getStyleClass().add("textAide"+this.style);
+            l.getStyleClass().add("textAide");
+            l1.getStyleClass().add("textAide");
+            l2.getStyleClass().add("textAide");
+            l3.getStyleClass().add("textAide");
             l.setPrefWidth(374);
             l1.setPrefWidth(374);
             l2.setPrefWidth(374);
@@ -2253,6 +2262,7 @@ public class FXMLDocumentController implements Initializable {
             this.fondAide.getChildren().add(l1);
             this.fondAide.getChildren().add(l2);
             this.fondAide.getChildren().add(l3);
+        //Si on de décoche le choix "touche", on supprime le message
         } else {
             this.fond.getChildren().removeAll(this.fondAide);
         }
@@ -2260,6 +2270,8 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void newPartie(){
+        //TODO: enregistrer le score
+        
         //On retire le message de fin
         this.fond.getChildren().removeAll(this.fondMessageFin);
         this.fond.getChildren().removeAll(this.messageFin);
@@ -2286,11 +2298,31 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void menuSauvegarde(){
-        //TODO: sauvegarder la partie + le score + retour au menu
+        //TODO: sauvegarder la partie + le score 
+        try {
+            Stage stage = new Stage();
+            this.fond.getScene().getWindow().hide();
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @FXML
     private void menuNonSauvegarde(){
-        //TODO: sauvegarder le score + retour au menu
+        //TODO: sauvegarder le score 
+        try {
+            Stage stage = new Stage();
+            this.fond.getScene().getWindow().hide();
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

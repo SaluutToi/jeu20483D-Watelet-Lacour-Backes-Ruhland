@@ -10,28 +10,21 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 /**
  *
  * @author emili
  */
-public class ConnexionController /*implements Initializable*/ {
+public class FXMLConnexionController implements Initializable {
     
     @FXML
     private AnchorPane fondConnexion;
@@ -52,27 +45,42 @@ public class ConnexionController /*implements Initializable*/ {
     @FXML
     private TextField textConfirmerMdp;
     
-    Bdd bdd = new Bdd();
+    private Bdd bdd;
+    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        bdd = new Bdd();
+        this.fondConnexion.getStyleClass().add("fondConnexion");
+        this.buttonC.getStyleClass().add("buttonConnexion");
+        this.buttonI.getStyleClass().add("buttonConnexion");
+    } 
 
     @FXML
     private void handleButtonC(ActionEvent event) {
-        if (bdd.connexion(textMailC.getText(), textMdpC.getText()))
-        {
-            
+        //if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
             try {
                 Stage stage = (Stage) buttonC.getScene().getWindow();
-                Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException ex) {
-                Logger.getLogger(ConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-
-        
+        //}
     }
    
-    
-    
+    @FXML
+    private void handleButtonI(){
+        //TOD0: inscire le joueur dans la bdd
+        try {
+            Stage stage = (Stage) buttonC.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
