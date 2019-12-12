@@ -9,151 +9,245 @@ and open the template in the editor.  Author     : chloe
 .fondClassique {
     -fx-background-color: #FFFFFF;
 }
-
 .fondFinClassique{
     -fx-background-color: #FFFFFF;
     -fx-opacity: 0.5;
 }
-
 .fondMessageClassique {
     -fx-background-color: #FFFFFF;
     -fx-border-color: black;
 }
-
-
 .textFinClassique{
     -fx-text-fill: #000000;
     -fx-font-size: 36;
     -fx-alignment: CENTER;  
+}.textAideClassique{
+    -fx-text-fill: #000000;
+    -fx-font-size: 20;
+    -fx-alignment: CENTER;  
 }
-
 .textScoreMeilleureCaseClassique{
     -fx-text-fill: #000000;
     -fx-font-size: 30;
     -fx-alignment: CENTER;  
 }
-
 .textClassique {
     -fx-text-fill: #000000;
 }
-
 .buttonClassique {
     -fx-text-fill: #000000;
     -fx-background-color: #FFFFFF;
     -fx-border-color: black;
     -fx-font-size: 18;
 }
-
 .gridpaneClassique {
      -fx-border-color: black;
      -fx-grid-lines-visible: true;
      -fx-halignment: center;
      -fx-alignment: CENTER;  
 }
-
 .pane2Classique {
     -fx-background-image: url("images/classique2.png");
     -fx-border-color: black;
 }
-
 .pane4Classique {
     -fx-background-image: url("images/classique4.png");
     -fx-border-color: black;
 }
-
 .pane8Classique {
     -fx-background-image: url("images/classique8.png");
     -fx-border-color: black;
 }
-
 .pane16Classique {
     -fx-background-image: url("images/classique16.png");
     -fx-border-color: black;
 }
-
 .pane32Classique {
     -fx-background-image: url("images/classique32.png");
     -fx-border-color: black;
 }
-
 .pane64Classique {
     -fx-background-image: url("images/classique64.png");
     -fx-border-color: black;
 }
-
 .pane128Classique {
     -fx-background-image: url("images/classique128.png");
     -fx-border-color: black;
 }
-
 .pane256Classique {
     -fx-background-image: url("images/classique256.png");
     -fx-border-color: black;
 }
-
 .pane512Classique {
     -fx-background-image: url("images/classique512.png");
     -fx-border-color: black;
 }
-
 .pane1024Classique {
     -fx-background-image: url("images/classique1024.png");
     -fx-border-color: black;
 }
-
 .pane2048Classique {
     -fx-background-image: url("images/classique2048.png");
     -fx-border-color: black;
 }
 
 /* style Nuit */
-
 .fondNuit {
     -fx-background-color: #000000;
 }
-
+.fondFinNuit{
+    -fx-background-color: #2c2a42;
+    -fx-opacity: 0.5;
+}
+.fondMessageNuit {
+    -fx-background-color: #000000;
+    -fx-border-color: #000000;
+}
+.textFinNuit{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 36;
+    -fx-alignment: CENTER;  
+}
+.textFinNuit{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20;
+    -fx-alignment: CENTER;  
+}
+.textScoreMeilleureCaseNuit{
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 30;
+    -fx-alignment: CENTER;  
+}
 .gridpaneNuit {
      -fx-border-color: white;
      -fx-grid-lines-visible: true;
      -fx-halignment: center;
      -fx-alignment: CENTER;  
 }
-
 .textNuit {
     -fx-text-fill: #FFFFFF;
 }
-
 .buttonNuit {
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #201f21;
     -fx-border-color: white;
+    -fx-font-size: 18;
 }
-
 .pane2Nuit {
-    -fx-background-color: #211b3d;
+    -fx-background-image: url("images/nuit2.png");
     -fx-border-color: white;
 }
-
-.tuile2Nuit {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 46;
-    -fx-padding: 26 40 26 40;
-}
-
 .pane4Nuit {
-    -fx-background-color: #372d66;
+    -fx-background-image: url("images/nuit4.png");
+    -fx-border-color: white;
+}
+.pane8Nuit {
+    -fx-background-image: url("images/nuit8.png");
+    -fx-border-color: white;
+}
+.pane16Nuit {
+    -fx-background-image: url("images/nuit16.png");
+    -fx-border-color: white;
+}.pane32Nuit {
+    -fx-background-image: url("images/nuit32.png");
+    -fx-border-color: white;
+}.pane64Nuit {
+    -fx-background-image: url("images/nuit64.png");
+    -fx-border-color: white;
+}.pane128Nuit {
+    -fx-background-image: url("images/nuit128.png");
+    -fx-border-color: white;
+}.pane256Nuit {
+    -fx-background-image: url("images/nuit256.png");
+    -fx-border-color: white;
+}.pane512Nuit {
+    -fx-background-image: url("images/nuit512.png");
+    -fx-border-color: white;
+}.pane1024Nuit {
+    -fx-background-image: url("images/nuit1024.png");
+    -fx-border-color: white;
+}.pane2048Nuit {
+    -fx-background-image: url("images/nuit2048.png");
     -fx-border-color: white;
 }
 
-.tuile4Nuit {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 46;
-    -fx-padding: 26 40 26 40;
+
+/* style Noël */
+.fondNoel {
+    -fx-background-image: url("images/fondNoel.png");
+}fondFinNoel {
+    -fx-background-color:  #FFFFFF;
+    -fx-opacity: 0.5;
 }
-
-
-
+.fondMessageNoel {
+    -fx-background-color:  #201f21;
+    -fx-border-color: #ffee36;
+}
+.textFinNoel{
+    -fx-text-fill: #ffee36;
+    -fx-font-size: 36;
+    -fx-alignment: CENTER;  
+}
+.textAideNoel{
+    -fx-text-fill: #ffee36;
+    -fx-font-size: 20;
+    -fx-alignment: CENTER;  
+}
+.textScoreMeilleureCaseNoel{
+    -fx-text-fill: #ffee36;
+    -fx-font-size: 30;
+    -fx-alignment: CENTER;  
+}
+.gridpaneNoel {
+     -fx-border-color: #000000;
+     -fx-grid-lines-visible: true;
+     -fx-halignment: center;
+     -fx-alignment: CENTER;  
+     -fx-background-color: #FFFFFF;
+}
+.textNoel {
+    -fx-text-fill: #000000;
+}
+.buttonNoel {
+    -fx-text-fill: #ffee36;
+    -fx-background-color: #201f21;
+    -fx-border-color: #ffee36;
+    -fx-font-size: 18;
+}
 .pane2Noel {
     -fx-background-image: url("images/noel2.png");
+    -fx-border-color: black;
+}
+.pane4Noel {
+    -fx-background-image: url("images/noel4.png");
+    -fx-border-color: black;
+}
+.pane8Noel {
+    -fx-background-image: url("images/noel8.png");
+    -fx-border-color: black;
+}
+.pane16Noel {
+    -fx-background-image: url("images/noel16.png");
+    -fx-border-color: black;
+}.pane32Noel {
+    -fx-background-image: url("images/noel32.png");
+    -fx-border-color: black;
+}.pane64Noel {
+    -fx-background-image: url("images/noel64.png");
+    -fx-border-color: black;
+}.pane128Noel {
+    -fx-background-image: url("images/noel128.png");
+    -fx-border-color: black;
+}.pane256Noel {
+    -fx-background-image: url("images/noel256.png");
+    -fx-border-color: black;
+}.pane512Noel {
+    -fx-background-image: url("images/noel512.png");
+    -fx-border-color: black;
+}.pane1024Noel {
+    -fx-background-image: url("images/noel1024.png");
+    -fx-border-color: black;
+}.pane2048Noel {
+    -fx-background-image: url("images/noel2048.png");
     -fx-border-color: black;
 }
