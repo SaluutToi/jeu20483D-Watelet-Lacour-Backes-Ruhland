@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane prefHeight="958.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLDocumentController">
+<ScrollPane prefHeight="958.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLJeuController">
    <content>
       <AnchorPane fx:id="fond" onKeyPressed="#keyPressed" prefHeight="958.0" prefWidth="1293.0" stylesheets="@styles.css">
           <children>
@@ -36,7 +36,7 @@
                   <Font name="Monospaced Regular" size="22.0" />
                </font>
             </Button>
-            <GridPane id="grilleBase" fx:id="grilleBase" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="825.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0">
+            <GridPane id="grilleBase" fx:id="grilleBase" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="825.0" layoutY="385.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="350.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,7 +53,7 @@
                   <Font name="Monospaced Regular" size="22.0" />
                </font>
             </Button>
-            <GridPane id="grilleSommet" fx:id="grilleSommet" alignment="CENTER" gridLinesVisible="true" layoutX="112.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0" style="-fx-margin-right: 7%;">
+            <GridPane id="grilleSommet" fx:id="grilleSommet" alignment="CENTER" gridLinesVisible="true" layoutX="112.0" layoutY="385.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="350.0" style="-fx-margin-right: 7%;">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -77,30 +77,31 @@
             </Button>
             <MenuBar prefHeight="29.0" prefWidth="1022.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
               <menus>
+                  <Menu mnemonicParsing="false" text="Aide">
+                    <items>
+                        <CheckMenuItem mnemonicParsing="false" onAction="#aideTouche" text="Touches" />
+                    </items>
+                  </Menu>
                 <Menu mnemonicParsing="false" text="Nouvelle partie">
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#newPartie" text="Partie solo" />
                      </items>
                   </Menu>
-                <Menu mnemonicParsing="false" text="Mon compte">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="Classement" />
-                        <MenuItem mnemonicParsing="false" text="Déconnexion" />
-                     </items></Menu>
-                <Menu mnemonicParsing="false" text="Retour au menu">
-                     <items>
-                        <MenuItem mnemonicParsing="false" text="sans sauvegarder" />
-                        <MenuItem mnemonicParsing="false" text="en sauvegardant" />
-                     </items></Menu>
                   <Menu mnemonicParsing="false" text="Styles">
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#styleClassique" text="Classique" />
                         <MenuItem mnemonicParsing="false" onAction="#styleNuit" text="Nuit" />
+                        <MenuItem mnemonicParsing="false" onAction="#styleNoel" text="Noel" />
                     </items>
                   </Menu>
+                <Menu mnemonicParsing="false" text="Retour au menu">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#menuNonSauvegarde" text="sans sauvegarder" />
+                        <MenuItem mnemonicParsing="false" onAction="#menuSauvegarde" text="en sauvegardant" />
+                     </items></Menu>
               </menus>
             </MenuBar>
-            <GridPane id="grilleMilieu" fx:id="grilleMilieu" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="469.0" layoutY="386.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="348.0">
+            <GridPane id="grilleMilieu" fx:id="grilleMilieu" alignment="CENTER" cache="true" gridLinesVisible="true" layoutX="469.0" layoutY="385.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="350.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

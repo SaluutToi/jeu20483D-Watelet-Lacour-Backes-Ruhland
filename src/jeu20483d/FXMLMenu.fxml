@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane prefHeight="958.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jeu20483d.FXMLMenuController">
+   <content>
+      <AnchorPane id="AnchorPane" fx:id="fond" prefHeight="958.0" prefWidth="1293.0" stylesheets="@styles.css">
+         <children>
+            <Pane fx:id="fondMessage" layoutX="264.0" layoutY="138.0" prefHeight="666.0" prefWidth="763.0">
+               <children>
+                  <Button fx:id="deco" layoutX="310.0" layoutY="525.0" mnemonicParsing="false" onAction="#handleButtonDeco" text="Déconnexion">
+                     <font>
+                        <Font name="Monospaced Regular" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="rejouer" layoutX="218.0" layoutY="385.0" mnemonicParsing="false" onAction="#handleButtonRejouer" text="Continuer ma dernière partie">
+                     <font>
+                        <Font name="Monospaced Regular" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="classement" layoutX="316.0" layoutY="455.0" mnemonicParsing="false" onAction="#handleButtonClassement" text="Classement">
+                     <font>
+                        <Font name="Monospaced Regular" size="18.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="jouer" layoutX="289.0" layoutY="325.0" mnemonicParsing="false" onAction="#handleButtonJouer" text="Nouvelle partie">
+                     <font>
+                        <Font name="Monospaced Regular" size="18.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="titre" alignment="CENTER" layoutX="132.0" layoutY="14.0" prefHeight="125.0" prefWidth="520.0" text="BIENVENUE !" textAlignment="CENTER">
+                     <font>
+                        <Font name="Monospaced Regular" size="63.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="text" layoutX="20.0" layoutY="107.0" prefHeight="203.0" prefWidth="726.0" text="Le jeu 2048-3D est un jeu de déplacements de cases, le but étant d'atteindre 2048. Pour déplacer les cases vous pouvez utilser les boutons prévus à cet effet ou vos touches de clavier: z pour haut, d pour droite, s pour bas, q pour gauche, r pour sommet et f pour base. Lorsque vous jouez, vous pouvez retrouver ces informations dans l'onglet &quot;Aide&quot;." textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="quitter" layoutX="338.0" layoutY="595.0" mnemonicParsing="false" onAction="#handleButtonQuitter" text="Quitter">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>
