@@ -7,7 +7,8 @@ import java.io.Serializable;
  * @author chloe
  */
 public class Joueur implements Serializable {
-    private String pseudo, mdp;
+    private String pseudo;
+    private transient String mdp;
     private int meilleurScore, partiesGagnees;
     
     //Constructeur
