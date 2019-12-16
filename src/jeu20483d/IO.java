@@ -1,11 +1,10 @@
 package jeu20483d;
 
 import java.io.*;
-import java.nio.*;
 import java.net.*;
-import java.util.Scanner;
 
 /**
+ * Gère les échangent réseaux et fichiers
  * @author mbackes
  * @version 1.0
  */
@@ -16,8 +15,9 @@ public class IO implements Runnable {
 
     static int port = 3306;
     final static String IDhote = "maxime-X556UQ/127.0.1.1";
-    final String IDnet = "";
-    private final Socket s;
+    private Socket s;
+    ObjectInputStream objIn;
+    ObjectOutputStream objOut;
     Socket connection = new Socket(IDhote, port);
 
     /**
@@ -29,9 +29,9 @@ public class IO implements Runnable {
     public IO(Socket s) throws IOException {
         this.s = s;
         try{
-            ObjectInputStream objIn = new ObjectInputStream(s.getInputStream());
-            ObjectOutputStream objOut = new ObjectOutputStream(s.getOutputStream());
-        }catch(IOException e){e.printStackTrace();}
+            this.objIn = new ObjectInputStream(s.getInputStream());
+            this.objOut = new ObjectOutputStream(s.getOutputStream());
+        }catch(IOException e) {e.printStackTrace();}
     }
 
     /**
@@ -57,12 +57,13 @@ public class IO implements Runnable {
      */
 
     public static void client() throws IOException {
-        Socket s = null;
         try {
-            s = new Socket(IDhote, port);
+            Socket s = new Socket(IDhote, port);
             ObjectInputStream in = new ObjectInputStream(s.getInputStream());
             ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-        } catch (IOException e) {e.printStackTrace();}
+            Partie p = (Partie) in.readObject();
+
+        } catch (IOException | ClassNotFoundException e) {e.printStackTrace();}
     }
 
     /**
@@ -74,11 +75,7 @@ public class IO implements Runnable {
             try {
                 Socket soc = new Socket("127.0.0.1", i);
                 System.out.println("La machine autorise les connexions sur le port : " + i);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-
-            }
+            } catch (IOException e) {e.printStackTrace();}
         }
     }
 
@@ -92,9 +89,7 @@ public class IO implements Runnable {
             InetAddress IP = InetAddress.getLocalHost();
             String s = IP.toString();
             return s;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {e.printStackTrace();}
         return null;
     }
 
@@ -105,20 +100,22 @@ public class IO implements Runnable {
      */
     public static void creerFichierPartie (Partie p) {
         try {
-            ObjectOutputStream sortie = new ObjectOutputStream(new FileOutputStream("partie.dat"));
+            String s = p.getJoueur1().getPseudo();
+            ObjectOutputStream sortie = new ObjectOutputStream(new FileOutputStream(s + "_partie.dat"));
             sortie.writeObject(p);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        }catch(IOException e) {e.printStackTrace();}
     }
 
     /**
      *
+     * @param j
      * @return
      */
-    public static Partie lecFichierPartie () {
+    public static Partie lecFichierPartie (Joueur j) {
         try {
-            ObjectInputStream entree = new ObjectInputStream(new FileInputStream("partie.dat"));
+            String s = j.getPseudo();
+            File f = new File(s + "_partie.dat");
+            ObjectInputStream entree = new ObjectInputStream(new FileInputStream(f));
             Partie p;
             p = (Partie) entree.readObject();
             return p;
@@ -126,20 +123,24 @@ public class IO implements Runnable {
             e.printStackTrace();
         }return null;
     }
-/**
+
     @Override
     public void run() {
-        try{
+        s = connection;
+        try {
             while(true){
-                Partie partie =
+                IO io = new IO(s);
+                Partie partie = (Partie) io.objIn.readObject();
+                if (partie == null)break;
+                System.out.println(partie.toString());
+                objOut.flush();
             }
-        }catch(IOException e){
+        }catch(IOException | ClassNotFoundException e){
             e.printStackTrace();
-        }finally{
-            try{
+        }finally {
+            try {
                 s.close();
-            }
+            }catch(IOException e) {e.printStackTrace();}
         }
     }
-    **/
 }
