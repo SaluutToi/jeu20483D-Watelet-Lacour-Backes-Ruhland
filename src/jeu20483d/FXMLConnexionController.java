@@ -58,6 +58,7 @@ public class FXMLConnexionController implements Initializable {
     @FXML
     private void handleButtonC(ActionEvent event) {
         //if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
+        
             try {
                 Stage stage = (Stage) buttonC.getScene().getWindow();
                 Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
