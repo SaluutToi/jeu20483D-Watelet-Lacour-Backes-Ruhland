@@ -46,6 +46,7 @@ public class FXMLConnexionController implements Initializable {
     private TextField textConfirmerMdp;
     
     private Bdd bdd;
+    private Joueur j;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,7 +58,8 @@ public class FXMLConnexionController implements Initializable {
 
     @FXML
     private void handleButtonC(ActionEvent event) {
-        //if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
+        if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
+            j = new Joueur()
             try {
                 Stage stage = (Stage) buttonC.getScene().getWindow();
                 Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
@@ -67,13 +69,16 @@ public class FXMLConnexionController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        //}
+        }
     }
    
     @FXML
-    private void handleButtonI(){
+    private void handleButtonI(ActionEvent event){
         //TOD0: inscire le joueur dans la bdd
-        try {
+        
+            if(bdd.ajouter(textMailI.getText(), textPseudo.getText(), textMdpI.getText()))
+            {
+                try {
             Stage stage = (Stage) buttonC.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
             Scene scene = new Scene(root);
@@ -82,5 +87,7 @@ public class FXMLConnexionController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+                }
+            }
+            
 }

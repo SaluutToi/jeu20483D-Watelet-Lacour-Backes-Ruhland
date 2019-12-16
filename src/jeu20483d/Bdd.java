@@ -38,8 +38,6 @@ public class Bdd {
     
     //Méthodes
     public void ouvrir() {
-         
-        
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             BufferedReader br = new BufferedReader(new FileReader("bdd.txt"));
@@ -56,7 +54,7 @@ public class Bdd {
             System.out.println(e.toString());
         }   catch (IOException ex) {   
                 Logger.getLogger(Bdd.class.getName()).log(Level.SEVERE, null, ex);
-            }   
+        }   
     }
     
     public void fermer(){
@@ -91,18 +89,18 @@ public class Bdd {
     public boolean supprimer(Partie p){
         return true;
     }
-    public boolean ajouter(Joueur j){
+    public boolean ajouter(String mail, String pseudo, String mdp){
         this.ouvrir();
         boolean b = false;
         try {
             Statement s = conn.createStatement();
-        String q = "Select pseudo from joueur where pseudo like '"+j.getPseudo()+"'";
-        ResultSet rs = s.executeQuery(q);
+            String q = "Select mail from joueur where mail='"+mail+"'";
+            ResultSet rs = s.executeQuery(q);
             if (!rs.next())
             {
                 Statement t = conn.createStatement();
-                String r ="Insert into joueur (pseudo, mdp) values ('"+j.getPseudo()+"', '"+j.getMDP()+"')";
-                t.executeQuery(r);
+                String r ="Insert into joueur (mail, pseudo, mdp) values ('"+mail+"','"+pseudo+"', '"+mdp+"')";
+                t.executeUpdate(r);
                 b= true;
             } 
         }
@@ -132,15 +130,14 @@ public class Bdd {
         return true;
     }
     
-    public boolean connexion(String mail, String mdp)
-    {
+    public boolean connexion(String mail, String mdp){
         this.ouvrir();
         boolean b = false;
-     
+        System.out.println(this.conn);
         try 
         {
             Statement s = this.conn.createStatement();
-            String q = "select from joueur where mail like '"+mail+"' and mdp like '"+mdp+"'";
+            String q = "SELECT * FROM joueur WHERE mail='"+mail+"' and mdp='"+mdp+"'";
             ResultSet rs = s.executeQuery(q);
             if (rs.next())
             {
@@ -178,7 +175,6 @@ public class Bdd {
         this.ouvrir();
         Map<String,Integer> scores = new HashMap<>();
         try{
-            conn = DriverManager.getConnection(adresse, user, password);
             Statement s = conn.createStatement();
             String q = "Select pseudo, score from joueur";
             ResultSet rs = s.executeQuery(q);
@@ -197,5 +193,79 @@ public class Bdd {
     return scores;
     
     }
+    public String getPseudo(String mail) {
+        String r = null;
+        try {
+        Statement s = conn.createStatement();
+        String q = "select pseudo from joueur where mail='"+mail+"'";
+        ResultSet rs = s.executeQuery(q);
+            
+            if (rs.next())
+            {
+                r = rs.getString(1);
+            }
+     
+    }       catch (SQLException ex) {
+                Logger.getLogger(Bdd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    return r;
+    }
+    public String getStyle(String mail)
+    {
+        String r = null;
+        try {
+        Statement s = conn.createStatement();
+        String q = "select style from joueur where mail='"+mail+"'";
+        ResultSet rs = s.executeQuery(q);
+            
+            if (rs.next())
+            {
+                r = rs.getString(1);
+            }
+     
+    }       catch (SQLException ex) {
+                Logger.getLogger(Bdd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    return r;
+    }
+    
+    public int getScoreJoueur(String mail)
+    {
+        int r = 0;
+        try {
+        Statement s = conn.createStatement();
+        String q = "select score from joueur where mail='"+mail+"'";
+        ResultSet rs = s.executeQuery(q);
+            
+            if (rs.next())
+            {
+                r = rs.getInt(1);
+            }
+     
+    }       catch (SQLException ex) {
+                Logger.getLogger(Bdd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    return r;
+    }
+    
+    public int getNbParties(String mail)
+    {
+        int r = 0;
+        try {
+        Statement s = conn.createStatement();
+        String q = "select nbPartiesGagnees from joueur where mail='"+mail+"'";
+        ResultSet rs = s.executeQuery(q);
+            
+            if (rs.next())
+            {
+                r = rs.getInt(1);
+            }
+     
+    }       catch (SQLException ex) {
+                Logger.getLogger(Bdd.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    return r;
+    }
+    
 }
 

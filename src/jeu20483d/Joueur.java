@@ -7,15 +7,14 @@ import java.io.Serializable;
  * @author chloe
  */
 public class Joueur implements Serializable {
-    private String pseudo, mdp;
+    private String pseudo, mdp, style, mail;
     private int meilleurScore, partiesGagnees;
     
     //Constructeur
-    public Joueur(String p, String m){
+    public Joueur(String p, String mdp, String m){
         this.pseudo = p;
-        this.mdp = m;
-        this.meilleurScore = 0;
-        this.partiesGagnees = 0;
+        this.mdp = mdp;
+        this.mail = m;
     }
     
     //Getters
