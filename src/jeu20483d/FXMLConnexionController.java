@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
@@ -67,7 +68,16 @@ public class FXMLConnexionController implements Initializable {
      */
     @FXML
     private void handleButtonC(ActionEvent event) {
-        if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
+        if (textMailC.getText().length()==0 || textMailC.getText().length()==0)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Vous n'avez pas rempli tous les champs.");
+            alert.setContentText("Vous avez une autre chance.");
+
+            alert.showAndWait();
+        }
+        else if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
             String pseudo = bdd.getPseudo(textMailC.getText());
             int score = bdd.getScoreJoueur(textMailC.getText());
             int partieG = bdd.getNbParties(textMailC.getText());
@@ -86,6 +96,16 @@ public class FXMLConnexionController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            }
+        else
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setHeaderText("Identifiants incorrects.");
+                alert.setContentText("Vous avez une autre chance.");
+
+                alert.showAndWait();
         }
     }
 
@@ -95,7 +115,25 @@ public class FXMLConnexionController implements Initializable {
      */
     @FXML
     private void handleButtonI(ActionEvent event){
-        if(bdd.ajouter(textMailI.getText(), textPseudo.getText(), textMdpI.getText()))
+        if (textMailI.getText().length()==0 || textPseudo.getText().length()==0 || textMdpI.getText().length()==0 || textConfirmerMdp.getText().length()==0)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Vous n'avez pas rempli tous les champs.");
+            alert.setContentText("Vous avez une autre chance.");
+
+            alert.showAndWait();
+        }
+        else if (textMdpI.getText()!=textConfirmerMdp.getText())
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Les mots de passe ne corresponent pas.");
+            alert.setContentText("Vous avez une autre chance.");
+
+            alert.showAndWait();
+        }
+        else if(bdd.ajouter(textMailI.getText(), textPseudo.getText(), textMdpI.getText()))
             {
             Joueur jCo = new Joueur(textPseudo.getText(), textMdpI.getText(), textMailI.getText());
             Bdd.creerFichierJoueur(jCo);
