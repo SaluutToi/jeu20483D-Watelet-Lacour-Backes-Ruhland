@@ -108,6 +108,15 @@ public class FXMLMenuController implements Initializable {
     
     @FXML
     private void handleButtonClassement(){
-        
+        try {
+            Stage stage = new Stage();
+            this.fond.getScene().getWindow().hide();
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLScore.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -195,16 +196,36 @@ public class Bdd {
         this.fermer();
     }
 
-    public Map<String, Integer> getScores() {
+    public ArrayList getScoresClassement() {
         this.ouvrir();
-        Map<String,Integer> scores = new HashMap<>();
+        ArrayList<Integer> scores = new ArrayList<Integer>();
         try{
             Statement s = conn.createStatement();
-            String q = "Select pseudo, score from joueur";
+            String q = "Select score from joueur order by score desc";
             ResultSet rs = s.executeQuery(q);
             while (rs.next())
             {
-                scores.put(rs.getString(1), rs.getInt(2));
+                scores.add(rs.getInt(1));
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.toString());
+        }
+        this.fermer();    
+        return scores;
+    }
+    
+    public ArrayList getPseudosClassement() {
+        this.ouvrir();
+        ArrayList<String> scores = new ArrayList<String>();
+        try{
+            Statement s = conn.createStatement();
+            String q = "Select pseudo from joueur order by score desc";
+            ResultSet rs = s.executeQuery(q);
+            while (rs.next())
+            {
+                scores.add(rs.getString(1));
             }
         }
         catch (SQLException e)

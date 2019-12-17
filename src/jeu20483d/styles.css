@@ -26,6 +26,22 @@ and open the template in the editor.  Author     : chloe
     -fx-background-color: #FFFFFF;
     -fx-border-color: black;
 }
+
+/*Css classement*/
+.fondScore{
+    -fx-background-image: url("images/fondConnexion.png");
+}
+.buttonScore {
+    -fx-text-fill: #000000;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: black;
+}
+.textScore{
+    -fx-text-fill: #000000;
+    -fx-font-size: 20;
+    -fx-alignment: CENTER;  
+}
+
 /*Css de l'onglet aide dans le jeu'*/
 .textAide{
     -fx-text-fill: #000000;
