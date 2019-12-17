@@ -93,7 +93,12 @@ public class FXMLJeuController implements Initializable {
     private boolean aide= false;
     private Pane fondAide;
     private Joueur joueur;
-    
+
+    /**
+     * Controller qui initialise la vue
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.joueur = Bdd.lecFichierJoueur();
@@ -106,9 +111,21 @@ public class FXMLJeuController implements Initializable {
         //On affiche les deux nouvelles Cases
         this.afficher(this.style);
         this.score.setText("0");
-    }  
-    
-    
+    }
+
+    public void reinitialize(URL url, ResourceBundle rb, Partie p){
+        this.joueur = Bdd.lecFichierJoueur();
+        this.style = joueur.getStyle();
+        this.jeu = p.getGrille1();
+        this.afficher(this.style);
+        String s = String.valueOf(this.jeu.getScore());
+        this.score.setText(s);
+    }
+
+    /**
+     * ecoute les entrees claviers
+     * @param ke
+     */
     @FXML
     private void keyPressed(KeyEvent ke) {
         String touche = ke.getText();
@@ -126,7 +143,10 @@ public class FXMLJeuController implements Initializable {
             this.handleButtonBase();
         }
     }
-    
+
+    /**
+     * Controller deplace les cases vers le haut
+     */
     @FXML
     private void handleButtonHaut() {
         //On actualise les grilles de pane
@@ -346,7 +366,10 @@ public class FXMLJeuController implements Initializable {
             this.ajoutCase();
         }
     }
-    
+
+    /**
+     * Controller deplace les cases vers le bas
+     */
     @FXML
     private void handleButtonBas() {
         //On actualise les grilles de pane
@@ -568,7 +591,10 @@ public class FXMLJeuController implements Initializable {
             this.ajoutCase();
         }
     }
-    
+
+    /**
+     * Controller deplace les cases vers la gauche
+     */
     @FXML
     private void handleButtonGauche() {
         //On actualise les grilles de pane
@@ -788,7 +814,10 @@ public class FXMLJeuController implements Initializable {
             this.ajoutCase();
         }
     }
-    
+
+    /**
+     * Controller deplace les cases vers la droite
+     */
     @FXML
     private void handleButtonDroite() {
         //On actualise les grilles de pane
@@ -1009,7 +1038,10 @@ public class FXMLJeuController implements Initializable {
             this.ajoutCase();
         }
     }
-    
+
+    /**
+     * Controller deplace les cases vers le sommet
+     */
     @FXML
     private void handleButtonSommet() {
         //On actualise les grilles de pane
@@ -1227,7 +1259,10 @@ public class FXMLJeuController implements Initializable {
             this.ajoutCase();
         }
     }
-    
+
+    /**
+     * Controller deplacement vers la base
+     */
     @FXML
     private void handleButtonBase() {
         //On actualise les grilles de pane
@@ -1444,7 +1479,11 @@ public class FXMLJeuController implements Initializable {
             this.ajoutCase();
         }
     }
-    
+
+    /**
+     *
+     * @param d
+     */
     private void calculObjectif(int d){
         //Coordonnée X du coin haut-gauche de chaque grille servant à définir les objectifs:
         final int xSommet = 112;
@@ -1627,7 +1666,13 @@ public class FXMLJeuController implements Initializable {
             }
         }
     }
-    
+
+    /**
+     * Controller de calcul de score
+     * @param iGrille
+     * @param iLigne
+     * @param direction
+     */
     private void calculObjectif(int iGrille, int iLigne, int direction){
         //On initialise les grilles temporaires qui serviront à remplir les varibales globales indiquant:
         boolean[] casesPrises = new boolean[3]; //les cases prises
@@ -1952,7 +1997,10 @@ public class FXMLJeuController implements Initializable {
                 break;
         }
     }
-    
+
+    /**
+     * Controller Ajoute une case à la vue
+     */
     private void ajoutCase(){
             //On ajoute une case
             this.jeu.ajoutCase();
@@ -2038,7 +2086,11 @@ public class FXMLJeuController implements Initializable {
                 }   
             }
     }
-    
+
+    /**
+     * Controller Test les conditions de fin de partie
+     * @param vrai
+     */
     private void finPartie(boolean vrai){
         //On rend la vue du jeu un peu caché cf css
         Pane fondFin = new Pane();
@@ -2099,7 +2151,11 @@ public class FXMLJeuController implements Initializable {
         this.fondMessageFin = fondFin;
         this.messageFin = fondMessage;
     }
-    
+
+    /**
+     * Controller Affiche tous les éléments de la scene
+     * @param s
+     */
     private void afficher(String s){
       //On supprime l'ancien style sur tous les élèment de la vue
         this.fond.getStyleClass().remove("fond"+this.style);
@@ -2235,7 +2291,10 @@ public class FXMLJeuController implements Initializable {
             }
         }
     }
-    
+
+    /**
+     * Controller du menu d'aide des touches
+     */
     @FXML
     private void aideTouche(){
         //TRUE si le choix "touche" dans l'onglet aide est selectionné
@@ -2274,7 +2333,10 @@ public class FXMLJeuController implements Initializable {
             this.fond.getChildren().removeAll(this.fondAide);
         }
     }
-    
+
+    /**
+     * Controller relance une partie
+     */
     @FXML
     private void newPartie(){
         //On enregistre le nouveau meilleur score
@@ -2295,20 +2357,34 @@ public class FXMLJeuController implements Initializable {
         this.afficher(this.style);
         this.score.setText("0");
     }
-   
+
+    /**
+     * Controller theme Nuit
+     */
     @FXML
     private void styleNuit() {
         this.afficher("Nuit");
     }
+
+    /**
+     * Controller theme Classique
+     */
     @FXML
     private void styleClassique() {
         this.afficher("Classique");
     }
+
+    /**
+     * Controller theme de Noel
+     */
     @FXML
     private void styleNoel() {
         this.afficher("Noel");
     }
-    
+
+    /**
+     * Controller menu avec sauvegarde
+     */
     @FXML
     private void menuSauvegarde(){
         //On enregistre le nouveau meilleur score
@@ -2328,7 +2404,10 @@ public class FXMLJeuController implements Initializable {
             Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * Controller Menu sans sauvegarde
+     */
     @FXML
     private void menuNonSauvegarde(){
         //On enregistre le nouveau meilleur score

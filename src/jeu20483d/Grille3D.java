@@ -18,6 +18,10 @@ public class Grille3D implements Parametre, Serializable {
     private boolean deplacement;
     
     //Constructeur
+
+    /**
+     * Constructeur
+     */
     public Grille3D(){
         this.grilleBase = new HashSet <>();
         this.grilleMilieu = new HashSet<>();
@@ -63,7 +67,11 @@ public class Grille3D implements Parametre, Serializable {
     public void setGrilleSommet(HashSet <Case> gS){
         this.grilleSommet = gS;
     }
-    
+
+    /**
+     * redefinit la vue console d'une grille 3d
+     * @return Grille3D en String
+     */
     @Override
     public String toString() {
         int[][] tableau1 = new int[TAILLE][TAILLE];
@@ -92,8 +100,13 @@ public class Grille3D implements Parametre, Serializable {
         }
         return result;
     }
-    
-    
+
+    /**
+     * deplace les cases dans une des grilles
+     * @param grille
+     * @param direction
+     * @param ligne
+     */
     public void deplacer(HashSet<Case> grille, int direction, int ligne){
         //On établit la ligne ou la colonne que l'on doit déplacer et les objectifs correspondants
         int [] obj = new int[3];
@@ -435,7 +448,11 @@ public class Grille3D implements Parametre, Serializable {
                 break;
         }
     }
-    
+
+    /**
+     * deplace les cases de Grille3D
+     * @param direction
+     */
     public void deplacer(int direction){
         if(direction == BASE){
             //On parcourt les 3 grilles 
@@ -600,7 +617,12 @@ public class Grille3D implements Parametre, Serializable {
             }
         }
     }
-    
+
+    /**
+     * verifie les conditions d'ajout de nouvelles cases
+     * @param direction
+     * @return booleen conditions d'ajout remplies
+     */
     public boolean lanceDeplacement(int direction){
         deplacement = false; // pour vérifier si on a bougé au moins une case après le déplacement, avant d'en rajouter une nouvelle
         switch(direction){
@@ -643,7 +665,11 @@ public class Grille3D implements Parametre, Serializable {
         }
         return deplacement;
     }
-    
+
+    /**
+     * Condition de fin de jeu
+     * @return booleen partie terminée
+     */
     public boolean jeuFini(){
         boolean fin = true;
         //On vérifie si les trois grilles sont pleine
@@ -704,17 +730,27 @@ public class Grille3D implements Parametre, Serializable {
         }
         return fin;
     }
-    
+
+    /**
+     * affichage en cas de defaite
+     */
     public void jeuPerdu(){
         System.out.println("La partie est finie. Votre score est " + this.score);
         System.exit(1);
     }
-    
+
+    /**
+     * affichage en cas de victoire
+     */
     public void jeuGagne(){
         System.out.println("Bravo ! Vous avez atteint 2048");
         System.exit(0);
     }
-    
+
+    /**
+     * fusionne les cases fusionnable
+     * @param c
+     */
     public void fusion(Case c){
         //On fusionne les deux cases
         c.setV(c.getV() * 2);
@@ -727,7 +763,10 @@ public class Grille3D implements Parametre, Serializable {
         //On indique que le déplacement à eu lieu
         deplacement = true;
     }
-    
+
+    /**
+     * ajoute une case dans la grille à un emplacement vide aleatoire
+     */
     public void ajoutCase(){
         if ((this.grilleBase.size() < TAILLE * TAILLE)||(this.grilleMilieu.size() < TAILLE * TAILLE)||(this.grilleSommet.size() < TAILLE * TAILLE)) {          
             //On choisit une grille au hasard

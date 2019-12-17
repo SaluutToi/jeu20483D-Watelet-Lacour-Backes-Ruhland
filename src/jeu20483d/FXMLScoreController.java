@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 /**
  *
  * @author emili
+ * @version 1.0
  */
 public class FXMLScoreController implements Initializable {
     
@@ -35,7 +36,12 @@ public class FXMLScoreController implements Initializable {
     private Button buttonRetour;
     
     private Bdd bdd;
-    
+
+    /**
+     * Controller initialise la bdd
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         bdd = new Bdd();
@@ -44,6 +50,10 @@ public class FXMLScoreController implements Initializable {
         this.afficherScore();
       
     }
+
+    /**
+     * Controller affiche les scores
+     */
     @FXML
     private void afficherScore()
     {
@@ -62,7 +72,11 @@ public class FXMLScoreController implements Initializable {
             layoutY = layoutY + 40;
         }
     }
-    
+
+    /**
+     * Controller qui gère la vue en fonction devenements claviers
+     * @param event
+     */
     @FXML
     private void handleButtonR(ActionEvent event) {
         try {

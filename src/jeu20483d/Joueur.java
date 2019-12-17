@@ -5,12 +5,18 @@ import java.io.Serializable;
 /**
  *
  * @author chloe
+ * @version 1.0
  */
 public class Joueur implements Serializable {
     private String pseudo, mdp, style, mail;
     private int meilleurScore, partiesGagnees;
-    
-    //Constructeur
+
+    /**
+     * Constructeur
+     * @param p
+     * @param mdp
+     * @param m
+     */
     public Joueur(String p, String mdp, String m){
         this.pseudo = p;
         this.mdp = mdp;

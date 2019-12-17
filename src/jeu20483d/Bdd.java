@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  *
  * @author chloe
+ * @version 1.0
  */
 public class Bdd {
         private Connection conn;
@@ -27,20 +28,46 @@ public class Bdd {
         private String user;
         private String password;
     
-    //Constructeur 
+
+
+    /**
+     * Constructeur
+     */
     public Bdd (){}
     
-    //Getter
+
+
+    /**
+     * Getter
+     * @return renvoie l'adresse mail
+     */
     public String getAdresse(){
         return this.adresse;
     }
+
+    //Getter
+
+    /**
+     *
+     * @return renvoie le nom utilisateur
+     */
+    public String getUser() { return this.user; }
     
     //Setter
+
+    /**
+     *
+     * @param a adresse
+     */
     public void setAdresse(String a){
         this.adresse = a;
     }
     
-    //Méthodes
+
+
+    /**
+     * Ouvre la Bdd
+     */
     public void ouvrir() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -60,7 +87,10 @@ public class Bdd {
                 Logger.getLogger(Bdd.class.getName()).log(Level.SEVERE, null, ex);
         }   
     }
-    
+
+    /**
+     * Ferme la Bdd
+     */
     public void fermer(){
         if(conn!=null){
             try{
@@ -71,7 +101,20 @@ public class Bdd {
             }
         }
     }
-    
+
+    /**
+     *
+     * @return Vérifie la connection
+     */
+    public boolean estConnecté(){
+        if (conn != null)return true;
+        else return false;
+    }
+
+    /**
+     *
+     * @param j
+     */
     public void supprimer(Joueur j) {
         this.ouvrir();
             try {
@@ -83,11 +126,23 @@ public class Bdd {
             }
         this.fermer();
     }
-    
+
+    /**
+     *
+     * @param p
+     * @return
+     */
     public boolean supprimer(Partie p){
         return true;
     }
 
+    /**
+     *
+     * @param mail
+     * @param pseudo
+     * @param mdp
+     * @return booléen qui confirme l'ajout
+     */
     public boolean ajouter(String mail, String pseudo, String mdp){
         this.ouvrir();
         boolean b = false;
@@ -109,7 +164,11 @@ public class Bdd {
         this.fermer();
         return b;
     }
-    
+
+    /**
+     *
+     * @param j
+     */
     public void ajouterPartie(Joueur j){
         this.ouvrir();
         try {
@@ -124,11 +183,22 @@ public class Bdd {
         }
         this.fermer();
     }
-    
+
+    /**
+     *
+     * @param j
+     * @return
+     */
     public boolean chercher(Joueur j){
         return true;
     }
-    
+
+    /**
+     *
+     * @param mail
+     * @param mdp
+     * @return connection d'un utilisateur particulier
+     */
     public boolean connexion(String mail, String mdp){
         this.ouvrir();
         boolean b = false;
@@ -150,7 +220,11 @@ public class Bdd {
         return b;
         
     }
-    
+
+    /**
+     *
+     * @param j
+     */
     public void writeScore(Joueur j){
         this.ouvrir();
         try {
@@ -166,7 +240,11 @@ public class Bdd {
         }
         this.fermer();
     }
-    
+
+    /**
+     *
+     * @param j
+     */
     public void updateJoueur(Joueur j){
         this.ouvrir();
         try {
@@ -196,6 +274,10 @@ public class Bdd {
         this.fermer();
     }
 
+    /**
+     *
+     * @return Liste des scores
+     */
     public ArrayList getScoresClassement() {
         this.ouvrir();
         ArrayList<Integer> scores = new ArrayList<Integer>();
@@ -215,7 +297,11 @@ public class Bdd {
         this.fermer();    
         return scores;
     }
-    
+
+    /**
+     *
+     * @return Classement des pseudos
+     */
     public ArrayList getPseudosClassement() {
         this.ouvrir();
         ArrayList<String> scores = new ArrayList<String>();
@@ -235,7 +321,12 @@ public class Bdd {
         this.fermer();    
         return scores;
     }
-    
+
+    /**
+     *
+     * @param mail
+     * @return L'adresse Email d'un utilisateur
+     */
     public String getPseudo(String mail) {
         this.ouvrir();
         String r = null;
@@ -252,7 +343,12 @@ public class Bdd {
         this.fermer();
         return r;
     }
-    
+
+    /**
+     *
+     * @param mail
+     * @return Le nom du thème couleur utilisé par l'utilisateur
+     */
     public String getStyle(String mail){
         this.ouvrir();
         String r = null;
@@ -269,7 +365,12 @@ public class Bdd {
         this.fermer();
         return r;
     }
-    
+
+    /**
+     *
+     * @param mail
+     * @return Le score d'un joueur
+     */
     public int getScoreJoueur(String mail){
         this.ouvrir();
         int r = 0;
@@ -286,7 +387,12 @@ public class Bdd {
         this.fermer();
         return r;
     }
-    
+
+    /**
+     *
+     * @param mail
+     * @return nombre de partie jouées par l'utilisateur
+     */
     public int getNbParties(String mail){
         this.ouvrir();
         int r = 0;
@@ -303,7 +409,11 @@ public class Bdd {
         this.fermer();
         return r;
     }
-    
+
+    /**
+     *
+     * @param j
+     */
     public static void creerFichierJoueur (Joueur j) {
         try {
             ObjectOutputStream sortie = new ObjectOutputStream(new FileOutputStream("joueur.dat"));
@@ -313,6 +423,10 @@ public class Bdd {
         }
     }
 
+    /**
+     *
+     * @return le joueur ayant joué précédemment
+     */
     public static Joueur lecFichierJoueur () {
         try {
             ObjectInputStream entree = new ObjectInputStream(new FileInputStream("joueur.dat"));

@@ -47,15 +47,24 @@ public class FXMLConnexionController implements Initializable {
     
     private Bdd bdd;
     private Joueur j;
-    
+
+    /**
+     *
+     * @param url
+     * @param rb
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         bdd = new Bdd();
         this.fondConnexion.getStyleClass().add("fondConnexion");
         this.buttonC.getStyleClass().add("buttonConnexion");
         this.buttonI.getStyleClass().add("buttonConnexion");
-    } 
+    }
 
+    /**
+     *
+     * @param event
+     */
     @FXML
     private void handleButtonC(ActionEvent event) {
         if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
@@ -79,7 +88,11 @@ public class FXMLConnexionController implements Initializable {
             }
         }
     }
-   
+
+    /**
+     *
+     * @param event
+     */
     @FXML
     private void handleButtonI(ActionEvent event){
         if(bdd.ajouter(textMailI.getText(), textPseudo.getText(), textMdpI.getText()))

@@ -12,8 +12,13 @@ public class Case implements Parametre, Serializable {
     
     private int x, y, v;
     private HashSet<Case> grille;
-    
-    //Constructeur
+
+    /**
+     * Constructeur
+     * @param abscisse
+     * @param ordonne
+     * @param valeur
+     */
     public  Case(int abscisse, int ordonne, int valeur){
         this.x = abscisse;
         this.y = ordonne;
@@ -47,12 +52,21 @@ public class Case implements Parametre, Serializable {
     public void setGrille(HashSet<Case> g) {
         this.grille = g;
     }
-    
+
+    /**
+     *
+     * @return Case de type String
+     */
     @Override
     public String toString() {
         return "Case(" + this.x + "," + this.y + "," + this.v + ")";
     }
-    
+
+    /**
+     *
+     * @param obj
+     * @return booleen qui compare un objet à une case
+     */
     @Override
     public boolean equals(Object obj) { 
         if (obj instanceof Case) {
@@ -63,11 +77,20 @@ public class Case implements Parametre, Serializable {
         }
     }
 
+    /**
+     *
+     * @return Hashcode de l'objet
+     */
     @Override
     public int hashCode() {
         return this.x * 7 + this.y * 13;
     }
 
+    /**
+     * Compare les valeurs de deux cases
+     * @param c
+     * @return booleen
+     */
     public boolean valeursEgales(Case c) {
         if (c != null) {
             return this.v == c.v;
@@ -75,7 +98,12 @@ public class Case implements Parametre, Serializable {
             return false;
         }
     }
-    
+
+    /**
+     * Renvoie la case qui est voisin direct de la case considérée
+     * @param direction
+     * @return Case
+     */
     public Case getVoisinDirect(int direction){
         switch (direction) {
             case HAUT:

@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 /**
  *
  * @author chloe
+ * @version 1.0
  */
 public class FXMLMenuController implements Initializable {
     
@@ -48,8 +49,13 @@ public class FXMLMenuController implements Initializable {
     
     private Bdd bdd;
     private Joueur joueur;
-    
 
+
+    /**
+     * Controller initialise la vue de la scene
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.fond.getStyleClass().add("fondMenu");
@@ -62,7 +68,10 @@ public class FXMLMenuController implements Initializable {
         this.bdd = new Bdd();
         this.joueur = Bdd.lecFichierJoueur();
     }
-    
+
+    /**
+     * Controller bouton "jouer"
+     */
     @FXML
     private void handleButtonJouer(){
         try {
@@ -76,12 +85,27 @@ public class FXMLMenuController implements Initializable {
             Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * Controller bouton "rejouer"
+
     @FXML
     private void handleButtonRejouer(){
         //TODO: désérialisation de la partie
+        try {
+            if (this.bdd.estConnecté()) {
+                Partie p = IO.lecFichierPartie(this.joueur);
+
+            }
+        }catch(IOException | ClassNotFoundException e) {
+            e.getStackTrace();
+        }
     }
-    
+    */
+
+    /**
+     * Controller met à jour les information joueur dans la bdd
+     */
     @FXML
     private void handleButtonDeco(){
         //Enregistrement dans la bdd des modificatons de la classe joueur effectuées au cours du jeu
@@ -97,7 +121,10 @@ public class FXMLMenuController implements Initializable {
             Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * Controller pour quitter le jeu
+     */
     @FXML
     private void handleButtonQuitter(){
         //Enregistrement dans la bdd des modificatons de la classe joueur effectuées au cours du jeu
@@ -105,7 +132,10 @@ public class FXMLMenuController implements Initializable {
         //On quitte le jeu
         System.exit(0);
     }
-    
+
+    /**
+     * Controller affichage des classements
+     */
     @FXML
     private void handleButtonClassement(){
         try {

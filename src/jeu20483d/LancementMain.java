@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 /**
  *
  * @author chloe
+ * @versioon 1.0
  */
 public class LancementMain extends Application {
     public static void main(String[] args){
@@ -21,6 +22,11 @@ public class LancementMain extends Application {
         }
     }
 
+    /**
+     * Initialise la fenetre pour la vue
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {}
 }

@@ -8,6 +8,13 @@ public class PartieCoop extends Partie {
     private Joueur joueur2;
     
     //Constructeur
+
+    /**
+     * Constructeur PartieCoop
+     * @param j1
+     * @param g1
+     * @param j2
+     */
     public PartieCoop(Joueur j1, Grille3D g1, Joueur j2) {
         super(j1, g1);
         this.joueur2 = j2;
@@ -17,6 +24,4 @@ public class PartieCoop extends Partie {
     public Joueur getJoueur2(){
         return this.joueur2;
     }
-    
-    //Partie sert uniquement à enregistrer dans la bdd donc pas besoin de setters?
 }

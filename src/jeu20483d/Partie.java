@@ -5,13 +5,18 @@ import java.io.Serializable;
 /**
  *
  * @author chloe
+ * @version 1.0
  */
 public class Partie implements Serializable {
     private Joueur joueur1;
     private Grille3D grille1;
     private int score1;
-    
-    //Constructeur
+
+    /**
+     * Constructeur
+     * @param j1
+     * @param g1
+     */
     public Partie(Joueur j1, Grille3D g1){
         this.joueur1 = j1;
         this.grille1 = g1;
