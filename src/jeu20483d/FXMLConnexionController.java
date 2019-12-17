@@ -46,6 +46,7 @@ public class FXMLConnexionController implements Initializable {
     private TextField textConfirmerMdp;
     
     private Bdd bdd;
+    private Joueur j;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -94,7 +95,18 @@ public class FXMLConnexionController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if(bdd.ajouter(textMailI.getText(), textPseudo.getText(), textMdpI.getText()))
+            {
+                try {
+                    Stage stage = (Stage) buttonC.getScene().getWindow();
+                    Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException ex) {
+                    Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-    }
-            
+    }      
 }

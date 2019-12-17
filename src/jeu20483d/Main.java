@@ -11,12 +11,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 /**
  *
  * @author chloe
  */
-public class Main extends Application {
-    
+public class Main extends Application{
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLConnexion.fxml"));
@@ -27,11 +32,18 @@ public class Main extends Application {
         stage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
+
+    //@param args the command line arguments **/
+
+    public static void main(String[] args) { launch(args);
+        /**Joueur j = new Joueur("max","b");
+        Grille3D g = new Grille3D();
+        Partie p = new Partie(j,g);
+        IO.creerFichierPartie(p);
+        p = IO.lecFichierPartie();
+        System.out.println(p.getJoueur1().getPseudo());
+
+        IO.testPort();**/
     }
     
 }

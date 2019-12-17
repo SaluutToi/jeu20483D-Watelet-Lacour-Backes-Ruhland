@@ -83,6 +83,10 @@ public class Bdd {
         this.fermer();
     }
     
+    public boolean supprimer(Partie p){
+        return true;
+    }
+
     public boolean ajouter(String mail, String pseudo, String mdp){
         this.ouvrir();
         boolean b = false;
@@ -298,5 +302,6 @@ public class Bdd {
             e.printStackTrace();
         }return null;
     }
+    
 }
 
