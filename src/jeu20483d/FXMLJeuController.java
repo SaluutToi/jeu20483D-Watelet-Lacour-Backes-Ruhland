@@ -92,15 +92,19 @@ public class FXMLJeuController implements Initializable {
     private Pane messageFin;
     private boolean aide= false;
     private Pane fondAide;
+    private Joueur joueur;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.joueur = Bdd.lecFichierJoueur();
+        this.style = joueur.getStyle();
+        
         this.jeu.ajoutCase();
         this.jeu.ajoutCase();
         this.jeu.ajoutCase();
         
         //On affiche les deux nouvelles Cases
-        this.afficher("Noel");
+        this.afficher(this.style);
         this.score.setText("0");
     }  
     
@@ -2079,11 +2083,14 @@ public class FXMLJeuController implements Initializable {
         rejouer.relocate(217, 300);
         rejouer.getStyleClass().add("button"+this.style);
         rejouer.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
-            newPartie();
+            this.newPartie();
         });
         Button quit = new Button("Retour au menu");
         quit.relocate(214, 350);
         quit.getStyleClass().add("button"+this.style);
+        quit.addEventHandler(ActionEvent.ACTION, (ActionEvent event) -> {
+            this.menuNonSauvegarde();
+        });
         fondMessage.getChildren().add(quit);
         fondMessage.getChildren().add(rejouer);
         fondMessage.getChildren().add(scoreMess);
@@ -2112,7 +2119,7 @@ public class FXMLJeuController implements Initializable {
         this.base.getStyleClass().remove("button"+this.style);
       //On aenregistre le nouveau style
         this.style = s;
-        //TODO
+        this.joueur.setStyle(this.style);
       //On attribue le nouveau style
         this.fond.getStyleClass().add("fond"+this.style);
         this.grilleSommet.getStyleClass().add("gridpane"+this.style);
@@ -2270,8 +2277,14 @@ public class FXMLJeuController implements Initializable {
     
     @FXML
     private void newPartie(){
-        //TODO: enregistrer le score
-        
+        //On enregistre le nouveau meilleur score
+        if(this.jeu.getScore()>this.joueur.getMeilleurScore()){
+            this.joueur.setMeilleurScore(this.jeu.getScore());
+        }
+        //Si le joueur a gagné la partie, on le comptabilise
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.joueur.setPartiesGagnees(this.joueur.getPartiesGagnees()+1);
+        }
         //On retire le message de fin
         this.fond.getChildren().removeAll(this.fondMessageFin);
         this.fond.getChildren().removeAll(this.messageFin);
@@ -2298,7 +2311,12 @@ public class FXMLJeuController implements Initializable {
     
     @FXML
     private void menuSauvegarde(){
-        //TODO: sauvegarder la partie + le score 
+        //On enregistre le nouveau meilleur score
+        if(this.jeu.getScore()>this.joueur.getMeilleurScore()){
+            this.joueur.setMeilleurScore(this.jeu.getScore());
+        }
+        //On sérialise le joueur
+        Bdd.creerFichierJoueur(joueur);
         try {
             Stage stage = new Stage();
             this.fond.getScene().getWindow().hide();
@@ -2313,7 +2331,16 @@ public class FXMLJeuController implements Initializable {
     
     @FXML
     private void menuNonSauvegarde(){
-        //TODO: sauvegarder le score 
+        //On enregistre le nouveau meilleur score
+        if(this.jeu.getScore()>this.joueur.getMeilleurScore()){
+            this.joueur.setMeilleurScore(this.jeu.getScore());
+        }
+        //Si le joueur a gagné la partie, on le comptabilise
+        if(this.jeu.getMeilleureCase() == 2048){
+            this.joueur.setPartiesGagnees(this.joueur.getPartiesGagnees()+1);
+        }
+        //On sérialise le joueur
+        Bdd.creerFichierJoueur(joueur);
         try {
             Stage stage = new Stage();
             this.fond.getScene().getWindow().hide();

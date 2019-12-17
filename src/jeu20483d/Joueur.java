@@ -7,56 +7,56 @@ import java.io.Serializable;
  * @author chloe
  */
 public class Joueur implements Serializable {
-    private String pseudo, mdp;
+    private String pseudo, mdp, style, mail;
     private int meilleurScore, partiesGagnees;
     
     //Constructeur
-    public Joueur(String p, String m){
+    public Joueur(String p, String mdp, String m){
         this.pseudo = p;
-        this.mdp = m;
-        this.meilleurScore = 0;
-        this.partiesGagnees = 0;
+        this.mdp = mdp;
+        this.mail = m;
+        this.meilleurScore=0;
+        this.partiesGagnees=0;
+        this.style = "Classique";
     }
     
     //Getters
     public String getPseudo(){
         return this.pseudo;
     }
-    
     public String getMDP(){
         return this.mdp;
     }
-    
     public int getMeilleurScore(){
         return this.meilleurScore;
     }
-    
     public int getPartiesGagnees(){
-        //idée: nombre parties gagnées en solo, en coop ou en compet
         return this.partiesGagnees;
+    }
+    public String getMail(){
+        return this.mail;
+    }
+    public String getStyle(){
+        return this.style;
     }
     
     //Setters
     public void setPseudo(String p){
         this.pseudo = p;
-        //enregistrement modif dans bdd
     }
-    
     public void setMDP(String m){
         this.mdp = m;
-        //enregistrement modif dans bdd
     }
-    
     public void setMeilleurScore(int s){
         this.meilleurScore = s;
-        //enregistrement modif dans bdd
     }
-    
-    public void getPartiesGagnees(int g){
-        //idée: nombre parties gagnées en solo, en coop ou en compet
+    public void setPartiesGagnees(int g){
         this.partiesGagnees = g;
-        //enregistrement modif dans bdd
     }
-    
-    //Affichage -> "Chloé, vous avez gagné 0 parties et votre meilleur score est de 0." ou juste "Chloé" ?
+    public void setStyle(String s){
+        this.style = s;
+    }
+    public void setMail(String s){
+        this.style = s;
+    }
 }

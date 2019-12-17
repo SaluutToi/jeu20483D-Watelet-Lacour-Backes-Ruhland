@@ -57,8 +57,16 @@ public class FXMLConnexionController implements Initializable {
 
     @FXML
     private void handleButtonC(ActionEvent event) {
-        //if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
-        
+        if (bdd.connexion(textMailC.getText(), textMdpC.getText())){
+            String pseudo = bdd.getPseudo(textMailC.getText());
+            int score = bdd.getScoreJoueur(textMailC.getText());
+            int partieG = bdd.getNbParties(textMailC.getText());
+            String style = bdd.getStyle(textMailC.getText());
+            Joueur joueurCo = new Joueur(pseudo, textMdpC.getText(), textMailC.getText());
+            joueurCo.setMeilleurScore(score);
+            joueurCo.setPartiesGagnees(partieG);
+            joueurCo.setStyle(style);
+            Bdd.creerFichierJoueur(joueurCo);
             try {
                 Stage stage = (Stage) buttonC.getScene().getWindow();
                 Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
@@ -68,20 +76,25 @@ public class FXMLConnexionController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
             }
-        //}
+        }
     }
    
     @FXML
-    private void handleButtonI(){
-        //TOD0: inscire le joueur dans la bdd
-        try {
-            Stage stage = (Stage) buttonC.getScene().getWindow();
-            Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException ex) {
-            Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+    private void handleButtonI(ActionEvent event){
+        if(bdd.ajouter(textMailI.getText(), textPseudo.getText(), textMdpI.getText()))
+            {
+            Joueur jCo = new Joueur(textPseudo.getText(), textMdpI.getText(), textMailI.getText());
+            Bdd.creerFichierJoueur(jCo);
+            try {
+                Stage stage = (Stage) buttonC.getScene().getWindow();
+                Parent root = FXMLLoader.load(getClass().getResource("FXMLMenu.fxml"));
+                Scene scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException ex) {
+                Logger.getLogger(FXMLConnexionController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
+            
 }

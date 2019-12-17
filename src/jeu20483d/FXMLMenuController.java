@@ -46,6 +46,9 @@ public class FXMLMenuController implements Initializable {
     @FXML
     private Button classement;
     
+    private Bdd bdd;
+    private Joueur joueur;
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +59,8 @@ public class FXMLMenuController implements Initializable {
         this.deco.getStyleClass().add("buttonMenu");
         this.quitter.getStyleClass().add("buttonMenu");
         this.classement.getStyleClass().add("buttonMenu");
+        this.bdd = new Bdd();
+        this.joueur = Bdd.lecFichierJoueur();
     }
     
     @FXML
@@ -79,7 +84,8 @@ public class FXMLMenuController implements Initializable {
     
     @FXML
     private void handleButtonDeco(){
-        //TODO: déconnexion de la bdd
+        //Enregistrement dans la bdd des modificatons de la classe joueur effectuées au cours du jeu
+        this.bdd.updateJoueur(this.joueur);
         try {
             Stage stage = new Stage();
             this.fond.getScene().getWindow().hide();
@@ -94,7 +100,9 @@ public class FXMLMenuController implements Initializable {
     
     @FXML
     private void handleButtonQuitter(){
-        //TODO: deconnexion de la bdd
+        //Enregistrement dans la bdd des modificatons de la classe joueur effectuées au cours du jeu
+        this.bdd.updateJoueur(this.joueur);
+        //On quitte le jeu
         System.exit(0);
     }
     
